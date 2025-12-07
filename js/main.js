@@ -12,7 +12,7 @@ $$ |      $$ |  $$ |$$$$$$\\    \\$  /   $$ |  $$ |
 `);
 
 // --- API CONFIGURATION ---
-const API_BASE_URL = 'https://portfolio-0fkz.onrender.com';
+const API_BASE_URL = 'https://portfolio-0fkz.onrender.com/api/v1';
 
 // Fetch projects from API
 async function fetchProjects() {
