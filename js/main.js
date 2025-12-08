@@ -748,6 +748,29 @@ function expandProjectCard(card) {
     }
 }
 
+// Generate skeleton HTML for project cards
+function generateProjectSkeletons(count = 6) {
+    let html = '';
+    for (let i = 0; i < count; i++) {
+        html += `
+            <div class="skeleton-card">
+                <div class="skeleton-image"></div>
+                <div class="skeleton-content">
+                    <div class="skeleton skeleton-title"></div>
+                    <div class="skeleton skeleton-text"></div>
+                    <div class="skeleton skeleton-text short"></div>
+                    <div class="skeleton-tags">
+                        <div class="skeleton skeleton-tag"></div>
+                        <div class="skeleton skeleton-tag"></div>
+                        <div class="skeleton skeleton-tag"></div>
+                    </div>
+                </div>
+            </div>
+        `;
+    }
+    return html;
+}
+
 // Render projects dynamically - SIMPLE & ALWAYS VISIBLE
 async function renderProjects() {
     const grid = document.getElementById('projects-grid');
@@ -755,8 +778,9 @@ async function renderProjects() {
         return;
     }
 
-    // Fetch from API if not already loaded
+    // Show skeleton loader while fetching
     if (!window.projectsData || window.projectsData.length === 0) {
+        grid.innerHTML = generateProjectSkeletons(6);
         await fetchProjects();
     }
 
@@ -843,13 +867,41 @@ function animateProjectCards() {
     // Animation now handled inside renderProjects
 }
 
+// Generate skeleton HTML for experience items
+function generateExperienceSkeletons(count = 3) {
+    let html = '';
+    for (let i = 0; i < count; i++) {
+        html += `
+            <div class="skeleton-experience">
+                <div class="skeleton-header">
+                    <div class="skeleton skeleton-logo"></div>
+                    <div class="skeleton-info">
+                        <div class="skeleton skeleton-company"></div>
+                        <div class="skeleton skeleton-role"></div>
+                        <div class="skeleton skeleton-period"></div>
+                    </div>
+                </div>
+                <div class="skeleton skeleton-desc"></div>
+                <div class="skeleton skeleton-desc short"></div>
+                <div class="skeleton-achievements">
+                    <div class="skeleton skeleton-achievement-title"></div>
+                    <div class="skeleton skeleton-achievement-item"></div>
+                    <div class="skeleton skeleton-achievement-item"></div>
+                </div>
+            </div>
+        `;
+    }
+    return html;
+}
+
 // Render experience dynamically
 async function renderExperience() {
     const grid = document.getElementById('experience-grid');
     if (!grid) return;
 
-    // Fetch from API if not already loaded
+    // Show skeleton loader while fetching
     if (!window.experienceData || window.experienceData.length === 0) {
+        grid.innerHTML = generateExperienceSkeletons(3);
         await fetchExperience();
     }
 

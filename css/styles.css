@@ -991,3 +991,138 @@ input:focus, textarea:focus {
         padding: 0 1rem;
     }
 }
+
+/* Skeleton Loader Styles */
+.skeleton {
+    background: linear-gradient(90deg, #1a1a1a 25%, #2a2a2a 50%, #1a1a1a 75%);
+    background-size: 200% 100%;
+    animation: skeleton-shimmer 1.5s ease-in-out infinite;
+    border-radius: 8px;
+}
+
+@keyframes skeleton-shimmer {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+}
+
+/* Project Skeleton Card */
+.skeleton-card {
+    background: rgba(20, 20, 20, 0.95);
+    border: 1px solid #2a2a2a;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.skeleton-card .skeleton-image {
+    height: 180px;
+    background: linear-gradient(90deg, #1a1a1a 25%, #252525 50%, #1a1a1a 75%);
+    background-size: 200% 100%;
+    animation: skeleton-shimmer 1.5s ease-in-out infinite;
+}
+
+.skeleton-card .skeleton-content {
+    padding: 20px;
+}
+
+.skeleton-card .skeleton-title {
+    height: 24px;
+    width: 70%;
+    margin-bottom: 12px;
+}
+
+.skeleton-card .skeleton-text {
+    height: 14px;
+    width: 100%;
+    margin-bottom: 8px;
+}
+
+.skeleton-card .skeleton-text.short {
+    width: 60%;
+}
+
+.skeleton-card .skeleton-tags {
+    display: flex;
+    gap: 8px;
+    margin-top: 16px;
+}
+
+.skeleton-card .skeleton-tag {
+    height: 20px;
+    width: 50px;
+    border-radius: 4px;
+}
+
+/* Experience Skeleton */
+.skeleton-experience {
+    background: rgba(15, 15, 15, 0.5);
+    backdrop-filter: blur(10px);
+    border: 1px solid #2a2a2a;
+    border-radius: 8px;
+    padding: 24px;
+}
+
+.skeleton-experience .skeleton-header {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 20px;
+}
+
+.skeleton-experience .skeleton-logo {
+    width: 60px;
+    height: 60px;
+    border-radius: 8px;
+    flex-shrink: 0;
+}
+
+.skeleton-experience .skeleton-info {
+    flex: 1;
+}
+
+.skeleton-experience .skeleton-company {
+    height: 22px;
+    width: 50%;
+    margin-bottom: 8px;
+}
+
+.skeleton-experience .skeleton-role {
+    height: 18px;
+    width: 40%;
+    margin-bottom: 8px;
+}
+
+.skeleton-experience .skeleton-period {
+    height: 14px;
+    width: 30%;
+}
+
+.skeleton-experience .skeleton-desc {
+    height: 14px;
+    width: 100%;
+    margin-bottom: 8px;
+}
+
+.skeleton-experience .skeleton-desc.short {
+    width: 85%;
+}
+
+.skeleton-experience .skeleton-achievements {
+    border-top: 1px solid #2a2a2a;
+    padding-top: 16px;
+    margin-top: 16px;
+}
+
+.skeleton-experience .skeleton-achievement-title {
+    height: 16px;
+    width: 120px;
+    margin-bottom: 12px;
+}
+
+.skeleton-experience .skeleton-achievement-item {
+    height: 14px;
+    width: 90%;
+    margin-bottom: 8px;
+}
+
+.skeleton-experience .skeleton-achievement-item:last-child {
+    width: 75%;
+}
