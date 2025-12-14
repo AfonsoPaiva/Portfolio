@@ -1,0 +1,18 @@
+name: Keep Render Service Active
+
+on:
+  schedule:
+    # Runs every 14 minutes, 24/7
+    - cron: '*/14 * * * *'
+  workflow_dispatch:  # Allows manual triggering
+
+jobs:
+  ping-service:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Ping Render Service
+        run: curl -I https://portfolio-0fkz.onrender.com
+        
+      - name: Log ping time
+        run: echo "Pinged at $(date)"
