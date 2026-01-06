@@ -17,20 +17,18 @@ type Status struct {
 }
 
 // Project represents a portfolio project
-type UpdateProjectInput struct {
-	StatusText  string   `json:"statusText"`
-	StatusColor string   `json:"statusColor"`
-	Image       string   `json:"image"`
-	TitleEn     string   `json:"titleEn"`
-	TitlePt     string   `json:"titlePt"`
-	ShortDescEn string   `json:"shortDescEn"`
-	ShortDescPt string   `json:"shortDescPt"`
-	FullDescEn  string   `json:"fullDescEn"`
-	FullDescPt  string   `json:"fullDescPt"`
-	FeaturesEn  []string `json:"featuresEn"`
-	FeaturesPt  []string `json:"featuresPt"`
-	Tech        []string `json:"tech"`
-	Link        string   `json:"link"`
+type Project struct {
+	ID               int           `json:"id"`
+	Status           Status        `json:"status"`
+	Image            string        `json:"image"`
+	Title            LocalizedText `json:"title"`
+	ShortDescription LocalizedText `json:"shortDescription"`
+	FullDescription  LocalizedText `json:"fullDescription"`
+	Features         LocalizedList `json:"features"`
+	Tech             []string      `json:"tech"`
+	Link             string        `json:"link"`
+	CreatedAt        time.Time     `json:"createdAt"`
+	UpdatedAt        time.Time     `json:"updatedAt"`
 }
 
 // LocalizedList represents a list of items in multiple languages
