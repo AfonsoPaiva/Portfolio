@@ -8,35 +8,35 @@ import (
 
 	"github.com/afonsopaiva/portfolio-api/internal/config"
 	"github.com/afonsopaiva/portfolio-api/internal/models"
-	"github.com/mailersend/mailersend-go"
+	"github.com/mailgun/mailgun-go/v4"
 )
 
-// EmailService handles email sending via MailerSend
+// EmailService handles email sending via Mailgun
 type EmailService struct {
-	client           *mailersend.Mailersend
+	mg               mailgun.Mailgun
 	fromName         string
 	fromEmail        string
 	toEmail          string
 	thankYouDisabled bool
 }
 
-// NewEmailService creates a new email service instance using MailerSend
+// NewEmailService creates a new email service instance using Mailgun
 func NewEmailService() *EmailService {
-	client := mailersend.NewMailersend(config.AppConfig.MailerSendAPIKey)
+	mg := mailgun.NewMailgun(config.AppConfig.MailgunDomain, config.AppConfig.MailgunAPIKey)
 
 	return &EmailService{
-		client:    client,
-		fromName:  config.AppConfig.MailerSendFromName,
-		fromEmail: config.AppConfig.MailerSendFromEmail,
-		toEmail:   config.AppConfig.MailerSendToEmail,
+		mg:        mg,
+		fromName:  config.AppConfig.MailgunFromName,
+		fromEmail: config.AppConfig.MailgunFromEmail,
+		toEmail:   config.AppConfig.MailgunToEmail,
 	}
 }
 
 // SendContactNotification sends an email notification for a new contact message
 // and a thank-you email to the sender
 func (s *EmailService) SendContactNotification(msg *models.ContactMessage) error {
-	if s.fromEmail == "" || s.toEmail == "" {
-		return fmt.Errorf("email configuration incomplete: from=%s, to=%s", s.fromEmail, s.toEmail)
+	if s.fromEmail == "" || s.toEmail == "" || config.AppConfig.MailgunDomain == "" || config.AppConfig.MailgunAPIKey == "" {
+		return fmt.Errorf("email configuration incomplete: from=%s, to=%s, domain=%s", s.fromEmail, s.toEmail, config.AppConfig.MailgunDomain)
 	}
 
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
@@ -45,7 +45,7 @@ func (s *EmailService) SendContactNotification(msg *models.ContactMessage) error
 	// --- 1. Send notification to admin ---
 	subject := fmt.Sprintf("New Contact: %s", msg.Name)
 
-	// HTML body (no emojis)
+	// HTML body (kept the original style)
 	html := fmt.Sprintf(`
 <!DOCTYPE html>
 <html>
@@ -105,47 +105,28 @@ Message:
 Received: %s
 `, msg.Name, msg.Email, msg.Message, msg.CreatedAt.Format("Jan 02, 2006 at 15:04"))
 
-	// Build the admin notification message
-	message := s.client.Email.NewMessage()
+	from := fmt.Sprintf("%s <%s>", s.fromName, s.fromEmail)
 
-	message.SetFrom(mailersend.From{
-		Name:  s.fromName,
-		Email: s.fromEmail,
-	})
+	adminMsg := s.mg.NewMessage(from, subject, text, s.toEmail)
+	adminMsg.SetHtml(html)
+	// Set Reply-To header
+	adminMsg.AddHeader("Reply-To", fmt.Sprintf("%s <%s>", msg.Name, msg.Email))
 
-	message.SetRecipients([]mailersend.Recipient{
-		{
-			Name:  "Portfolio Admin",
-			Email: s.toEmail,
-		},
-	})
-
-	message.SetReplyTo(mailersend.ReplyTo{
-		Name:  msg.Name,
-		Email: msg.Email,
-	})
-
-	message.SetSubject(subject)
-	message.SetHTML(html)
-	message.SetText(text)
-	message.SetTags([]string{"portfolio", "contact-form"})
-
-	_, err := s.client.Email.Send(ctx, message)
+	_, _, err := s.mg.Send(ctx, adminMsg)
 	if err != nil {
-		return fmt.Errorf("failed to send email via MailerSend: %v", err)
+		return fmt.Errorf("failed to send email via Mailgun: %v", err)
 	}
 
-	// --- 2. Send thank-you email to the sender ---
-	if config.AppConfig.MailerSendSendThankYou == "true" {
+	// --- 2. Send thank-you email to the sender (optional) ---
+	if strings.ToLower(config.AppConfig.MailgunSendThankYou) == "true" {
 		if s.thankYouDisabled {
-			fmt.Printf("Skipping thank-you email to %s (disabled due to previous MailerSend limit)\n", msg.Email)
+			fmt.Printf("Skipping thank-you email to %s (disabled due to previous errors)\n", msg.Email)
 		} else {
-			err = s.sendThankYouEmail(msg)
-			if err != nil {
-				// detect MailerSend unique recipients limit and stop further attempts
-				if strings.Contains(err.Error(), "MS42225") || strings.Contains(strings.ToLower(err.Error()), "unique recipients") {
+			if err := s.sendThankYouEmail(ctx, msg); err != nil {
+				e := err.Error()
+				if strings.Contains(e, "422") || strings.Contains(strings.ToLower(e), "limit") || strings.Contains(strings.ToLower(e), "too many") {
 					s.thankYouDisabled = true
-					fmt.Printf("Disabling thank-you emails due to MailerSend limit: %v\n", err)
+					fmt.Printf("Disabling thank-you emails due to Mailgun error: %v\n", err)
 				} else {
 					fmt.Printf("Warning: failed to send thank-you email to %s: %v\n", msg.Email, err)
 				}
@@ -156,13 +137,10 @@ Received: %s
 	return nil
 }
 
-// sendThankYouEmail sends a thank-you email to the person who submitted the contact form
-func (s *EmailService) sendThankYouEmail(msg *models.ContactMessage) error {
-	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
-	defer cancel()
-
+func (s *EmailService) sendThankYouEmail(ctx context.Context, msg *models.ContactMessage) error {
 	subject := "Thank you for reaching out!"
 
+	// Keep the original thank-you HTML/template
 	html := fmt.Sprintf(`
 <!DOCTYPE html>
 <html>
@@ -212,26 +190,13 @@ Afonso Paiva
 This is an automated response - Please do not reply directly to this email
 `, msg.Name)
 
-	message := s.client.Email.NewMessage()
+	from := fmt.Sprintf("%s <%s>", s.fromName, s.fromEmail)
+	to := msg.Email
 
-	message.SetFrom(mailersend.From{
-		Name:  s.fromName,
-		Email: s.fromEmail,
-	})
+	message := s.mg.NewMessage(from, subject, text, to)
+	message.SetHtml(html)
 
-	message.SetRecipients([]mailersend.Recipient{
-		{
-			Name:  msg.Name,
-			Email: msg.Email,
-		},
-	})
-
-	message.SetSubject(subject)
-	message.SetHTML(html)
-	message.SetText(text)
-	message.SetTags([]string{"portfolio", "thank-you"})
-
-	_, err := s.client.Email.Send(ctx, message)
+	_, _, err := s.mg.Send(ctx, message)
 	if err != nil {
 		return fmt.Errorf("failed to send thank-you email: %v", err)
 	}
@@ -241,35 +206,20 @@ This is an automated response - Please do not reply directly to this email
 
 // SendTestEmail sends a test email to verify configuration
 func (s *EmailService) SendTestEmail() error {
-	if s.fromEmail == "" || s.toEmail == "" {
+	if s.fromEmail == "" || s.toEmail == "" || config.AppConfig.MailgunDomain == "" || config.AppConfig.MailgunAPIKey == "" {
 		return fmt.Errorf("email configuration incomplete")
 	}
 
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 
-	message := s.client.Email.NewMessage()
+	from := fmt.Sprintf("%s <%s>", s.fromName, s.fromEmail)
+	message := s.mg.NewMessage(from, "Portfolio API - Email Test", "This is a test email from your Portfolio API.", s.toEmail)
+	message.SetHtml("<p>This is a test email from your Portfolio API. <strong>Mailgun configuration is working correctly!</strong></p>")
 
-	message.SetFrom(mailersend.From{
-		Name:  s.fromName,
-		Email: s.fromEmail,
-	})
-
-	message.SetRecipients([]mailersend.Recipient{
-		{
-			Name:  "Test Recipient",
-			Email: s.toEmail,
-		},
-	})
-
-	message.SetSubject("Portfolio API - Email Test")
-	message.SetText("This is a test email from your Portfolio API. MailerSend configuration is working correctly!")
-	message.SetHTML("<p>This is a test email from your Portfolio API. <strong>MailerSend configuration is working correctly!</strong></p>")
-
-	_, err := s.client.Email.Send(ctx, message)
+	_, _, err := s.mg.Send(ctx, message)
 	if err != nil {
 		return fmt.Errorf("failed to send test email: %v", err)
 	}
-
 	return nil
 }
