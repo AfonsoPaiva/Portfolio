@@ -36,6 +36,14 @@ func main() {
 	// Setup Gin router
 	router := gin.Default()
 
+	router.GET("/health", func(c *gin.Context) {
+		c.JSON(200, gin.H{
+			"status":  "healthy",
+			"service": "portfolio-api",
+			"version": "1.0.0",
+		})
+	})
+
 	// CORS configuration using gin-contrib/cors
 	// Use permissive default that allows all origins for development
 	router.Use(cors.New(cors.Config{
