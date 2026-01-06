@@ -2,9 +2,9 @@ name: Keep Render Service Active
 
 on:
   schedule:
-    # Runs every 14 minutes, 24/7
-    - cron: '*/6 * * * *'
-  workflow_dispatch:  # Allows manual triggering
+    # Runs every 5 minutes, 24/7
+    - cron: '*/5 * * * *' 
+  workflow_dispatch:
 
 jobs:
   ping-service:
