@@ -134,10 +134,13 @@ Received: %s
 	}
 
 	// --- 2. Send thank-you email to the sender ---
-	err = s.sendThankYouEmail(msg)
-	if err != nil {
-		// Log but don't fail the whole operation if thank-you email fails
-		fmt.Printf("Warning: failed to send thank-you email to %s: %v\n", msg.Email, err)
+	if config.AppConfig.MailerSendSendThankYou == "true" {
+		err = s.sendThankYouEmail(msg)
+		if err != nil {
+			fmt.Printf("Warning: failed to send thank-you email to %s: %v\n", msg.Email, err)
+		}
+	} else {
+		fmt.Printf("Skipping thank-you email to %s due to MAILERSEND_SEND_THANKYOU=false\n", msg.Email)
 	}
 
 	return nil

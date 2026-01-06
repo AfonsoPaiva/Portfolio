@@ -7,14 +7,15 @@ import (
 )
 
 type Config struct {
-	Port                string
-	DatabaseURL         string
-	APIKey              string
-	MailerSendAPIKey    string
-	MailerSendFromName  string
-	MailerSendFromEmail string
-	MailerSendToEmail   string
-	AllowedOrigins      string
+	Port                   string
+	DatabaseURL            string
+	APIKey                 string
+	MailerSendAPIKey       string
+	MailerSendFromName     string
+	MailerSendFromEmail    string
+	MailerSendToEmail      string
+	AllowedOrigins         string
+	MailerSendSendThankYou string
 }
 
 var AppConfig *Config
@@ -24,14 +25,15 @@ func Load() error {
 	godotenv.Load()
 
 	AppConfig = &Config{
-		Port:                getEnv("PORT", "8080"),
-		DatabaseURL:         getEnv("DATABASE_URL", "postgresql://root@localhost:26257/portfolio?sslmode=disable"),
-		APIKey:              getEnv("API_KEY", ""),
-		MailerSendAPIKey:    getEnv("MAILERSEND_API_KEY", ""),
-		MailerSendFromName:  getEnv("MAILERSEND_FROM_NAME", "Portfolio Contact"),
-		MailerSendFromEmail: getEnv("MAILERSEND_FROM_EMAIL", ""),
-		MailerSendToEmail:   getEnv("MAILERSEND_TO_EMAIL", ""),
-		AllowedOrigins:      getEnv("ALLOWED_ORIGINS", "*"),
+		Port:                   getEnv("PORT", "8080"),
+		DatabaseURL:            getEnv("DATABASE_URL", "postgresql://root@localhost:26257/portfolio?sslmode=disable"),
+		APIKey:                 getEnv("API_KEY", ""),
+		MailerSendAPIKey:       getEnv("MAILERSEND_API_KEY", ""),
+		MailerSendFromName:     getEnv("MAILERSEND_FROM_NAME", "Portfolio Contact"),
+		MailerSendFromEmail:    getEnv("MAILERSEND_FROM_EMAIL", ""),
+		MailerSendToEmail:      getEnv("MAILERSEND_TO_EMAIL", ""),
+		AllowedOrigins:         getEnv("ALLOWED_ORIGINS", "*"),
+		MailerSendSendThankYou: getEnv("MAILERSEND_SEND_THANKYOU", "true"),
 	}
 
 	return nil
