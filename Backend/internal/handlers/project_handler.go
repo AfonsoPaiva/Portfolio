@@ -143,6 +143,14 @@ func (h *ProjectHandler) Delete(c *gin.Context) {
 		})
 		return
 	}
+	var input models.UpdateProjectInput
+	if err := c.ShouldBindJSON(&input); err != nil {
+		c.JSON(http.StatusBadRequest, models.APIResponse{
+			Success: false,
+			Error:   "Invalid input: " + err.Error(),
+		})
+		return
+	}
 
 	c.JSON(http.StatusOK, models.APIResponse{
 		Success: true,
