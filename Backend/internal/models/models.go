@@ -84,6 +84,23 @@ type CreateProjectInput struct {
 	Link        string   `json:"link"`
 }
 
+// UpdateProjectInput allows partial updates; nil = field omitted
+type UpdateProjectInput struct {
+	StatusText  *string   `json:"statusText"`
+	StatusColor *string   `json:"statusColor"`
+	Image       *string   `json:"image"`
+	TitleEn     *string   `json:"titleEn"`
+	TitlePt     *string   `json:"titlePt"`
+	ShortDescEn *string   `json:"shortDescEn"`
+	ShortDescPt *string   `json:"shortDescPt"`
+	FullDescEn  *string   `json:"fullDescEn"`
+	FullDescPt  *string   `json:"fullDescPt"`
+	FeaturesEn  *[]string `json:"featuresEn"`
+	FeaturesPt  *[]string `json:"featuresPt"`
+	Tech        *[]string `json:"tech"`
+	Link        *string   `json:"link"`
+}
+
 // CreateExperienceInput represents input for creating experience
 type CreateExperienceInput struct {
 	Logo          string        `json:"logo"`

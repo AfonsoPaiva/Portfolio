@@ -100,7 +100,7 @@ func (h *ProjectHandler) Update(c *gin.Context) {
 		return
 	}
 
-	var input models.CreateProjectInput
+	var input models.UpdateProjectInput
 	if err := c.ShouldBindJSON(&input); err != nil {
 		c.JSON(http.StatusBadRequest, models.APIResponse{
 			Success: false,

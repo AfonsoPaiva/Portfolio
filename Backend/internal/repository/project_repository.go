@@ -2,6 +2,8 @@ package repository
 
 import (
 	"context"
+	"fmt"
+	"strings"
 	"time"
 
 	"github.com/afonsopaiva/portfolio-api/internal/database"
@@ -147,24 +149,89 @@ func (r *ProjectRepository) Create(ctx context.Context, input models.CreateProje
 }
 
 // Update updates a project
-func (r *ProjectRepository) Update(ctx context.Context, id int, input models.CreateProjectInput) (*models.Project, error) {
+func (r *ProjectRepository) Update(ctx context.Context, id int, input models.UpdateProjectInput) (*models.Project, error) {
 	var updatedAt time.Time
 
-	err := database.Pool.QueryRow(ctx, `
-		UPDATE projects SET 
-			status_text = $2, status_color = $3, image = $4,
-			title_en = $5, title_pt = $6, short_desc_en = $7, short_desc_pt = $8,
-			full_desc_en = $9, full_desc_pt = $10, features_en = $11, features_pt = $12,
-			tech = $13, link = $14, updated_at = NOW()
-		WHERE id = $1
-		RETURNING updated_at
-	`,
-		id, input.StatusText, input.StatusColor, input.Image,
-		input.TitleEn, input.TitlePt, input.ShortDescEn, input.ShortDescPt,
-		input.FullDescEn, input.FullDescPt, input.FeaturesEn, input.FeaturesPt,
-		input.Tech, input.Link,
-	).Scan(&updatedAt)
+	set := make([]string, 0)
+	args := make([]interface{}, 0)
+	argPos := 1
 
+	if input.StatusText != nil {
+		set = append(set, fmt.Sprintf("status_text = $%d", argPos))
+		args = append(args, *input.StatusText)
+		argPos++
+	}
+	if input.StatusColor != nil {
+		set = append(set, fmt.Sprintf("status_color = $%d", argPos))
+		args = append(args, *input.StatusColor)
+		argPos++
+	}
+	if input.Image != nil {
+		set = append(set, fmt.Sprintf("image = $%d", argPos))
+		args = append(args, *input.Image)
+		argPos++
+	}
+	if input.TitleEn != nil {
+		set = append(set, fmt.Sprintf("title_en = $%d", argPos))
+		args = append(args, *input.TitleEn)
+		argPos++
+	}
+	if input.TitlePt != nil {
+		set = append(set, fmt.Sprintf("title_pt = $%d", argPos))
+		args = append(args, *input.TitlePt)
+		argPos++
+	}
+	if input.ShortDescEn != nil {
+		set = append(set, fmt.Sprintf("short_desc_en = $%d", argPos))
+		args = append(args, *input.ShortDescEn)
+		argPos++
+	}
+	if input.ShortDescPt != nil {
+		set = append(set, fmt.Sprintf("short_desc_pt = $%d", argPos))
+		args = append(args, *input.ShortDescPt)
+		argPos++
+	}
+	if input.FullDescEn != nil {
+		set = append(set, fmt.Sprintf("full_desc_en = $%d", argPos))
+		args = append(args, *input.FullDescEn)
+		argPos++
+	}
+	if input.FullDescPt != nil {
+		set = append(set, fmt.Sprintf("full_desc_pt = $%d", argPos))
+		args = append(args, *input.FullDescPt)
+		argPos++
+	}
+	if input.FeaturesEn != nil {
+		set = append(set, fmt.Sprintf("features_en = $%d", argPos))
+		args = append(args, *input.FeaturesEn)
+		argPos++
+	}
+	if input.FeaturesPt != nil {
+		set = append(set, fmt.Sprintf("features_pt = $%d", argPos))
+		args = append(args, *input.FeaturesPt)
+		argPos++
+	}
+	if input.Tech != nil {
+		set = append(set, fmt.Sprintf("tech = $%d", argPos))
+		args = append(args, *input.Tech)
+		argPos++
+	}
+	if input.Link != nil {
+		set = append(set, fmt.Sprintf("link = $%d", argPos))
+		args = append(args, *input.Link)
+		argPos++
+	}
+
+	if len(set) == 0 {
+		// nothing to update; return current row
+		return r.GetByID(ctx, id)
+	}
+
+	// Build query with updated_at
+	query := fmt.Sprintf("UPDATE projects SET %s, updated_at = NOW() WHERE id = $%d RETURNING updated_at", strings.Join(set, ", "), argPos)
+	args = append(args, id)
+
+	err := database.Pool.QueryRow(ctx, query, args...).Scan(&updatedAt)
 	if err != nil {
 		return nil, err
 	}
