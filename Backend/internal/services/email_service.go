@@ -3,6 +3,7 @@ package services
 import (
 	"context"
 	"fmt"
+	"strings"
 	"time"
 
 	"github.com/afonsopaiva/portfolio-api/internal/config"
@@ -12,10 +13,11 @@ import (
 
 // EmailService handles email sending via MailerSend
 type EmailService struct {
-	client    *mailersend.Mailersend
-	fromName  string
-	fromEmail string
-	toEmail   string
+	client           *mailersend.Mailersend
+	fromName         string
+	fromEmail        string
+	toEmail          string
+	thankYouDisabled bool
 }
 
 // NewEmailService creates a new email service instance using MailerSend
@@ -135,12 +137,20 @@ Received: %s
 
 	// --- 2. Send thank-you email to the sender ---
 	if config.AppConfig.MailerSendSendThankYou == "true" {
-		err = s.sendThankYouEmail(msg)
-		if err != nil {
-			fmt.Printf("Warning: failed to send thank-you email to %s: %v\n", msg.Email, err)
+		if s.thankYouDisabled {
+			fmt.Printf("Skipping thank-you email to %s (disabled due to previous MailerSend limit)\n", msg.Email)
+		} else {
+			err = s.sendThankYouEmail(msg)
+			if err != nil {
+				// detect MailerSend unique recipients limit and stop further attempts
+				if strings.Contains(err.Error(), "MS42225") || strings.Contains(strings.ToLower(err.Error()), "unique recipients") {
+					s.thankYouDisabled = true
+					fmt.Printf("Disabling thank-you emails due to MailerSend limit: %v\n", err)
+				} else {
+					fmt.Printf("Warning: failed to send thank-you email to %s: %v\n", msg.Email, err)
+				}
+			}
 		}
-	} else {
-		fmt.Printf("Skipping thank-you email to %s due to MAILERSEND_SEND_THANKYOU=false\n", msg.Email)
 	}
 
 	return nil
