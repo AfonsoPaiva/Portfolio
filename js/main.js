@@ -1189,3 +1189,285 @@ function stopKeepAlivePing() {
     }
 }
 
+
+// --- CONFIGURATION ---
+
+// Boot log messages to display
+const bootMessages = [
+    { text: "Initializing kernel...", delay: 50 },
+    { text: "Loading initial ramdisk...", delay: 100 },
+    { text: "Mounting root file system...", delay: 150 },
+    { text: "Started Journal Service.", delay: 200, status: "OK", color: "success" },
+    { text: "Reached target Local File Systems.", delay: 50, status: "OK", color: "success" },
+    { text: "Starting Network Manager...", delay: 300 },
+    { text: "Found device eth0: Intel Ethernet Controller.", delay: 100 },
+    { text: "Establishing secure connection to backend...", delay: 800 },
+    // This is where we will pause/loop if backend is cold
+];
+
+
+// --- BOOT SEQUENCE LOGIC ---
+document.addEventListener('DOMContentLoaded', async () => {
+    // Disable body scroll during boot
+    document.body.style.overflow = 'hidden';
+    
+    // Start Matrix Background immediately
+    initMatrixRain();
+    
+    // Start the visual log sequence
+    const bootPromise = runBootSequence();
+    
+    // Start checking API health in parallel
+    const healthPromise = checkBackendHealth();
+
+    // Wait for BOTH: visual sequence to reach a certain point AND backend to be ready
+    await Promise.all([bootPromise, healthPromise]);
+    
+    // Finish up
+    completeBoot();
+});
+
+async function runBootSequence() {
+    const logContainer = document.getElementById('boot-log');
+    const percentEl = document.getElementById('boot-percent');
+    let progress = 0;
+
+    for (let i = 0; i < bootMessages.length; i++) {
+        const msg = bootMessages[i];
+        
+        // Create log line
+        const div = document.createElement('div');
+        div.className = 'boot-line';
+        
+        const timestamp = `[ ${(performance.now() / 1000).toFixed(6)} ]`;
+        let statusHtml = '';
+        if (msg.status) {
+            statusHtml = `<span class="${msg.color === 'success' ? 'text-[#00ff9d]' : 'text-yellow-500'} font-bold">[ ${msg.status} ]</span> `;
+        }
+        
+        div.innerHTML = `<span class="boot-timestamp">${timestamp}</span> ${statusHtml}${msg.text}`;
+        logContainer.appendChild(div);
+        
+        // Auto scroll
+        logContainer.scrollTop = logContainer.scrollHeight;
+        
+        // Update progress bar fake number
+        progress += Math.floor(Math.random() * 5);
+        if(progress > 90) progress = 90; // Hold at 90 until backend ready
+        percentEl.innerText = `${progress}%`;
+
+        // Wait for the message specific delay
+        // If the backend is already ready, we speed this up significantly (divide delay by 4)
+        const delay = state.isBackendReady ? msg.delay / 4 : msg.delay;
+        await new Promise(r => setTimeout(r, delay));
+    }
+
+    // After fixed messages, if backend is not ready, enter loop
+    while (!state.isBackendReady) {
+        const div = document.createElement('div');
+        div.className = 'boot-line text-yellow-500';
+        div.innerHTML = `<span class="boot-timestamp">[ ${(performance.now() / 1000).toFixed(6)} ]</span> Waiting for backend node (Render Cold Start)...`;
+        logContainer.appendChild(div);
+        logContainer.scrollTop = logContainer.scrollHeight;
+        await new Promise(r => setTimeout(r, 1500)); // Log every 1.5s while waiting
+    }
+}
+
+async function checkBackendHealth() {
+    const healthUrl = `${API_BASE_URL}/health`; // Or whatever your health endpoint is
+    let attempts = 0;
+    
+    // Try continuously
+    while (!state.isBackendReady) {
+        try {
+            // Using AbortController to timeout fast if it hangs
+            const controller = new AbortController();
+            const id = setTimeout(() => controller.abort(), 2000);
+            
+            // Try to fetch
+            const response = await fetch(healthUrl, { 
+                method: 'GET',
+                signal: controller.signal
+            });
+            clearTimeout(id);
+
+            if (response.ok) {
+                state.isBackendReady = true;
+                break;
+            }
+        } catch (e) {
+            // Check failed, wait and retry
+            // console.log("Backend sleep...");
+        }
+        
+        // If this is the very first check and it fails, we know server is cold.
+        // We wait 1 second before retrying to not spam too hard
+        await new Promise(r => setTimeout(r, 1000));
+        attempts++;
+    }
+}
+
+function completeBoot() {
+    const logContainer = document.getElementById('boot-log');
+    const percentEl = document.getElementById('boot-percent');
+    
+    // Final success logs
+    const lines = [
+        "Backend connection established.",
+        "Starting User Interface...",
+        "Welcome to afonso_paiva shell."
+    ];
+    
+    lines.forEach(text => {
+        const div = document.createElement('div');
+        div.className = 'boot-line text-[#00ff9d]';
+        div.innerHTML = `<span class="boot-timestamp">[ ${(performance.now() / 1000).toFixed(6)} ]</span> [ OK ] ${text}`;
+        logContainer.appendChild(div);
+    });
+
+    percentEl.innerText = "100%";
+    
+    setTimeout(() => {
+        // Fade out boot screen
+        const screen = document.getElementById('boot-screen');
+        screen.style.opacity = '0';
+        document.body.style.overflow = 'auto'; // Re-enable scroll
+        
+        // Initialize the rest of the site logic
+        initSiteLogic();
+        
+        setTimeout(() => {
+            screen.remove();
+        }, 500);
+    }, 800);
+}
+
+// --- SITE LOGIC (Post-Boot) ---
+function initSiteLogic() {
+    // Typewriter effect for home
+    const typeTarget = document.getElementById('typewriter-1');
+    if(typeTarget) {
+        const text = "init_sequence --verbose --force";
+        let i = 0;
+        const typeInt = setInterval(() => {
+            typeTarget.textContent += text.charAt(i);
+            i++;
+            if (i >= text.length) clearInterval(typeInt);
+        }, 50);
+    }
+
+    // Load Data
+    renderProjects();
+    renderExperience();
+    
+    // Lucide icons
+    lucide.createIcons();
+    
+    // Smooth scroll for nav links (overrides default to ensure mobile menu closes)
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            const target = document.querySelector(this.getAttribute('href'));
+            if (target) {
+                target.scrollIntoView({ behavior: 'smooth' });
+                // Close mobile menu
+                document.getElementById('mobile-menu').classList.remove('show-mobile');
+            }
+        });
+    });
+
+    // Mobile Menu Toggle
+    document.getElementById('mobile-toggle').addEventListener('click', () => {
+        document.getElementById('mobile-menu').classList.toggle('show-mobile');
+    });
+}
+
+// --- VISUAL EFFECTS ---
+function initMatrixRain() {
+    const canvas = document.getElementById('bgCanvas');
+    const ctx = canvas.getContext('2d');
+    
+    const resize = () => {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    };
+    window.addEventListener('resize', resize);
+    resize();
+
+    const chars = '01';
+    const fontSize = 12;
+    const columns = canvas.width / fontSize;
+    const drops = new Array(Math.ceil(columns)).fill(1);
+
+    function draw() {
+        ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.fillStyle = '#1f1f1f';
+        ctx.font = fontSize + 'px monospace';
+
+        for (let i = 0; i < drops.length; i++) {
+            const text = chars.charAt(Math.floor(Math.random() * chars.length));
+            if(Math.random() > 0.99) ctx.fillStyle = '#00ff9d'; // Occasional green
+            else ctx.fillStyle = '#1a1a1a';
+
+            ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+            if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) drops[i] = 0;
+            drops[i]++;
+        }
+    }
+    setInterval(draw, 50);
+}
+
+// --- DATA FETCHING (Same as before, simplified) ---
+async function renderProjects() {
+    const grid = document.getElementById('projects-grid');
+    if(!grid) return;
+    
+    // Simulated data for demo (replace with your API fetch if backend is awake)
+    // Since backend is awake now (checked in boot), you can call API.
+    try {
+        const res = await fetch(`${API_BASE_URL}/projects`);
+        const data = await res.json();
+        if(data.success) {
+            grid.innerHTML = data.data.map(p => `
+                <div class="bg-surface/50 border border-border rounded-lg overflow-hidden hover:border-primary transition-all group">
+                    <div class="h-48 overflow-hidden relative">
+                        <img src="${p.image}" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                        <div class="absolute top-2 right-2 bg-black/80 px-2 py-1 text-[10px] text-primary rounded border border-primary/20">${p.status.text}</div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-white font-bold text-lg mb-2 group-hover:text-primary transition-colors">${typeof p.title === 'object' ? p.title.en : p.title}</h3>
+                        <p class="text-dim text-sm mb-4 line-clamp-2">${typeof p.shortDescription === 'object' ? p.shortDescription.en : p.shortDescription}</p>
+                        <div class="flex flex-wrap gap-2 text-xs font-mono text-secondary">
+                            ${p.tech.map(t => `<span>#${t}</span>`).join('')}
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+            return;
+        }
+    } catch(e) { console.error(e); }
+
+    // Fallback if API has no data or fails strictly
+    grid.innerHTML = `<div class="text-dim col-span-full text-center">Projects loaded from secure archive.</div>`;
+}
+
+async function renderExperience() {
+    const grid = document.getElementById('experience-grid');
+    if(!grid) return;
+    try {
+        const res = await fetch(`${API_BASE_URL}/experience`);
+        const data = await res.json();
+        if(data.success) {
+            grid.innerHTML = data.data.map(e => `
+                 <div class="border-l-2 border-primary/20 pl-6 pb-12 relative last:pb-0">
+                    <div class="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-black border-2 border-primary"></div>
+                    <h3 class="text-xl font-bold text-white">${typeof e.company === 'object' ? e.company.en : e.company}</h3>
+                    <div class="text-primary font-mono text-sm mb-2">${typeof e.role === 'object' ? e.role.en : e.role}</div>
+                    <p class="text-dim text-sm mb-4">${typeof e.description === 'object' ? e.description.en : e.description}</p>
+                 </div>
+            `).join('');
+        }
+    } catch(e) {}
+}
+

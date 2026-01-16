@@ -1181,3 +1181,75 @@ input:focus, textarea:focus {
     font-size: 12px;
     color: rgba(0,0,0,0.6);
 }
+
+/* Core Variables & Reset */
+:root {
+    --bg: #000000;
+    --surface: #0f0f0f;
+    --border: #1f1f1f;
+    --primary: #00ff9d;
+    --secondary: #bd00ff;
+    --text: #e0e0e0;
+    --dim: #6b7280;
+    --error: #ff3333;
+}
+
+html {
+    scroll-behavior: smooth;
+    background-color: var(--bg);
+}
+
+body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'JetBrains Mono', monospace;
+    overflow-x: hidden;
+}
+
+/* Boot Screen Styles */
+#boot-screen {
+    background-color: #050505;
+    /* ensure it stays on top */
+    z-index: 99999; 
+    transition: opacity 0.5s ease-in-out;
+}
+
+.boot-line {
+    display: block;
+    margin-bottom: 2px;
+    opacity: 0.9;
+}
+.boot-line.success { color: #00ff9d; }
+.boot-line.warning { color: #f59e0b; }
+.boot-line.error { color: #ef4444; }
+.boot-timestamp { color: #6b7280; margin-right: 8px; }
+
+/* Section Spacing for Single Page */
+.section-pad {
+    padding-top: 6rem;
+    padding-bottom: 6rem;
+    min-height: 80vh; /* Ensure sections take up space */
+}
+
+/* Utilities */
+.terminal-text { text-shadow: 0 0 10px rgba(0, 255, 157, 0.2); }
+.text-dim { color: var(--dim); }
+.text-primary { color: var(--primary); }
+.text-secondary { color: var(--secondary); }
+.bg-surface { background-color: var(--surface); }
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: #000; }
+::-webkit-scrollbar-thumb { background: #333; border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: var(--primary); }
+
+/* Animations */
+.animate-blink { animation: blink 1s step-end infinite; }
+@keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+
+/* Mobile Menu */
+#mobile-menu.show-mobile { display: block !important; }
+
+/* Fix Canvas */
+#bgCanvas { pointer-events: none; }
