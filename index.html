@@ -29,7 +29,15 @@
     </script>
     <link rel="stylesheet" href="css/styles.css">
 </head>
-<body class="bg-black text-gray-200 font-mono selection:bg-green-400 selection:text-black">
+<body class="bg-black text-gray-200 font-mono selection:bg-green-400 selection:text-black loading">
+    
+    <!-- Terminal Loader -->
+    <div id="terminal-loader">
+        <div id="boot-log"></div>
+        <div class="mt-4 hidden" id="terminal-input-line">
+            <span class="text-green-400">root@afonso:~$</span> <span id="typing-command"></span><span class="cursor-blink"></span>
+        </div>
+    </div>
     
     <!-- Navigation -->
     <nav class="fixed top-0 w-full bg-black border-b-2 border-white/10 z-50">
@@ -46,11 +54,26 @@
                 <button id="lang-toggle" class="border-2 border-white/20 px-3 py-1 hover:border-green-400 hover:text-green-400 transition-all">
                     PT / EN
                 </button>
+                <button id="mobile-menu-btn" class="md:hidden text-white hover:text-green-400">
+                    <i data-lucide="menu" class="w-6 h-6"></i>
+                </button>
             </div>
+        </div>
+
+        <!-- Mobile Menu Overlay -->
+        <div id="mobile-menu" class="fixed inset-0 bg-black/95 z-[60] hidden flex flex-col items-center justify-center gap-8 backdrop-blur-lg transform transition-transform duration-300 translate-x-full">
+            <button id="mobile-menu-close" class="absolute top-5 right-6 text-white hover:text-green-400">
+               <i data-lucide="x" class="w-8 h-8"></i>
+            </button>
+            <a href="#about" class="text-2xl font-bold hover:text-green-400" data-i18n="nav.about">./ABOUT</a>
+            <a href="#experience" class="text-2xl font-bold hover:text-green-400" data-i18n="nav.experience">./EXPERIENCE</a>
+            <a href="#projects" class="text-2xl font-bold hover:text-green-400" data-i18n="nav.projects">./PROJECTS</a>
+            <a href="#docs" class="text-2xl font-bold hover:text-green-400" data-i18n="nav.docs">./DOCS</a>
+            <a href="#contact" class="text-2xl font-bold hover:text-green-400" data-i18n="nav.contact">./CONTACT</a>
         </div>
     </nav>
 
-    <main class="max-w-6xl mx-auto px-6 pt-32 pb-20">
+    <main class="max-w-6xl mx-auto px-6 pt-24 md:pt-32 pb-20">
         
         <!-- Hero Section -->
         <header class="min-h-[60vh] flex flex-col justify-center mb-24">

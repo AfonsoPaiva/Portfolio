@@ -268,6 +268,108 @@ async function submitContact(e) {
     }
 }
 
+// --- Boot Sequence ---
+
+const bootMessages = [
+    { text: "Mounting root filesystem...", status: "ok", delay: 200 },
+    { text: "Loading kernel modules...", status: "ok", delay: 100 },
+    { text: "Initializing graphics subsystem...", status: "ok", delay: 300 },
+    { text: "Checking memory integrity...", status: "ok", delay: 150 },
+    { text: "Starting system message bus...", status: "ok", delay: 100 },
+    { text: "Mounting /home/paiva...", status: "ok", delay: 200 },
+    { text: "Configuring network interfaces...", status: "ok", delay: 400 },
+    { text: "Establishing connection to sleep server...", status: "wait", delay: 500 }
+];
+
+function addBootLine(text, status) {
+    const log = document.getElementById('boot-log');
+    if (!log) return;
+    
+    const line = document.createElement('div');
+    line.className = 'boot-line';
+    
+    let statusHtml = '';
+    if (status === 'ok') statusHtml = '<span class="status ok">[ OK ]</span>';
+    else if (status === 'warn') statusHtml = '<span class="status warn">[WARN]</span>';
+    else if (status === 'fail') statusHtml = '<span class="status fail">[FAIL]</span>';
+    else if (status === 'wait') statusHtml = '<span class="status info">[....]</span>';
+    
+    line.innerHTML = `${statusHtml} <span class="content">${text}</span>`;
+    log.appendChild(line);
+}
+
+async function runBootSequence() {
+    // 1. Run initial messages
+    for (let i = 0; i < bootMessages.length - 1; i++) {
+        const msg = bootMessages[i];
+        await new Promise(r => setTimeout(r, msg.delay));
+        addBootLine(msg.text, msg.status);
+    }
+
+    // 2. Wait for API connection
+    const waitMsg = bootMessages[bootMessages.length - 1];
+    addBootLine(waitMsg.text, waitMsg.status);
+    
+    // Start fetches in background
+    const fetchStart = Date.now();
+    try {
+        await Promise.all([
+            fetchProjects(),
+            fetchExperience(),
+            fetchDocs(),
+            fetchGitHubStats()
+        ]);
+        
+        // Ensure at least 1.5 seconds of "waiting" so it looks realistic
+        const elapsed = Date.now() - fetchStart;
+        if (elapsed < 1500) {
+            await new Promise(r => setTimeout(r, 1500 - elapsed));
+        }
+
+        // Replace "wait" with "ok"
+        const log = document.getElementById('boot-log');
+        if (log && log.lastElementChild) {
+            log.lastElementChild.innerHTML = '<span class="status ok">[ OK ]</span> <span class="content">Connection established.</span>';
+        }
+
+    } catch (e) {
+        addBootLine("Connection failed. Starting offline mode...", "warn");
+    }
+
+    await new Promise(r => setTimeout(r, 500));
+    addBootLine("Starting portfolio_daemon v2.0...", "ok");
+    await new Promise(r => setTimeout(r, 800));
+
+    // 3. Fake typing command
+    const inputLine = document.getElementById('terminal-input-line');
+    if (inputLine) {
+        inputLine.classList.remove('hidden');
+        
+        const command = "./start_portfolio.sh";
+        const typingSpan = document.getElementById('typing-command');
+        
+        for (let char of command) {
+            if (typingSpan) typingSpan.innerText += char;
+            await new Promise(r => setTimeout(r, 50 + Math.random() * 50));
+        }
+    }
+
+    await new Promise(r => setTimeout(r, 500));
+
+    // 4. Remove Loader
+    const loader = document.getElementById('terminal-loader');
+    if (loader) {
+        gsap.to(loader, { 
+            opacity: 0, 
+            duration: 0.5, 
+            onComplete: () => {
+                loader.remove();
+                document.body.classList.remove('loading');
+            }
+        });
+    }
+}
+
 // --- Render Functions ---
 
 function renderExperience() {
@@ -539,13 +641,50 @@ document.addEventListener('DOMContentLoaded', () => {
 
     document.getElementById('contact-form').addEventListener('submit', submitContact);
 
+    // Mobile Menu
+    const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
+    const mobileMenuClose = document.getElementById('mobile-menu-close');
+    
+    if (mobileMenuBtn && mobileMenu && mobileMenuClose) {
+        mobileMenuBtn.addEventListener('click', () => {
+             mobileMenu.classList.remove('hidden');
+             gsap.fromTo(mobileMenu, { x: '100%' }, { x: '0%', duration: 0.4, ease: 'power2.out' });
+             document.body.style.overflow = 'hidden';
+        });
+
+        const closeMenu = () => {
+             gsap.to(mobileMenu, { 
+                x: '100%', 
+                duration: 0.4, 
+                ease: 'power2.in', 
+                onComplete: () => {
+                    mobileMenu.classList.add('hidden');
+                    document.body.style.overflow = '';
+                }
+             });
+        };
+
+        mobileMenuClose.addEventListener('click', closeMenu);
+
+        // Close on link click
+        mobileMenu.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                closeMenu();
+                // Allow lenis to scroll after menu closes? 
+                // Lenis scroll happens on click, closeMenu is async animation.
+                // It should be fine.
+            });
+        });
+    }
+
     // Initial Load
     updateLanguage(state.lang);
-    fetchProjects();
-    fetchDocs();
-    fetchExperience();
-    fetchGitHubStats();
-    lucide.createIcons();
+    
+    // Run boot sequence which handles data fetching
+    runBootSequence().then(() => {
+        lucide.createIcons();
+    });
 });
 
 // Exposed for onclick in HTML

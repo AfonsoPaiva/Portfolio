@@ -26,12 +26,6 @@ body {
     background: #00ff9d;
 }
 
-/* One-off Global Utilities */
-.glass {
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-}
-
 /* Lenis Smooth Scroll Required Styles */
 html.lenis, html.lenis body {
   height: auto;
@@ -51,4 +45,64 @@ html.lenis, html.lenis body {
 
 .lenis.lenis-scrolling iframe {
   pointer-events: none;
+}
+
+/* Terminal Boot Loader */
+#terminal-loader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #050505;
+    z-index: 9999;
+    padding: 2rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    color: #a3a3a3;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    overflow: hidden;
+    cursor: default;
+}
+
+.boot-line {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 4px;
+}
+
+.boot-line .status {
+    font-weight: bold;
+}
+
+.boot-line .status.ok { color: #00ff9d; } /* Green */
+.boot-line .status.warn { color: #facc15; } /* Yellow */
+.boot-line .status.fail { color: #ef4444; } /* Red */
+.boot-line .status.info { color: #3b82f6; } /* Blue */
+
+.boot-line .content {
+    color: #e5e7eb;
+}
+
+.cursor-blink {
+    display: inline-block;
+    width: 8px;
+    height: 14px;
+    background-color: #00ff9d;
+    animation: blink 1s step-end infinite;
+    vertical-align: middle;
+    margin-left: 5px;
+}
+
+@keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+}
+
+/* Hide scrollbar when loading */
+body.loading {
+    overflow: hidden;
 }
