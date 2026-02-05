@@ -3,7 +3,6 @@ package repository
 import (
 	"context"
 	"fmt"
-	"time"
 
 	"github.com/afonsopaiva/portfolio-api/internal/database"
 	"github.com/afonsopaiva/portfolio-api/internal/models"
