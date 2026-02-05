@@ -33,7 +33,8 @@ const state = {
             "contact.title": "Get In Touch",
             "contact.desc": "Currently looking for new opportunities. Whether you have a question or just want to say hi, I'll try my best to get back to you!",
             "contact.btn": "SEND_MESSAGE",
-            "modal.repo": "VIEW REPOSITORY"
+            "modal.repo": "VIEW REPOSITORY",
+            "docs.read_more": "READ_MORE"
         },
         pt: {
             "nav.about": "./SOBRE",
@@ -61,7 +62,8 @@ const state = {
             "contact.title": "Entre em Contato",
             "contact.desc": "Atualmente em busca de novas oportunidades. Se tiver uma pergunta ou apenas quiser dizer olá, tentarei responder o mais rápido possível!",
             "contact.btn": "ENVIAR_MENSAGEM",
-            "modal.repo": "VER REPOSITÓRIO"
+            "modal.repo": "VER REPOSITÓRIO",
+            "docs.read_more": "LER_MAIS"
         }
     }
 };
@@ -471,27 +473,47 @@ function renderDocs() {
     const grid = document.getElementById('docs-grid');
     const lang = state.lang;
     
-    if (state.docs.length === 0) {
+    if (!state.docs || state.docs.length === 0) {
         grid.innerHTML = '<p class="col-span-full text-center text-gray-500">No documentation data.</p>';
         return;
     }
 
     grid.innerHTML = state.docs.map(doc => {
         const title = doc.title?.[lang] || "Untitled Doc";
-        const desc = doc.description?.[lang] || "";
-        const linkText = doc.linkText?.[lang] || "READ_MORE";
-        const icon = doc.icon || "file-text";
+        
+        // Handle markdown content -> plain text description
+        const content = doc.content?.[lang] || "";
+        const plainContent = content.replace(/^#+\s+/gm, '') // headings
+                                  .replace(/(\*\*|__)(.*?)\1/g, '$2') // bold
+                                  .replace(/(\*|_)(.*?)\1/g, '$2') // italic
+                                  .replace(/`([^`]+)`/g, '$1') // code
+                                  .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1') // links
+                                  .split('\n').filter(line => line.trim() !== '').join(' ');
+        
+        const desc = plainContent.length > 150 ? plainContent.substring(0, 150) + "..." : (plainContent || "No content available.");
+        
+        const category = doc.category || "General";
+        const icon = category.toLowerCase().includes('guide') ? 'book-open' : 'file-text';
+        
+        // Localization for Read More
+        const linkText = state.translations[lang]["docs.read_more"] || "READ_MORE";
+
+        // Construct slug link
+        const link = doc.slug ? `doc.html?slug=${doc.slug}` : '#';
 
         return `
-        <div class="p-6 border border-white/10 bg-white/5 hover:border-green-400 transition-colors group">
+        <div class="p-6 border border-white/10 bg-white/5 hover:border-green-400 transition-colors group flex flex-col h-full">
              <div class="flex items-center gap-4 mb-4">
                 <i data-lucide="${icon}" class="text-green-400"></i>
-                <h4 class="text-xl font-bold text-white">${title}</h4>
+                <div>
+                     <div class="text-xs text-green-400 font-mono mb-1 uppercase">${category}</div>
+                     <h4 class="text-xl font-bold text-white leading-tight">${title}</h4>
+                </div>
              </div>
-             <p class="text-gray-400 text-sm mb-6 leading-relaxed">
+             <p class="text-gray-400 text-sm mb-6 leading-relaxed flex-grow">
                 ${desc}
              </p>
-             <a href="${doc.link || '#'}" class="text-green-400 text-sm font-mono hover:underline flex items-center gap-2">
+             <a href="${link}" class="text-green-400 text-sm font-mono hover:underline flex items-center gap-2 mt-auto">
                 ${linkText} <i data-lucide="arrow-right" class="w-4 h-4"></i>
              </a>
         </div>

@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%2300ff9d'/></svg>">
+    <title>Documentation | Afonso Paiva</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        green: {
+                            400: '#00ff9d',
+                        }
+                    },
+                    fontFamily: {
+                        mono: ['JetBrains Mono', 'monospace'],
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="css/styles.css">
+    <style>
+        /* Markdown Styles */
+        .markdown-body {
+            color: #d1d5db;
+        }
+        .markdown-body h1 {
+            font-size: 2.25rem;
+            font-weight: 800;
+            color: white;
+            margin-bottom: 1.5rem;
+            letter-spacing: -0.025em;
+        }
+        .markdown-body h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: white;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding-bottom: 0.5rem;
+        }
+        .markdown-body h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #00ff9d;
+            margin-top: 1.5rem;
+            margin-bottom: 0.75rem;
+        }
+        .markdown-body p {
+            margin-bottom: 1rem;
+            line-height: 1.75;
+        }
+        .markdown-body ul, .markdown-body ol {
+            margin-bottom: 1rem;
+            padding-left: 1.5rem;
+            list-style-type: disc;
+        }
+        .markdown-body li {
+            margin-bottom: 0.25rem;
+        } 
+        .markdown-body pre {
+            background-color: #111;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            overflow-x: auto;
+            margin-bottom: 1.5rem;
+        }
+        .markdown-body code {
+            font-family: 'JetBrains Mono', monospace;
+            background-color: rgb(255 255 255 / 0.1);
+            padding: 0.2em 0.4em;
+            border-radius: 0.25em;
+            font-size: 0.875em;
+        }
+        .markdown-body pre code {
+            background-color: transparent;
+            padding: 0;
+            border-radius: 0;
+            font-size: 0.875em;
+        }
+        .markdown-body a {
+            color: #00ff9d;
+            text-decoration: underline;
+            text-underline-offset: 2px;
+        }
+        .markdown-body blockquote {
+            border-left: 4px solid #00ff9d;
+            padding-left: 1rem;
+            font-style: italic;
+            color: #9ca3af;
+            margin-bottom: 1rem;
+        }
+    </style>
+</head>
+<body class="bg-black text-gray-200 font-mono selection:bg-green-400 selection:text-black">
+    
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full bg-black border-b-2 border-white/10 z-50">
+        <div class="max-w-4xl mx-auto px-6 h-16 flex justify-between items-center">
+            <a href="index.html" class="font-bold text-white tracking-tighter hover:text-green-400 transition-colors">
+                root@afonso:~$ cd ..
+            </a>
+            <div class="flex items-center gap-6 text-sm font-bold">
+                 <button id="lang-toggle" class="border-2 border-white/20 px-3 py-1 hover:border-green-400 hover:text-green-400 transition-all">
+                    EN
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <main class="max-w-4xl mx-auto px-6 pt-32 pb-20 min-h-screen">
+        <div id="loading" class="text-center py-20 text-gray-500 animate-pulse">
+            Loading documentation...
+        </div>
+
+        <div id="content-wrapper" class="hidden">
+            <a href="index.html#docs" class="inline-flex items-center gap-2 text-sm text-gray-500 hover:text-green-400 mb-8 transition-colors group">
+                <i data-lucide="arrow-left" class="w-4 h-4 group-hover:-translate-x-1 transition-transform"></i>
+                <span id="back-btn-text">Back to Docs</span>
+            </a>
+
+            <div class="mb-10 pb-10 border-b border-white/10">
+                <div class="flex items-center gap-2 text-xs text-green-400 mb-4 font-mono uppercase">
+                    <span id="doc-category" class="border border-green-400 px-2 py-0.5">Category</span>
+                    <span class="text-gray-500 px-2">/</span>
+                    <span id="doc-date" class="text-gray-500">YYYY-MM-DD</span>
+                </div>
+                <h1 id="doc-title" class="text-3xl md:text-5xl font-extrabold text-white tracking-tight mb-4"></h1>
+            </div>
+            
+            <div id="doc-body" class="markdown-body">
+                <!-- Content injected here -->
+            </div>
+        </div>
+        
+        <div id="error-message" class="hidden text-center py-20">
+            <h2 class="text-2xl font-bold text-red-500 mb-2">Error 404</h2>
+            <p class="text-gray-400 mb-6">Documentation not found.</p>
+            <a href="index.html#docs" class="text-green-400 hover:underline">Return to Docs</a>
+        </div>
+    </main>
+
+    <footer class="border-t-2 border-white/10 py-8 bg-black mt-auto">
+        <div class="text-center text-sm text-gray-500 font-mono">
+            <p>&copy; 2026 Afonso Paiva. Built with raw code.</p>
+        </div>
+    </footer>
+
+    <script src="js/doc.js"></script>
+</body>
+</html>
