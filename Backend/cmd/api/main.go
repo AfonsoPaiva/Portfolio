@@ -102,7 +102,7 @@ func main() {
 			protected.POST("/docs", documentationHandler.Create)
 			protected.PUT("/docs/:id", documentationHandler.Update)
 			protected.DELETE("/docs/:id", documentationHandler.Delete)
-			protected.GET("/docs/:id", documentationHandler.GetByID) // Get by ID (including unpublished)
+			protected.GET("/docs/id/:id", documentationHandler.GetByID) // Get by ID (including unpublished)
 
 			// Contact messages management
 			protected.GET("/messages", contactHandler.GetAll)
