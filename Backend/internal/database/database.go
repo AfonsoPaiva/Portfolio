@@ -88,11 +88,30 @@ func RunMigrations() error {
 			created_at TIMESTAMPTZ DEFAULT NOW()
 		)`,
 
+		// Documentation table
+		`CREATE TABLE IF NOT EXISTS documentation (
+			id SERIAL PRIMARY KEY,
+			slug VARCHAR(255) UNIQUE NOT NULL,
+			title_en TEXT NOT NULL,
+			title_pt TEXT NOT NULL,
+			content_en TEXT NOT NULL,
+			content_pt TEXT NOT NULL,
+			category VARCHAR(100) NOT NULL,
+			published BOOLEAN DEFAULT FALSE,
+			display_order INT DEFAULT 0,
+			created_at TIMESTAMPTZ DEFAULT NOW(),
+			updated_at TIMESTAMPTZ DEFAULT NOW()
+		)`,
+
 		// Create indexes
 		`CREATE INDEX IF NOT EXISTS idx_projects_created ON projects(created_at DESC)`,
 		`CREATE INDEX IF NOT EXISTS idx_experiences_created ON experiences(created_at DESC)`,
 		`CREATE INDEX IF NOT EXISTS idx_messages_created ON contact_messages(created_at DESC)`,
 		`CREATE INDEX IF NOT EXISTS idx_messages_read ON contact_messages(read)`,
+		`CREATE INDEX IF NOT EXISTS idx_docs_slug ON documentation(slug)`,
+		`CREATE INDEX IF NOT EXISTS idx_docs_category ON documentation(category)`,
+		`CREATE INDEX IF NOT EXISTS idx_docs_published ON documentation(published)`,
+		`CREATE INDEX IF NOT EXISTS idx_docs_order ON documentation(display_order, created_at DESC)`,
 	}
 
 	for _, migration := range migrations {

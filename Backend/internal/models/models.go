@@ -123,6 +123,43 @@ type ContactInput struct {
 	Message string `json:"message" binding:"required"`
 }
 
+// Documentation represents a documentation entry
+type Documentation struct {
+	ID          int           `json:"id"`
+	Slug        string        `json:"slug"`         // URL-friendly identifier
+	Title       LocalizedText `json:"title"`        // Title in multiple languages
+	Content     LocalizedText `json:"content"`      // Markdown content
+	Category    string        `json:"category"`     // e.g., "guide", "api", "tutorial"
+	Published   bool          `json:"published"`    // Whether the doc is publicly visible
+	Order       int           `json:"order"`        // Display order
+	CreatedAt   time.Time     `json:"createdAt"`
+	UpdatedAt   time.Time     `json:"updatedAt"`
+}
+
+// CreateDocumentationInput represents input for creating documentation
+type CreateDocumentationInput struct {
+	Slug      string `json:"slug" binding:"required"`
+	TitleEn   string `json:"titleEn" binding:"required"`
+	TitlePt   string `json:"titlePt" binding:"required"`
+	ContentEn string `json:"contentEn" binding:"required"`
+	ContentPt string `json:"contentPt" binding:"required"`
+	Category  string `json:"category" binding:"required"`
+	Published bool   `json:"published"`
+	Order     int    `json:"order"`
+}
+
+// UpdateDocumentationInput allows partial updates
+type UpdateDocumentationInput struct {
+	Slug      *string `json:"slug"`
+	TitleEn   *string `json:"titleEn"`
+	TitlePt   *string `json:"titlePt"`
+	ContentEn *string `json:"contentEn"`
+	ContentPt *string `json:"contentPt"`
+	Category  *string `json:"category"`
+	Published *bool   `json:"published"`
+	Order     *int    `json:"order"`
+}
+
 // APIResponse represents a standard API response
 type APIResponse struct {
 	Success bool        `json:"success"`

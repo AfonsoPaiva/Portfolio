@@ -32,6 +32,7 @@ func main() {
 	projectHandler := handlers.NewProjectHandler()
 	experienceHandler := handlers.NewExperienceHandler()
 	contactHandler := handlers.NewContactHandler()
+	documentationHandler := handlers.NewDocumentationHandler()
 
 	// Setup Gin router
 	router := gin.Default()
@@ -75,6 +76,11 @@ func main() {
 		v1.GET("/experience", experienceHandler.GetAll)
 		v1.GET("/experience/:id", experienceHandler.GetByID)
 
+		// Documentation - anyone can view published docs
+		v1.GET("/docs", documentationHandler.GetAll)
+		v1.GET("/docs/:slug", documentationHandler.GetBySlug)
+		v1.GET("/docs/category/:category", documentationHandler.GetByCategory)
+
 		// Contact - anyone can submit a message
 		v1.POST("/contact", contactHandler.Submit)
 
@@ -91,6 +97,12 @@ func main() {
 			protected.POST("/experience", experienceHandler.Create)
 			protected.PUT("/experience/:id", experienceHandler.Update)
 			protected.DELETE("/experience/:id", experienceHandler.Delete)
+
+			// Documentation management
+			protected.POST("/docs", documentationHandler.Create)
+			protected.PUT("/docs/:id", documentationHandler.Update)
+			protected.DELETE("/docs/:id", documentationHandler.Delete)
+			protected.GET("/docs/:id", documentationHandler.GetByID) // Get by ID (including unpublished)
 
 			// Contact messages management
 			protected.GET("/messages", contactHandler.GetAll)
