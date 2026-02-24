@@ -231,55 +231,32 @@ async function fetchGitHubStats() {
     }
 }
 
-async function submitContact(e) {
-    e.preventDefault();
-    const btn = e.target.querySelector('button');
-    const originalText = btn.innerText;
-    btn.innerText = "SENDING...";
-    btn.disabled = true;
-
-    const formData = new FormData(e.target);
-    const data = Object.fromEntries(formData.entries());
-
-    try {
-        const res = await fetch(`${API_BASE}/contact`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(data)
-        });
-        
-        if (res.ok) {
-            btn.innerText = "SENT!";
-            btn.classList.add('bg-green-400', 'text-black');
-            e.target.reset();
-            setTimeout(() => {
-                btn.innerText = originalText;
-                btn.classList.remove('bg-green-400', 'text-black');
-                btn.disabled = false;
-            }, 3000);
-        } else {
-            throw new Error('Network response was not ok');
-        }
-    } catch (error) {
-        btn.innerText = "ERROR";
-        console.error('Error:', error);
-        setTimeout(() => {
-            btn.innerText = originalText;
-            btn.disabled = false;
-        }, 3000);
-    }
-}
 
 // --- Boot Sequence ---
 
 const bootMessages = [
     { text: "Mounting root filesystem...", status: "ok", delay: 200 },
     { text: "Loading kernel modules...", status: "ok", delay: 100 },
+    { text: "Detecting hardware...", status: "ok", delay: 120 },
     { text: "Initializing graphics subsystem...", status: "ok", delay: 300 },
+    { text: "Probing PCI devices...", status: "ok", delay: 150 },
+    { text: "Loading audio drivers...", status: "ok", delay: 180 },
     { text: "Checking memory integrity...", status: "ok", delay: 150 },
     { text: "Starting system message bus...", status: "ok", delay: 100 },
+    { text: "Starting udev daemon...", status: "ok", delay: 220 },
+    { text: "Activating swap...", status: "ok", delay: 130 },
     { text: "Mounting /home/paiva...", status: "ok", delay: 200 },
+    { text: "Verifying disk quotas...", status: "ok", delay: 150 },
+    { text: "Loading user profiles...", status: "ok", delay: 250 },
+    { text: "Starting background services...", status: "ok", delay: 200 },
     { text: "Configuring network interfaces...", status: "ok", delay: 400 },
+    { text: "Resolving hostnames...", status: "ok", delay: 180 },
+    { text: "Starting SSH daemon...", status: "ok", delay: 140 },
+    { text: "Initializing firewall rules...", status: "ok", delay: 160 },
+    { text: "Starting cron scheduler...", status: "ok", delay: 120 },
+    { text: "Checking security policies...", status: "ok", delay: 190 },
+    { text: "Setting system time...", status: "ok", delay: 110 },
+    { text: "Loading locale settings...", status: "ok", delay: 130 },
     { text: "Establishing connection to sleep server...", status: "wait", delay: 500 }
 ];
 
@@ -660,8 +637,6 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('modal-overlay').addEventListener('click', (e) => {
         if (e.target.id === 'modal-overlay') closeModal();
     });
-
-    document.getElementById('contact-form').addEventListener('submit', submitContact);
 
     // Mobile Menu
     const mobileMenuBtn = document.getElementById('mobile-menu-btn');
