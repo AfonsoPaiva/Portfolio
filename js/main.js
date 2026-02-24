@@ -17,7 +17,7 @@ const state = {
             "hero.desc": "Backend Engineer specialized in high-performance microservices, distributed systems, and cloud-native infrastructure.",
             "hero.cta": "VIEW_WORK.SH",
             "hero.open_work": "OPEN_FOR_WORK",
-            "hero.last_updated": "LAST_UPDATED::2026-02-04",
+            "hero.last_updated": "LAST_UPDATED::2026-02-24",
             "section.about": "About Me",
             "about.text1": "Backend Developer based in Porto, Portugal. Specialized in building robust server-side architectures, API development, and efficient database management. Focused on system scalability, security, and performance.",
             "about.text2": "I specialize in creating efficient services and have a strong foundation in distributed systems. I'm always eager to learn new technologies and improve my craft.",
@@ -46,7 +46,7 @@ const state = {
             "hero.desc": "Engenheiro Backend especializado em microsserviços de alta performance, sistemas distribuídos e infraestrutura cloud-native.",
             "hero.cta": "VER_TRABALHO.SH",
             "hero.open_work": "DISPONÍVEL_PARA_TRABALHO",
-            "hero.last_updated": "ULTIMA_ATUALIZAÇÃO::04-02-2026",
+            "hero.last_updated": "ULTIMA_ATUALIZAÇÃO::24-02-2026",
             "section.about": "Sobre Mim",
             "about.text1": "Desenvolvedor Backend sediado no Porto, Portugal. Especializado na construção de arquiteturas de servidor robustas, desenvolvimento de APIs e gestão eficiente de bases de dados. Focado em escalabilidade, segurança e performance de sistemas.",
             "about.text2": "Especializo-me em criar serviços eficientes e tenho uma base sólida em sistemas distribuídos. Estou sempre ansioso para aprender novas tecnologias e melhorar minha arte.",
@@ -235,29 +235,29 @@ async function fetchGitHubStats() {
 // --- Boot Sequence ---
 
 const bootMessages = [
-    { text: "Mounting root filesystem...", status: "ok", delay: 200 },
-    { text: "Loading kernel modules...", status: "ok", delay: 100 },
-    { text: "Detecting hardware...", status: "ok", delay: 120 },
-    { text: "Initializing graphics subsystem...", status: "ok", delay: 300 },
-    { text: "Probing PCI devices...", status: "ok", delay: 150 },
-    { text: "Loading audio drivers...", status: "ok", delay: 180 },
-    { text: "Checking memory integrity...", status: "ok", delay: 150 },
-    { text: "Starting system message bus...", status: "ok", delay: 100 },
-    { text: "Starting udev daemon...", status: "ok", delay: 220 },
-    { text: "Activating swap...", status: "ok", delay: 130 },
-    { text: "Mounting /home/paiva...", status: "ok", delay: 200 },
-    { text: "Verifying disk quotas...", status: "ok", delay: 150 },
-    { text: "Loading user profiles...", status: "ok", delay: 250 },
-    { text: "Starting background services...", status: "ok", delay: 200 },
-    { text: "Configuring network interfaces...", status: "ok", delay: 400 },
-    { text: "Resolving hostnames...", status: "ok", delay: 180 },
-    { text: "Starting SSH daemon...", status: "ok", delay: 140 },
-    { text: "Initializing firewall rules...", status: "ok", delay: 160 },
-    { text: "Starting cron scheduler...", status: "ok", delay: 120 },
-    { text: "Checking security policies...", status: "ok", delay: 190 },
-    { text: "Setting system time...", status: "ok", delay: 110 },
-    { text: "Loading locale settings...", status: "ok", delay: 130 },
-    { text: "Establishing connection to sleep server...", status: "wait", delay: 500 }
+    { text: "Mounting root filesystem...", status: "ok", delay: 100 },
+    { text: "Loading kernel modules...", status: "ok", delay: 50 },
+    { text: "Detecting hardware...", status: "ok", delay: 60 },
+    { text: "Initializing graphics subsystem...", status: "ok", delay: 150 },
+    { text: "Probing PCI devices...", status: "ok", delay: 75 },
+    { text: "Loading audio drivers...", status: "ok", delay: 90 },
+    { text: "Checking memory integrity...", status: "ok", delay: 75 },
+    { text: "Starting system message bus...", status: "ok", delay: 50 },
+    { text: "Starting udev daemon...", status: "ok", delay: 110 },
+    { text: "Activating swap...", status: "ok", delay: 65 },
+    { text: "Mounting /home/paiva...", status: "ok", delay: 100 },
+    { text: "Verifying disk quotas...", status: "ok", delay: 75 },
+    { text: "Loading user profiles...", status: "ok", delay: 125 },
+    { text: "Starting background services...", status: "ok", delay: 100 },
+    { text: "Configuring network interfaces...", status: "ok", delay: 200 },
+    { text: "Resolving hostnames...", status: "ok", delay: 90 },
+    { text: "Starting SSH daemon...", status: "ok", delay: 70 },
+    { text: "Initializing firewall rules...", status: "ok", delay: 80 },
+    { text: "Starting cron scheduler...", status: "ok", delay: 60 },
+    { text: "Checking security policies...", status: "ok", delay: 95 },
+    { text: "Setting system time...", status: "ok", delay: 55 },
+    { text: "Loading locale settings...", status: "ok", delay: 65 },
+    { text: "Establishing connection to sleep server...", status: "wait", delay: 250 }
 ];
 
 function addBootLine(text, status) {
@@ -301,8 +301,8 @@ async function runBootSequence() {
         
         // Ensure at least 1.5 seconds of "waiting" so it looks realistic
         const elapsed = Date.now() - fetchStart;
-        if (elapsed < 1500) {
-            await new Promise(r => setTimeout(r, 1500 - elapsed));
+        if (elapsed < 800) {
+            await new Promise(r => setTimeout(r, 800 - elapsed));
         }
 
         // Replace "wait" with "ok"
@@ -315,9 +315,9 @@ async function runBootSequence() {
         addBootLine("Connection failed. Starting offline mode...", "warn");
     }
 
-    await new Promise(r => setTimeout(r, 500));
+    await new Promise(r => setTimeout(r, 200));
     addBootLine("Starting portfolio_daemon v2.0...", "ok");
-    await new Promise(r => setTimeout(r, 800));
+    await new Promise(r => setTimeout(r, 300));
 
     // 3. Fake typing command
     const inputLine = document.getElementById('terminal-input-line');
@@ -329,11 +329,11 @@ async function runBootSequence() {
         
         for (let char of command) {
             if (typingSpan) typingSpan.innerText += char;
-            await new Promise(r => setTimeout(r, 50 + Math.random() * 50));
+            await new Promise(r => setTimeout(r, 10 + Math.random() * 10));
         }
     }
 
-    await new Promise(r => setTimeout(r, 500));
+    await new Promise(r => setTimeout(r, 100));
 
     // 4. Remove Loader
     const loader = document.getElementById('terminal-loader');
