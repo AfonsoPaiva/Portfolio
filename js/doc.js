@@ -1,4 +1,4 @@
-const API_BASE = 'https://portfolio-0fkz.onrender.com/api/v1';
+const DATA_URL = 'data.json';
 
 const state = {
     lang: localStorage.getItem('lang') || 'pt',
@@ -22,12 +22,12 @@ const state = {
 
 async function fetchDoc(slug) {
     try {
-        const res = await fetch(`${API_BASE}/docs/${slug}`);
-        if (!res.ok) throw new Error('Not found');
-        const json = await res.json();
-        
-        if (json.success) {
-            renderDoc(json.data);
+        const res = await fetch(DATA_URL);
+        if (!res.ok) throw new Error('Failed to load data.json');
+        const data = await res.json();
+        const doc = (data.docs || []).find(d => d.slug === slug);
+        if (doc) {
+            renderDoc(doc);
         } else {
             showError();
         }

@@ -1,0 +1,385 @@
+{
+  "projects": [
+    {
+      "id": 1153117849120505857,
+      "status": {
+        "text": "IN-DEVELOPMENT",
+        "color": "yellow"
+      },
+      "image": "https://life.berkeley.edu/wp-content/uploads/2024/04/2019_04_24_UCB_Admissions_day2-12_edited.jpg",
+      "title": {
+        "en": "SKILLBRIDGE: Student Collaboration Platform",
+        "pt": "SKILLBRIDGE: Plataforma de Colaboração para Estudantes"
+      },
+      "shortDescription": {
+        "en": "A non-profit matchmaking platform connecting university students across different fields to collaborate on real-world projects and build their portfolios.",
+        "pt": "Uma plataforma de matchmaking sem fins lucrativos que liga estudantes universitários de diferentes áreas para colaborarem em projetos reais e construírem os seus portfólios."
+      },
+      "fullDescription": {
+        "en": "Conexo is a multidisciplinary collaboration hub designed for students in Portugal. It operates on a skill-barter system, allowing, for example, a developer and a designer to team up and build real projects. The platform features a matchmaking system, peer reviews, and project showcases, bridging the gap between academic theory and practical market experience. Built with a high-performance Go backend and a dynamic Angular frontend.",
+        "pt": "O Conexo é um hub de colaboração multidisciplinar criado para estudantes em Portugal. Funciona num sistema de troca de competências, permitindo que, por exemplo, um programador e um designer se unam para criar projetos reais. A plataforma inclui um sistema de matchmaking, avaliações entre pares e uma montra de projetos, colmatando a lacuna entre a teoria académica e a experiência prática exigida pelo mercado. Construída com um backend de alta performance em Go e um frontend dinâmico em Angular."
+      },
+      "features": {
+        "en": [
+          "Smart matchmaking algorithm for students with complementary skills",
+          "Dynamic user profiles with portfolio links, bio, and custom skill tags",
+          "Peer-to-peer review and rating system to build academic and professional reputation",
+          "Project posting board with status tracking and team formation tools",
+          "Secure RESTful API built with Go (Gin framework) and PostgreSQL",
+          "Responsive Single Page Application (SPA) built with Angular and TypeScript"
+        ],
+        "pt": [
+          "Algoritmo de matchmaking inteligente para estudantes com competências complementares",
+          "Perfis dinâmicos com links de portfólio, biografia e tags de competências personalizadas",
+          "Sistema de avaliação entre pares para construir reputação académica e profissional",
+          "Mural de publicação de projetos com acompanhamento de estado e formação de equipas",
+          "API RESTful segura construída com Go (framework Gin) e PostgreSQL",
+          "Single Page Application (SPA) responsiva construída com Angular e TypeScript"
+        ]
+      },
+      "tech": [
+        "Go",
+        "Gin",
+        "PostgreSQL",
+        "Angular",
+        "TypeScript",
+        "RxJS",
+        "JWT Authentication"
+      ],
+      "link": "https://github.com/AfonsoPaiva",
+      "createdAt": "2026-02-24T23:00:40.478074Z",
+      "updatedAt": "2026-02-24T23:04:10.538993Z"
+    },
+    {
+      "id": 1130698403144663041,
+      "status": {
+        "text": "COMPLETED",
+        "color": "green"
+      },
+      "image": "https://i.postimg.cc/yNPcMLMb/aaaa.png",
+      "title": {
+        "en": "Personal Portfolio Website",
+        "pt": "Website de Portfólio Pessoal"
+      },
+      "shortDescription": {
+        "en": "Full-stack portfolio website with Go backend API and responsive frontend for showcasing projects, experience, and contact management.",
+        "pt": "Website de portfólio full-stack com API backend em Go e frontend responsivo para apresentação de projetos, experiência e gestão de contactos."
+      },
+      "fullDescription": {
+        "en": "A modern full-stack portfolio website built with a Go backend API and vanilla HTML/CSS/JavaScript frontend. Features a RESTful API for managing projects, professional experience, and contact form submissions with email notifications. Includes admin authentication middleware and PostgreSQL database integration.",
+        "pt": "Um website de portfólio full-stack moderno construído com uma API backend em Go e frontend em HTML/CSS/JavaScript vanilla. Inclui uma API RESTful para gestão de projetos, experiência profissional e submissões de formulário de contacto com notificações por email. Inclui middleware de autenticação de administrador e integração com base de dados PostgreSQL."
+      },
+      "features": {
+        "en": [
+          "RESTful API built with Go and Gin framework",
+          "PostgreSQL database for persistent data storage",
+          "Admin authentication middleware for secure content management",
+          "Email service integration for contact form notifications",
+          "Responsive frontend with bilingual support (EN/PT)",
+          "Project and experience showcase with CRUD operations"
+        ],
+        "pt": [
+          "API RESTful construída com Go e framework Gin",
+          "Base de dados PostgreSQL para armazenamento persistente",
+          "Middleware de autenticação de administrador para gestão segura de conteúdo",
+          "Integração de serviço de email para notificações de formulário de contacto",
+          "Frontend responsivo com suporte bilingue (EN/PT)",
+          "Apresentação de projetos e experiência com operações CRUD"
+        ]
+      },
+      "tech": [
+        "Go",
+        "Gin",
+        "PostgreSQL",
+        "HTML",
+        "CSS",
+        "JavaScript",
+        "REST API"
+      ],
+      "link": "https://github.com/AfonsoPaiva/Portfolio",
+      "createdAt": "2025-12-07T18:29:28.537084Z",
+      "updatedAt": "2025-12-07T18:29:28.537084Z"
+    },
+    {
+      "id": 1130670955160403969,
+      "status": {
+        "text": "COMPLETED",
+        "color": "green"
+      },
+      "image": "https://i.postimg.cc/DZQrC48n/Captura-de-ecra-de-2026-02-24-23-06-26.png",
+      "title": {
+        "en": "Escritores Nogueira ",
+        "pt": "Escritores Nogueira"
+      },
+      "shortDescription": {
+        "en": "E-commerce website with integrated payment system and private API for managing books, blog posts, and clients.",
+        "pt": "Website de e-commerce com sistema de pagamento integrado e API privada para gestão de livros, artigos de blog e clientes."
+      },
+      "fullDescription": {
+        "en": "A full-stack e-commerce platform built with Java Spring Boot backend, featuring Stripe payment integration and a private REST API for comprehensive management of books, blog posts, and client data. Designed specifically for writers to sell their books and manage their content online.",
+        "pt": "Uma plataforma de e-commerce full-stack construída com backend Java Spring Boot, com integração de pagamentos Stripe e uma API REST privada para gestão abrangente de livros, artigos de blog e dados de clientes. Concebida especificamente para escritores venderem os seus livros e gerirem o seu conteúdo online."
+      },
+      "features": {
+        "en": [
+          "Stripe payment integration for secure transactions",
+          "Private REST API for books, blog posts, and client management",
+          "Spring Boot backend with robust business logic",
+          "User authentication and authorization system",
+          "Content management system for writers"
+        ],
+        "pt": [
+          "Integração de pagamentos Stripe para transações seguras",
+          "API REST privada para gestão de livros, blog e clientes",
+          "Backend Spring Boot com lógica de negócio robusta",
+          "Sistema de autenticação e autorização de utilizadores",
+          "Sistema de gestão de conteúdo para escritores"
+        ]
+      },
+      "tech": [
+        "Java",
+        "Spring Boot",
+        "Stripe",
+        "REST API"
+      ],
+      "link": "https://www.escritoresnogueira.com/",
+      "createdAt": "2025-12-07T16:09:52.07711Z",
+      "updatedAt": "2026-02-24T23:07:06.622075Z"
+    },
+    {
+      "id": 1130665734946816001,
+      "status": {
+        "text": "COMPLETED",
+        "color": "green"
+      },
+      "image": "https://camo.githubusercontent.com/a63e3da58876b56b88d9b694dcf671446c2955f00c3ad42a5e9f458c719212fa/68747470733a2f2f692e706f7374696d672e63632f514d344d336856672f766964656f2d6769662d6769746875622e676966",
+      "title": {
+        "en": "Modern 3D Graphics Engine for Model Visualization and Rendering",
+        "pt": "Motor Gráfico 3D Moderno para Visualização e Renderização de Modelos"
+      },
+      "shortDescription": {
+        "en": "Graphics engine with PBR rendering, multi-format model loading, and real-time visualization capabilities.",
+        "pt": "Motor gráfico com renderização PBR, carregamento de modelos em múltiplos formatos e capacidades de visualização em tempo real."
+      },
+      "fullDescription": {
+        "en": "A modern graphics engine built with OpenGL 3.3, featuring physically-based rendering (PBR), support for multiple model formats, and advanced real-time rendering capabilities including normal mapping, height mapping, and multiple light types.",
+        "pt": "Um motor gráfico moderno construído com OpenGL 3.3, com renderização baseada em física (PBR), suporte para múltiplos formatos de modelos e capacidades avançadas de renderização em tempo real, incluindo normal mapping, height mapping e vários tipos de iluminação."
+      },
+      "features": {
+        "en": [
+          "Modern OpenGL 3.3 pipeline with programmable shaders",
+          "PBR material system with multi-texture support",
+          "Real-time lighting with multiple light types",
+          "Normal and height mapping support",
+          "Real-time grid rendering with infinite appearance"
+        ],
+        "pt": [
+          "Pipeline OpenGL 3.3 moderno com shaders programáveis",
+          "Sistema de materiais PBR com suporte multi-textura",
+          "Iluminação em tempo real com vários tipos de luz",
+          "Suporte para normal mapping e height mapping",
+          "Renderização de grelha em tempo real com aparência infinita"
+        ]
+      },
+      "tech": [
+        "C++",
+        "OpenGL",
+        "GLSL",
+        "PBR"
+      ],
+      "link": "https://github.com/AfonsoPaiva/LoadX",
+      "createdAt": "2025-12-07T15:43:18.99451Z",
+      "updatedAt": "2025-12-07T15:43:18.99451Z"
+    },
+    {
+      "id": 1130664758225108993,
+      "status": {
+        "text": "COMPLETED",
+        "color": "green"
+      },
+      "image": "https://camo.githubusercontent.com/13bd7db1dc75791905ac0662c9dd1e283e1c80411b270247affcd767b609767b/68747470733a2f2f692e706f7374696d672e63632f7a584a72524744352f676966792e676966",
+      "title": {
+        "en": "Web & Mobile Platform for Solar Terrain Analysis and Site Management",
+        "pt": "Plataforma Web e Móvel para Análise de Terrenos Solares e Gestão de Locais"
+      },
+      "shortDescription": {
+        "en": "Web and mobile platform for solar potential analysis and terrain management, with interactive maps and real-time shading visualization.",
+        "pt": "Plataforma web e móvel para análise do potencial solar e gestão de terrenos, com mapas interactivos e visualização de sombreamento em tempo real."
+      },
+      "fullDescription": {
+        "en": "A cross-platform app for analyzing solar potential and shading on custom terrain areas. It lets users draw areas on a map, view real-time solar analysis and heatmaps, and manage saved sites, using Flutter for the frontend and Spring Boot for the backend.",
+        "pt": "Uma aplicação multiplataforma para análise do potencial solar e sombreamento em áreas de terreno personalizadas. Permite aos utilizadores desenhar áreas num mapa, visualizar análises solares em tempo real e mapas de calor, e gerir locais guardados, utilizando Flutter para o frontend e Spring Boot para o backend."
+      },
+      "features": {
+        "en": [
+          "Draw custom areas on a map to analyze solar potential",
+          "Real-time shading and light intensity heatmaps",
+          "Save, view, and manage analyzed sites",
+          "Visualize and compare multiple terrains"
+        ],
+        "pt": [
+          "Desenhar áreas personalizadas num mapa para analisar o potencial solar",
+          "Mapas de calor de sombreamento e intensidade luminosa em tempo real",
+          "Guardar, visualizar e gerir locais analisados",
+          "Visualizar e comparar múltiplos terrenos"
+        ]
+      },
+      "tech": [
+        "Java",
+        "SpringBoot",
+        "Firebase",
+        "Flutter"
+      ],
+      "link": "https://github.com/AfonsoPaiva/Solar-Terrain-Analytics",
+      "createdAt": "2025-12-07T15:38:20.922666Z",
+      "updatedAt": "2025-12-07T15:38:20.922666Z"
+    }
+  ],
+  "experience": [
+    {
+      "id": 1153116928346456065,
+      "logo": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQtQ6wEGeE78SEnOFN3wIBR5Q8eP_-tU4TCzw&s",
+      "company": {
+        "en": "YouOn",
+        "pt": "YouOn"
+      },
+      "role": {
+        "en": "Internship",
+        "pt": "Estágio Curricular"
+      },
+      "period": {
+        "en": "February 2026 - Present",
+        "pt": "Fevereiro 2026 - Presente"
+      },
+      "description": {
+        "en": "Internship focused on developing front-end interfaces for the YouOn group's digital products and platforms. Responsibilities include the technical implementation of layouts, creating modular reusable components based on existing design systems, integrating backend APIs, and optimizing performance and accessibility in a collaborative engineering environment.",
+        "pt": "Estágio focado no desenvolvimento de interfaces front-end para produtos e plataformas digitais do grupo YouOn. As responsabilidades incluem a implementação técnica de layouts, criação de componentes modulares reutilizáveis com base em design systems existentes, integração com APIs e otimização de performance e acessibilidade em ambiente de engenharia colaborativo."
+      },
+      "tech": [
+        "Angular",
+        "Typescript",
+        "Vue",
+        "Storybook",
+        "SCSS",
+        "FrontEnd Development"
+      ],
+      "achievements": [
+        {
+          "en": "Developed modular and reusable front-end components using Vue.js, TypeScript, and Angular based on established design systems.",
+          "pt": "Desenvolvi componentes front-end modulares e reutilizáveis utilizando Vue.js, TypeScript e Angular com base em design systems estabelecidos."
+        },
+        {
+          "en": "Integrated backend APIs and implemented state management, alongside functional testing and performance optimization.",
+          "pt": "Integrei APIs backend e implementei gestão de estado, em conjunto com a execução de testes funcionais e otimização de performance."
+        },
+        {
+          "en": "Conducted code reviews, created technical documentation, and implemented accessibility and cross-platform compatibility improvements.",
+          "pt": "Realizei revisões de código, criei documentação técnica e implementei melhorias de acessibilidade e compatibilidade multiplataforma."
+        }
+      ],
+      "createdAt": "2026-02-24T22:55:59.480043Z",
+      "updatedAt": "2026-02-24T22:55:59.480043Z"
+    },
+    {
+      "id": 1130669675672633345,
+      "logo": "https://upload.wikimedia.org/wikipedia/commons/5/50/Logo-howest.jpg",
+      "company": {
+        "en": "Howest University of Applied Sciences",
+        "pt": "Howest University of Applied Sciences"
+      },
+      "role": {
+        "en": "Erasmus+ Exchange Program",
+        "pt": "Programa de Intercâmbio Erasmus+"
+      },
+      "period": {
+        "en": "September 2025 - Feburary 2026",
+        "pt": "Setembro 2025 - Fevereiro 2026"
+      },
+      "description": {
+        "en": "Participated in an academic exchange program focused on advanced software engineering. Developed advanced C++ programs in practical coursework and learned advanced programming patterns such as MVP in C# during theoretical classes. Experienced international education in a multicultural environment.",
+        "pt": "Participei num programa de intercâmbio académico focado em engenharia de software avançada. Desenvolvi programas avançados em C++ na parte prática e aprendi padrões de programação avançados como o MVP em C# na componente teórica. Experienciei educação internacional num ambiente multicultural."
+      },
+      "tech": [
+        "C++",
+        "C#",
+        "MVP Pattern",
+        "Software Engineering"
+      ],
+      "achievements": [
+        {
+          "en": "Developed advanced C++ programs",
+          "pt": "Desenvolvi programas avançados em C++"
+        },
+        {
+          "en": "Learned advanced programming patterns (MVP)",
+          "pt": "Aprendi padrões de programação avançados (MVP)"
+        },
+        {
+          "en": "International academic experience",
+          "pt": "Experiência académica internacional"
+        }
+      ],
+      "createdAt": "2025-12-07T16:03:21.60861Z",
+      "updatedAt": "2026-02-24T22:50:15.256526Z"
+    },
+    {
+      "id": 1130668724483457025,
+      "logo": "https://intracomp.info/wp-content/uploads/2025/03/nord.png",
+      "company": {
+        "en": "Nord University",
+        "pt": "Nord University"
+      },
+      "role": {
+        "en": "BIP Program",
+        "pt": "Programa BIP"
+      },
+      "period": {
+        "en": "March - April 2025",
+        "pt": "Março - Abril 2025"
+      },
+      "description": {
+        "en": "Developed a VR game in an international team during a 3 ECTS Erasmus+ programme focused on engineering and design. Explored emerging technologies related to virtual reality, including hardware integration and interaction design. Collaborated in a multicultural environment and communicated exclusively in English throughout the project.",
+        "pt": "Desenvolvi um jogo de realidade virtual numa equipa internacional durante um programa Erasmus+ de 3 ECTS focado em engenharia e design. Explorou tecnologias emergentes relacionadas com realidade virtual, incluindo integração de hardware e design de interação. Colaborou num ambiente multicultural e comunicou exclusivamente em inglês durante todo o projeto."
+      },
+      "tech": [
+        "Unity VR",
+        "C#",
+        "Virtual Reality"
+      ],
+      "achievements": [
+        {
+          "en": "Developed VR game in international team",
+          "pt": "Desenvolvi um jogo VR com uma equipa internacional"
+        },
+        {
+          "en": "Explored emerging VR technologies",
+          "pt": "Explorei tecnologias emergentes de RV"
+        },
+        {
+          "en": "Collaborated in multicultural environment",
+          "pt": "Colaborei em ambiente multicultural"
+        }
+      ],
+      "createdAt": "2025-12-07T15:58:31.328688Z",
+      "updatedAt": "2025-12-07T15:58:31.328688Z"
+    }
+  ],
+  "docs": [
+    {
+      "id": 1147681623929356289,
+      "slug": "loadx-full-documentation",
+      "title": {
+        "en": "LoadX - Complete Documentation",
+        "pt": "LoadX - Documentação Completa"
+      },
+      "content": {
+        "en": "# LoadX (OpenGL Modular Engine)\n\n**A Modern 3D Graphics Engine for Model Visualization and Rendering**\n\nLoadX is a robust, modular graphics engine built with C++17 and OpenGL 3.3. It is designed to provide a professional environment for loading, viewing, and inspecting 3D models with Physically Based Rendering (PBR) and real-time performance monitoring.\n\n---\n\n## 1. Features & Capabilities\n\n### Advanced Rendering\n* **Core Pipeline:** Modern OpenGL 3.3+ with programmable shaders.\n* **Material System:** Full PBR support (Physically Based Rendering) including Metallic/Roughness workflows.\n* **Lighting:** Real-time support for Directional, Point, and Spot lights.\n* **Texture Support:** Automatic detection of Diffuse, Normal, Specular, and Height maps.\n\n### Multi-Format Model Support\nPowered by **Assimp**, LoadX supports 20+ formats including:\n* **.obj** (Wavefront - with native MTL support)\n* **.fbx** (Filmbox)\n* **.gltf / .glb** (GL Transmission Format)\n* **.dae** (Collada)\n* **.stl** (Stereolithography)\n\n### Interactive Interface\nBuilt with **Dear ImGui**, the UI features:\n* **Dark Theme:** Professional visual style.\n* **Real-time Stats:** FPS monitoring, Frame time, and Memory usage.\n* **Inspectors:** Material property editors and Transform controls.\n\n---\n\n## 2. Technical Stack\n\n| Component | Technology | Description |\n| :--- | :--- | :--- |\n| **Language** | C++17 | Core logic and systems |\n| **Graphics API** | OpenGL 3.3+ | Hardware accelerated rendering |\n| **Windowing** | GLFW 3.x | Cross-platform window & input management |\n| **Math** | GLM | OpenGL Mathematics library |\n| **Asset Import** | Assimp | 3D model loading pipeline |\n| **GUI** | Dear ImGui | Immediate mode user interface |\n\n---\n\n## 3. Installation Guide\n\n### Prerequisites\n* **OS:** Windows (Recommended) or Linux.\n* **Compiler:** Visual Studio 2022 (MSVC) or GCC with C++17 support.\n* **Build System:** CMake 3.15+.\n* **Git:** Version control.\n\n### Step-by-Step Build (Windows)\n\n1.  **Clone the Repository:**\n    ```bash\n    git clone [https://github.com/AfonsoPaiva/LoadX.git](https://github.com/AfonsoPaiva/LoadX.git)\n    ```\n2.  **Open in Visual Studio:**\n    Launch `OpenGL-Modular-Engine.sln`.\n3.  **Select Configuration:**\n    Choose **Release** mode from the top toolbar (Debug mode is significantly slower).\n4.  **Build:**\n    Press `Ctrl + Shift + B` to build the solution.\n5.  **Run:**\n    Locate the executable in `bin/Release/` and launch it.\n\n*Note: All dependencies (GLFW, GLAD, GLM, etc.) are included in the repository. No external package manager is needed.*\n\n---\n\n## 4. User Manual\n\n### Controls\n\n| Input | Action |\n| :--- | :--- |\n| **W, A, S, D** | Move Camera (Fly Mode) |\n| **Mouse Left + Drag** | Look Around / Pan |\n| **Mouse Scroll** | Zoom In / Out |\n| **F12** | Take Screenshot |\n| **ESC** | Exit Application |\n\n### UI Panels Guide\n\n1.  **Model Loader:** Click \"Select Model File\" to open the native file browser. Large models will show a progress bar.\n2.  **Transform:** Use sliders to adjust Position, Rotation, and Scale. Use \"Auto-Center\" to fix offset models.\n3.  **Lighting:** Adjust the sun direction (Directional) or add Point lights to test material roughness/metallic properties.\n4.  **Stats:** Monitor GPU performance. If FPS drops, check if you are running in Debug mode instead of Release.\n\n---\n\n## 5. System Architecture\n\nThe engine follows a modular Object-Oriented design:\n\n* **Window Class:** Wraps GLFW, handles context creation and input callbacks.\n* **Camera Class:** Implements 6-DOF movement using Euler angles (Yaw, Pitch).\n* **Model/Mesh Classes:**\n    * *Mesh:* Stores VBO/VAO/EBO data for a single geometry part.\n    * *Model:* Aggregates multiple Meshes and manages texture resources.\n* **Shader System:**\n    * *Vertex Shader:* Handles MVP matrices and Normal/Tangent space calculation.\n    * *Fragment Shader:* Calculates Blinn-Phong lighting and PBR maps.\n\n### Folder Structure\n* `src/`: C++ Source files (.cpp).\n* `include/`: Header files (.h).\n* `shaders/`: GLSL shader code (.vert, .frag).\n* `vendor/`: Third-party libraries.\n",
+        "pt": "# LoadX (Motor Modular OpenGL)\n\n**Um Motor Gráfico 3D Moderno para Visualização e Renderização de Modelos**\n\nLoadX é um motor gráfico robusto e modular construído com C++17 e OpenGL 3.3. Ele foi projetado para fornecer um ambiente profissional para carregar, visualizar e inspecionar modelos 3D com Renderização Baseada em Física (PBR) e monitoramento de desempenho em tempo real.\n\n---\n\n## 1. Recursos e Capacidades\n\n### Renderização Avançada\n* **Pipeline Principal:** OpenGL 3.3+ moderno com shaders programáveis.\n* **Sistema de Materiais:** Suporte completo a PBR (Physically Based Rendering), incluindo fluxos de trabalho Metallic/Roughness.\n* **Iluminação:** Suporte em tempo real para luzes Direcionais, Pontuais e Spot.\n* **Suporte a Texturas:** Detecção automática de mapas Diffuse, Normal, Specular e Height.\n\n### Suporte Multi-Formato\nImpulsionado pelo **Assimp**, o LoadX suporta mais de 20 formatos, incluindo:\n* **.obj** (Wavefront - com suporte nativo a MTL)\n* **.fbx** (Filmbox)\n* **.gltf / .glb** (GL Transmission Format)\n* **.dae** (Collada)\n* **.stl** (Estereolitografia)\n\n### Interface Interativa\nConstruída com **Dear ImGui**, a UI apresenta:\n* **Tema Escuro:** Estilo visual profissional.\n* **Estatísticas em Tempo Real:** Monitoramento de FPS, Tempo de Quadro e Uso de Memória.\n* **Inspetores:** Editores de propriedades de materiais e controles de Transformação.\n\n---\n\n## 2. Tech Stack (Tecnologias)\n\n| Componente | Tecnologia | Descrição |\n| :--- | :--- | :--- |\n| **Linguagem** | C++17 | Lógica principal e sistemas |\n| **API Gráfica** | OpenGL 3.3+ | Renderização acelerada por hardware |\n| **Janelas** | GLFW 3.x | Gerenciamento de janelas e entrada multiplataforma |\n| **Matemática** | GLM | Biblioteca de Matemática OpenGL |\n| **Importação** | Assimp | Pipeline de carregamento de modelos 3D |\n| **GUI** | Dear ImGui | Interface de usuário em modo imediato |\n\n---\n\n## 3. Guia de Instalação\n\n### Pré-requisitos\n* **SO:** Windows (Recomendado) ou Linux.\n* **Compilador:** Visual Studio 2022 (MSVC) ou GCC com suporte a C++17.\n* **Sistema de Build:** CMake 3.15+.\n* **Git:** Controle de versão.\n\n### Passo a Passo (Windows)\n\n1.  **Clonar o Repositório:**\n    ```bash\n    git clone [https://github.com/AfonsoPaiva/LoadX.git](https://github.com/AfonsoPaiva/LoadX.git)\n    ```\n2.  **Abrir no Visual Studio:**\n    Inicie o arquivo `OpenGL-Modular-Engine.sln`.\n3.  **Selecionar Configuração:**\n    Escolha o modo **Release** na barra de ferramentas superior (o modo Debug é significativamente mais lento).\n4.  **Compilar:**\n    Pressione `Ctrl + Shift + B` para compilar a solução.\n5.  **Executar:**\n    Localize o executável em `bin/Release/` e inicie-o.\n\n*Nota: Todas as dependências (GLFW, GLAD, GLM, etc.) estão incluídas no repositório. Nenhum gerenciador de pacotes externo é necessário.*\n\n---\n\n## 4. Manual do Usuário\n\n### Controles\n\n| Entrada | Ação |\n| :--- | :--- |\n| **W, A, S, D** | Mover Câmera (Modo Voo) |\n| **Mouse Esq + Arrastar** | Olhar ao Redor / Panorâmica |\n| **Rolagem do Mouse** | Zoom In / Out |\n| **F12** | Tirar Captura de Tela |\n| **ESC** | Sair da Aplicação |\n\n### Guia dos Painéis da UI\n\n1.  **Carregador de Modelos:** Clique em \"Select Model File\" para abrir o navegador de arquivos nativo. Modelos grandes mostrarão uma barra de progresso.\n2.  **Transformação:** Use os controles deslizantes para ajustar Posição, Rotação e Escala. Use \"Auto-Center\" para corrigir modelos deslocados.\n3.  **Iluminação:** Ajuste a direção do sol (Direcional) ou adicione luzes Pontuais para testar a rugosidade/metalicidade dos materiais.\n4.  **Estatísticas:** Monitore o desempenho da GPU. Se o FPS cair, verifique se você está executando no modo Debug em vez de Release.\n\n---\n\n## 5. Arquitetura do Sistema\n\nO motor segue um design Modular Orientado a Objetos:\n\n* **Classe Window:** Envolve o GLFW, lida com criação de contexto e callbacks de entrada.\n* **Classe Camera:** Implementa movimento 6-DOF usando ângulos de Euler (Yaw, Pitch).\n* **Classes Model/Mesh:**\n    * *Mesh:* Armazena dados VBO/VAO/EBO para uma única parte da geometria.\n    * *Model:* Agrega várias Meshes e gerencia recursos de textura.\n* **Sistema de Shader:**\n    * *Vertex Shader:* Lida com matrizes MVP e cálculo de espaço Normal/Tangente.\n    * *Fragment Shader:* Calcula iluminação Blinn-Phong e mapas PBR.\n\n### Estrutura de Pastas\n* `src/`: Arquivos de código fonte C++ (.cpp).\n* `include/`: Arquivos de cabeçalho (.h).\n* `shaders/`: Código shader GLSL (.vert, .frag).\n* `vendor/`: Bibliotecas de terceiros.\n"
+      },
+      "category": "documentation",
+      "published": true,
+      "order": 1,
+      "createdAt": "2026-02-05T18:10:36.208081Z",
+      "updatedAt": "2026-02-05T18:10:36.208081Z"
+    }
+  ]
+}

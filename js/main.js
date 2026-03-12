@@ -1,5 +1,6 @@
 // Simplified Main JS
-const API_BASE = 'https://portfolio-0fkz.onrender.com/api/v1';
+const DATA_URL = 'data.json';
+let _dataCache = null;
 
 const state = {
     lang: localStorage.getItem('lang') || 'pt',
@@ -68,47 +69,45 @@ const state = {
     }
 };
 
-// --- API Functions ---
+// --- Data Functions ---
+
+async function loadData() {
+    if (_dataCache) return _dataCache;
+    const res = await fetch(DATA_URL);
+    if (!res.ok) throw new Error('Failed to load data.json');
+    _dataCache = await res.json();
+    return _dataCache;
+}
 
 async function fetchProjects() {
     try {
-        const res = await fetch(`${API_BASE}/projects`);
-        const json = await res.json();
-        if (json.success) {
-            console.log('Projects loaded:', json.data);
-            state.projects = json.data.sort((a, b) => b.id - a.id);
-            renderProjects();
-        }
+        const data = await loadData();
+        state.projects = (data.projects || []).sort((a, b) => b.id - a.id);
+        renderProjects();
     } catch (e) {
-        console.error("Failed to fetch projects", e);
+        console.error("Failed to load projects", e);
         document.getElementById('projects-grid').innerHTML = '<p class="text-red-500">Error loading projects.</p>';
     }
 }
 
 async function fetchExperience() {
     try {
-        const res = await fetch(`${API_BASE}/experience`);
-        const json = await res.json();
-        if (json.success) {
-            state.experience = json.data;
-            renderExperience();
-        }
+        const data = await loadData();
+        state.experience = data.experience || [];
+        renderExperience();
     } catch (e) {
-        console.error("Failed to fetch experience", e);
+        console.error("Failed to load experience", e);
         document.getElementById('experience-list').innerHTML = '<p class="text-red-500">Error loading experience.</p>';
     }
 }
 
 async function fetchDocs() {
     try {
-        const res = await fetch(`${API_BASE}/docs`);
-        const json = await res.json();
-        if (json.success) {
-            state.docs = json.data;
-            renderDocs();
-        }
+        const data = await loadData();
+        state.docs = data.docs || [];
+        renderDocs();
     } catch (e) {
-        console.error("Failed to fetch docs", e);
+        console.error("Failed to load docs", e);
         document.getElementById('docs-grid').innerHTML = '<p class="text-red-500">Error loading docs.</p>';
     }
 }
