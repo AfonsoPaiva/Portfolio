@@ -234,29 +234,29 @@ async function fetchGitHubStats() {
 // --- Boot Sequence ---
 
 const bootMessages = [
-    { text: "Mounting root filesystem...", status: "ok", delay: 100 },
-    { text: "Loading kernel modules...", status: "ok", delay: 50 },
-    { text: "Detecting hardware...", status: "ok", delay: 60 },
-    { text: "Initializing graphics subsystem...", status: "ok", delay: 150 },
-    { text: "Probing PCI devices...", status: "ok", delay: 75 },
-    { text: "Loading audio drivers...", status: "ok", delay: 90 },
-    { text: "Checking memory integrity...", status: "ok", delay: 75 },
-    { text: "Starting system message bus...", status: "ok", delay: 50 },
-    { text: "Starting udev daemon...", status: "ok", delay: 110 },
-    { text: "Activating swap...", status: "ok", delay: 65 },
-    { text: "Mounting /home/paiva...", status: "ok", delay: 100 },
-    { text: "Verifying disk quotas...", status: "ok", delay: 75 },
-    { text: "Loading user profiles...", status: "ok", delay: 125 },
-    { text: "Starting background services...", status: "ok", delay: 100 },
-    { text: "Configuring network interfaces...", status: "ok", delay: 200 },
-    { text: "Resolving hostnames...", status: "ok", delay: 90 },
-    { text: "Starting SSH daemon...", status: "ok", delay: 70 },
-    { text: "Initializing firewall rules...", status: "ok", delay: 80 },
-    { text: "Starting cron scheduler...", status: "ok", delay: 60 },
-    { text: "Checking security policies...", status: "ok", delay: 95 },
-    { text: "Setting system time...", status: "ok", delay: 55 },
-    { text: "Loading locale settings...", status: "ok", delay: 65 },
-    { text: "Establishing connection to sleep server...", status: "wait", delay: 250 }
+    { text: "Mounting root filesystem...", status: "ok", delay: 20 },
+    { text: "Loading kernel modules...", status: "ok", delay: 15 },
+    { text: "Detecting hardware...", status: "ok", delay: 15 },
+    { text: "Initializing graphics subsystem...", status: "ok", delay: 20 },
+    { text: "Probing PCI devices...", status: "ok", delay: 15 },
+    { text: "Loading audio drivers...", status: "ok", delay: 15 },
+    { text: "Checking memory integrity...", status: "ok", delay: 15 },
+    { text: "Starting system message bus...", status: "ok", delay: 15 },
+    { text: "Starting udev daemon...", status: "ok", delay: 20 },
+    { text: "Activating swap...", status: "ok", delay: 15 },
+    { text: "Mounting /home/paiva...", status: "ok", delay: 20 },
+    { text: "Verifying disk quotas...", status: "ok", delay: 15 },
+    { text: "Loading user profiles...", status: "ok", delay: 20 },
+    { text: "Starting background services...", status: "ok", delay: 15 },
+    { text: "Configuring network interfaces...", status: "ok", delay: 20 },
+    { text: "Resolving hostnames...", status: "ok", delay: 15 },
+    { text: "Starting SSH daemon...", status: "ok", delay: 15 },
+    { text: "Initializing firewall rules...", status: "ok", delay: 15 },
+    { text: "Starting cron scheduler...", status: "ok", delay: 15 },
+    { text: "Checking security policies...", status: "ok", delay: 15 },
+    { text: "Setting system time...", status: "ok", delay: 15 },
+    { text: "Loading locale settings...", status: "ok", delay: 15 },
+    { text: "Establishing connection to sleep server...", status: "wait", delay: 50 }
 ];
 
 function addBootLine(text, status) {
@@ -298,10 +298,10 @@ async function runBootSequence() {
             fetchGitHubStats()
         ]);
         
-        // Ensure at least 1.5 seconds of "waiting" so it looks realistic
+        // Ensure a brief pause after data loads
         const elapsed = Date.now() - fetchStart;
-        if (elapsed < 800) {
-            await new Promise(r => setTimeout(r, 800 - elapsed));
+        if (elapsed < 200) {
+            await new Promise(r => setTimeout(r, 200 - elapsed));
         }
 
         // Replace "wait" with "ok"
@@ -314,9 +314,9 @@ async function runBootSequence() {
         addBootLine("Connection failed. Starting offline mode...", "warn");
     }
 
-    await new Promise(r => setTimeout(r, 200));
+    await new Promise(r => setTimeout(r, 50));
     addBootLine("Starting portfolio_daemon v2.0...", "ok");
-    await new Promise(r => setTimeout(r, 300));
+    await new Promise(r => setTimeout(r, 80));
 
     // 3. Fake typing command
     const inputLine = document.getElementById('terminal-input-line');
@@ -328,11 +328,11 @@ async function runBootSequence() {
         
         for (let char of command) {
             if (typingSpan) typingSpan.innerText += char;
-            await new Promise(r => setTimeout(r, 10 + Math.random() * 10));
+            await new Promise(r => setTimeout(r, 3 + Math.random() * 5));
         }
     }
 
-    await new Promise(r => setTimeout(r, 100));
+    await new Promise(r => setTimeout(r, 30));
 
     // 4. Remove Loader
     const loader = document.getElementById('terminal-loader');

@@ -51,56 +51,6 @@
       "updatedAt": "2026-02-24T23:04:10.538993Z"
     },
     {
-      "id": 1130698403144663041,
-      "status": {
-        "text": "COMPLETED",
-        "color": "green"
-      },
-      "image": "https://i.postimg.cc/yNPcMLMb/aaaa.png",
-      "title": {
-        "en": "Personal Portfolio Website",
-        "pt": "Website de Portfólio Pessoal"
-      },
-      "shortDescription": {
-        "en": "Full-stack portfolio website with Go backend API and responsive frontend for showcasing projects, experience, and contact management.",
-        "pt": "Website de portfólio full-stack com API backend em Go e frontend responsivo para apresentação de projetos, experiência e gestão de contactos."
-      },
-      "fullDescription": {
-        "en": "A modern full-stack portfolio website built with a Go backend API and vanilla HTML/CSS/JavaScript frontend. Features a RESTful API for managing projects, professional experience, and contact form submissions with email notifications. Includes admin authentication middleware and PostgreSQL database integration.",
-        "pt": "Um website de portfólio full-stack moderno construído com uma API backend em Go e frontend em HTML/CSS/JavaScript vanilla. Inclui uma API RESTful para gestão de projetos, experiência profissional e submissões de formulário de contacto com notificações por email. Inclui middleware de autenticação de administrador e integração com base de dados PostgreSQL."
-      },
-      "features": {
-        "en": [
-          "RESTful API built with Go and Gin framework",
-          "PostgreSQL database for persistent data storage",
-          "Admin authentication middleware for secure content management",
-          "Email service integration for contact form notifications",
-          "Responsive frontend with bilingual support (EN/PT)",
-          "Project and experience showcase with CRUD operations"
-        ],
-        "pt": [
-          "API RESTful construída com Go e framework Gin",
-          "Base de dados PostgreSQL para armazenamento persistente",
-          "Middleware de autenticação de administrador para gestão segura de conteúdo",
-          "Integração de serviço de email para notificações de formulário de contacto",
-          "Frontend responsivo com suporte bilingue (EN/PT)",
-          "Apresentação de projetos e experiência com operações CRUD"
-        ]
-      },
-      "tech": [
-        "Go",
-        "Gin",
-        "PostgreSQL",
-        "HTML",
-        "CSS",
-        "JavaScript",
-        "REST API"
-      ],
-      "link": "https://github.com/AfonsoPaiva/Portfolio",
-      "createdAt": "2025-12-07T18:29:28.537084Z",
-      "updatedAt": "2025-12-07T18:29:28.537084Z"
-    },
-    {
       "id": 1130670955160403969,
       "status": {
         "text": "COMPLETED",
