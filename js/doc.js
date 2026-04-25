@@ -58,18 +58,30 @@ function renderDoc(doc) {
     const date = new Date(doc.updatedAt || doc.createdAt);
     document.getElementById('doc-date').textContent = date.toLocaleDateString(lang === 'pt' ? 'pt-PT' : 'en-GB');
 
-    // Render Markdown
-    // We strip the first H1 if it matches the title to avoid duplication, 
-    // but looking at the backend sample: content has "# Getting Started". 
-    // We already display title in H1 text. So we might want to replace the first # line if it matches.
-    let content = doc.content[lang] || doc.content['en'] || "";
-    
-    // Optional: Remove first H1 from markdown if we are displaying it separately
-    // content = content.replace(/^#\s+.*$/m, '');
+    // Render content — prefer .md file, fall back to inline content
+    const mdFile = doc.mdFile ? (doc.mdFile[lang] || doc.mdFile['en'] || null) : null;
 
-    document.getElementById('doc-body').innerHTML = marked.parse(content);
-
-    lucide.createIcons();
+    if (mdFile) {
+        fetch(mdFile)
+            .then(res => {
+                if (!res.ok) throw new Error('MD file not found');
+                return res.text();
+            })
+            .then(content => {
+                document.getElementById('doc-body').innerHTML = marked.parse(content);
+                lucide.createIcons();
+            })
+            .catch(() => {
+                // Fall back to inline content if .md fetch fails
+                const content = doc.content?.[lang] || doc.content?.['en'] || "";
+                document.getElementById('doc-body').innerHTML = marked.parse(content);
+                lucide.createIcons();
+            });
+    } else {
+        const content = doc.content?.[lang] || doc.content?.['en'] || "";
+        document.getElementById('doc-body').innerHTML = marked.parse(content);
+        lucide.createIcons();
+    }
 }
 
 function showError() {

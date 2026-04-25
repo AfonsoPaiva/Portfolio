@@ -3,10 +3,10 @@
     {
       "id": 1153117849120505857,
       "status": {
-        "text": "IN-DEVELOPMENT",
-        "color": "yellow"
+        "text": "COMPLETED",
+        "color": "green"
       },
-      "image": "https://life.berkeley.edu/wp-content/uploads/2024/04/2019_04_24_UCB_Admissions_day2-12_edited.jpg",
+      "image": "https://i.postimg.cc/9Mqf49TN/Captura-de-ecra-de-2026-04-25-18-42-58.png",
       "title": {
         "en": "SKILLBRIDGE: Student Collaboration Platform",
         "pt": "SKILLBRIDGE: Plataforma de Colaboração para Estudantes"
@@ -46,7 +46,9 @@
         "RxJS",
         "JWT Authentication"
       ],
-      "link": "https://github.com/AfonsoPaiva",
+      "githubUrl": "",
+      "siteUrl": "https://www.skillbridge.pt",
+      "videoUrl": "",
       "createdAt": "2026-02-24T23:00:40.478074Z",
       "updatedAt": "2026-02-24T23:04:10.538993Z"
     },
@@ -91,7 +93,9 @@
         "Stripe",
         "REST API"
       ],
-      "link": "https://www.escritoresnogueira.com/",
+      "githubUrl": "",
+      "siteUrl": "https://www.escritoresnogueira.com/",
+      "videoUrl": "",
       "createdAt": "2025-12-07T16:09:52.07711Z",
       "updatedAt": "2026-02-24T23:07:06.622075Z"
     },
@@ -136,7 +140,9 @@
         "GLSL",
         "PBR"
       ],
-      "link": "https://github.com/AfonsoPaiva/LoadX",
+      "githubUrl": "https://github.com/AfonsoPaiva/LoadX",
+      "siteUrl": "",
+      "videoUrl": "https://youtu.be/upj2hi2GmW4?si=J4MVmoq5LjePKJsY",
       "createdAt": "2025-12-07T15:43:18.99451Z",
       "updatedAt": "2025-12-07T15:43:18.99451Z"
     },
@@ -179,7 +185,9 @@
         "Firebase",
         "Flutter"
       ],
-      "link": "https://github.com/AfonsoPaiva/Solar-Terrain-Analytics",
+      "githubUrl": "https://github.com/AfonsoPaiva/Solar-Terrain-Analytics",
+      "siteUrl": "",
+      "videoUrl": "https://youtu.be/6N8IoaQvjco?si=Z5nQRvipdDK4EHfK",
       "createdAt": "2025-12-07T15:38:20.922666Z",
       "updatedAt": "2025-12-07T15:38:20.922666Z"
     }
@@ -313,6 +321,47 @@
       "updatedAt": "2025-12-07T15:58:31.328688Z"
     }
   ],
+  "robotics": [
+    {
+      "id": 1,
+      "title": {
+        "en": "Autonomous Line-Following Robot",
+        "pt": "Robot Seguidor de Linha Autónomo"
+      },
+      "description": {
+        "en": "PID-controlled autonomous robot using infrared sensors for line detection and real-time path correction.",
+        "pt": "Robot autónomo com controlo PID usando sensores infravermelhos para deteção de linha e correção de trajetória em tempo real."
+      },
+      "youtubeUrl": "",
+      "tech": ["Arduino", "C", "PID Control", "IR Sensors", "Electronics"]
+    },
+    {
+      "id": 2,
+      "title": {
+        "en": "Servo Motor Control System",
+        "pt": "Sistema de Controlo de Servo Motor"
+      },
+      "description": {
+        "en": "Precision servo motor control system with PWM modulation and feedback loop for robotic arm positioning.",
+        "pt": "Sistema de controlo de servo motor de precisão com modulação PWM e loop de feedback para posicionamento de braço robótico."
+      },
+      "youtubeUrl": "",
+      "tech": ["Arduino", "PWM", "Servo Control", "C++", "Electronics"]
+    },
+    {
+      "id": 3,
+      "title": {
+        "en": "ESP32 IoT Sensor Network",
+        "pt": "Rede de Sensores IoT com ESP32"
+      },
+      "description": {
+        "en": "Distributed sensor network using ESP32 modules with MQTT protocol for real-time data collection and monitoring.",
+        "pt": "Rede de sensores distribuída utilizando módulos ESP32 com protocolo MQTT para recolha e monitorização de dados em tempo real."
+      },
+      "youtubeUrl": "",
+      "tech": ["ESP32", "MQTT", "IoT", "C++", "Wi-Fi"]
+    }
+  ],
   "docs": [
     {
       "id": 1147681623929356289,
@@ -320,6 +369,10 @@
       "title": {
         "en": "LoadX - Complete Documentation",
         "pt": "LoadX - Documentação Completa"
+      },
+      "mdFile": {
+        "en": "docs/loadx-full-documentation.en.md",
+        "pt": "docs/loadx-full-documentation.pt.md"
       },
       "content": {
         "en": "# LoadX (OpenGL Modular Engine)\n\n**A Modern 3D Graphics Engine for Model Visualization and Rendering**\n\nLoadX is a robust, modular graphics engine built with C++17 and OpenGL 3.3. It is designed to provide a professional environment for loading, viewing, and inspecting 3D models with Physically Based Rendering (PBR) and real-time performance monitoring.\n\n---\n\n## 1. Features & Capabilities\n\n### Advanced Rendering\n* **Core Pipeline:** Modern OpenGL 3.3+ with programmable shaders.\n* **Material System:** Full PBR support (Physically Based Rendering) including Metallic/Roughness workflows.\n* **Lighting:** Real-time support for Directional, Point, and Spot lights.\n* **Texture Support:** Automatic detection of Diffuse, Normal, Specular, and Height maps.\n\n### Multi-Format Model Support\nPowered by **Assimp**, LoadX supports 20+ formats including:\n* **.obj** (Wavefront - with native MTL support)\n* **.fbx** (Filmbox)\n* **.gltf / .glb** (GL Transmission Format)\n* **.dae** (Collada)\n* **.stl** (Stereolithography)\n\n### Interactive Interface\nBuilt with **Dear ImGui**, the UI features:\n* **Dark Theme:** Professional visual style.\n* **Real-time Stats:** FPS monitoring, Frame time, and Memory usage.\n* **Inspectors:** Material property editors and Transform controls.\n\n---\n\n## 2. Technical Stack\n\n| Component | Technology | Description |\n| :--- | :--- | :--- |\n| **Language** | C++17 | Core logic and systems |\n| **Graphics API** | OpenGL 3.3+ | Hardware accelerated rendering |\n| **Windowing** | GLFW 3.x | Cross-platform window & input management |\n| **Math** | GLM | OpenGL Mathematics library |\n| **Asset Import** | Assimp | 3D model loading pipeline |\n| **GUI** | Dear ImGui | Immediate mode user interface |\n\n---\n\n## 3. Installation Guide\n\n### Prerequisites\n* **OS:** Windows (Recommended) or Linux.\n* **Compiler:** Visual Studio 2022 (MSVC) or GCC with C++17 support.\n* **Build System:** CMake 3.15+.\n* **Git:** Version control.\n\n### Step-by-Step Build (Windows)\n\n1.  **Clone the Repository:**\n    ```bash\n    git clone [https://github.com/AfonsoPaiva/LoadX.git](https://github.com/AfonsoPaiva/LoadX.git)\n    ```\n2.  **Open in Visual Studio:**\n    Launch `OpenGL-Modular-Engine.sln`.\n3.  **Select Configuration:**\n    Choose **Release** mode from the top toolbar (Debug mode is significantly slower).\n4.  **Build:**\n    Press `Ctrl + Shift + B` to build the solution.\n5.  **Run:**\n    Locate the executable in `bin/Release/` and launch it.\n\n*Note: All dependencies (GLFW, GLAD, GLM, etc.) are included in the repository. No external package manager is needed.*\n\n---\n\n## 4. User Manual\n\n### Controls\n\n| Input | Action |\n| :--- | :--- |\n| **W, A, S, D** | Move Camera (Fly Mode) |\n| **Mouse Left + Drag** | Look Around / Pan |\n| **Mouse Scroll** | Zoom In / Out |\n| **F12** | Take Screenshot |\n| **ESC** | Exit Application |\n\n### UI Panels Guide\n\n1.  **Model Loader:** Click \"Select Model File\" to open the native file browser. Large models will show a progress bar.\n2.  **Transform:** Use sliders to adjust Position, Rotation, and Scale. Use \"Auto-Center\" to fix offset models.\n3.  **Lighting:** Adjust the sun direction (Directional) or add Point lights to test material roughness/metallic properties.\n4.  **Stats:** Monitor GPU performance. If FPS drops, check if you are running in Debug mode instead of Release.\n\n---\n\n## 5. System Architecture\n\nThe engine follows a modular Object-Oriented design:\n\n* **Window Class:** Wraps GLFW, handles context creation and input callbacks.\n* **Camera Class:** Implements 6-DOF movement using Euler angles (Yaw, Pitch).\n* **Model/Mesh Classes:**\n    * *Mesh:* Stores VBO/VAO/EBO data for a single geometry part.\n    * *Model:* Aggregates multiple Meshes and manages texture resources.\n* **Shader System:**\n    * *Vertex Shader:* Handles MVP matrices and Normal/Tangent space calculation.\n    * *Fragment Shader:* Calculates Blinn-Phong lighting and PBR maps.\n\n### Folder Structure\n* `src/`: C++ Source files (.cpp).\n* `include/`: Header files (.h).\n* `shaders/`: GLSL shader code (.vert, .frag).\n* `vendor/`: Third-party libraries.\n",

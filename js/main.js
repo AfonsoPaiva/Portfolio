@@ -7,6 +7,7 @@ const state = {
     projects: [],
     experience: [],
     docs: [],
+    robotics: [],
     translations: {
         en: {
             "nav.about": "./ABOUT",
@@ -35,7 +36,13 @@ const state = {
             "contact.desc": "Currently looking for new opportunities. Whether you have a question or just want to say hi, I'll try my best to get back to you!",
             "contact.btn": "SEND_MESSAGE",
             "modal.repo": "VIEW REPOSITORY",
-            "docs.read_more": "READ_MORE"
+            "modal.site": "VISIT SITE",
+            "modal.video": "WATCH DEMO",
+            "docs.read_more": "READ_MORE",
+            "nav.robotics": "./ROBOTICS",
+            "section.robotics": "Robotics & Electronics",
+            "hero.cv": "DOWNLOAD_CV.PDF",
+            "robotics.watch": "WATCH"
         },
         pt: {
             "nav.about": "./SOBRE",
@@ -64,7 +71,13 @@ const state = {
             "contact.desc": "Atualmente em busca de novas oportunidades. Se tiver uma pergunta ou apenas quiser dizer olá, tentarei responder o mais rápido possível!",
             "contact.btn": "ENVIAR_MENSAGEM",
             "modal.repo": "VER REPOSITÓRIO",
-            "docs.read_more": "LER_MAIS"
+            "modal.site": "VISITAR SITE",
+            "modal.video": "VER DEMO",
+            "docs.read_more": "LER_MAIS",
+            "nav.robotics": "./ROBÓTICA",
+            "section.robotics": "Robótica & Eletrotécnica",
+            "hero.cv": "DOWNLOAD_CV.PDF",
+            "robotics.watch": "VER"
         }
     }
 };
@@ -112,28 +125,41 @@ async function fetchDocs() {
     }
 }
 
+async function fetchRobotics() {
+    try {
+        const data = await loadData();
+        state.robotics = data.robotics || [];
+        renderRobotics();
+    } catch (e) {
+        console.error("Failed to load robotics", e);
+        const el = document.getElementById('robotics-grid');
+        if (el) el.innerHTML = '<p class="text-red-500">Error loading robotics data.</p>';
+    }
+}
+
 async function fetchGitHubStats() {
     const container = document.getElementById('github-stats');
     if (!container) return;
 
     try {
-        const [userRes, eventsRes, prsRes, issuesRes] = await Promise.all([
+        const [userRes, eventsRes, reposRes] = await Promise.all([
             fetch('https://api.github.com/users/AfonsoPaiva'),
             fetch('https://api.github.com/users/AfonsoPaiva/events?per_page=100'),
-            fetch('https://api.github.com/search/issues?q=author:AfonsoPaiva+type:pr+is:merged'),
-            fetch('https://api.github.com/search/issues?q=author:AfonsoPaiva+type:issue')
+            fetch('https://api.github.com/users/AfonsoPaiva/repos?per_page=100&sort=updated')
         ]);
 
         const user = await userRes.json();
         const events = await eventsRes.json();
-        const prs = await prsRes.json();
-        const issues = await issuesRes.json();
+        const repos = await reposRes.json();
 
         // 1. Counts
-        const prsCount = prs.total_count || 0;
-        const issuesCount = issues.total_count || 0;
-        
-        // 2. Last Commit
+        const reposCount = user.public_repos || 0;
+        const followersCount = user.followers || 0;
+
+        // 2. Total stars
+        const totalStars = Array.isArray(repos) ? repos.reduce((sum, r) => sum + (r.stargazers_count || 0), 0) : 0;
+
+        // 3. Last Commit
         const lastPush = Array.isArray(events) ? events.find(e => e.type === 'PushEvent') : null;
         let lastCommitDate = 'N/A';
         let lastCommitRepo = 'No recent activity';
@@ -151,7 +177,7 @@ async function fetchGitHubStats() {
             }
         }
 
-        // 3. Streak & Graph (Based on Public Events)
+        // 4. Activity graph (last 21 days)
         const activityMap = {};
         if (Array.isArray(events)) {
              events.forEach(e => {
@@ -161,34 +187,7 @@ async function fetchGitHubStats() {
                 }
             });
         }
-        
-        // Calculate Streak
-        let streak = 0;
-        const today = new Date();
-        let currentCheck = new Date();
-        let checking = true;
 
-        // Check if active today
-        const todayStr = today.toISOString().split('T')[0];
-        
-        while (checking) {
-            const dateStr = currentCheck.toISOString().split('T')[0];
-            if (activityMap[dateStr]) {
-                streak++;
-                currentCheck.setDate(currentCheck.getDate() - 1);
-            } else {
-                 // Allow missing today if it's the first check
-                 if (streak === 0 && dateStr === todayStr) {
-                    currentCheck.setDate(currentCheck.getDate() - 1);
-                    continue; 
-                 }
-                 checking = false;
-            }
-            // Safety break for loop
-            if (streak > 365) checking = false;
-        }
-
-        // Generate Graph (Last 21 days - 3 weeks)
         let graphHTML = '';
         const daysToShow = 21;
         for (let i = daysToShow - 1; i >= 0; i--) {
@@ -201,27 +200,27 @@ async function fetchGitHubStats() {
         }
         
         container.innerHTML = `
-            <a href="https://github.com/search?q=author%3AAfonsoPaiva+type%3Apr+is%3Amerged" target="_blank" class="p-3 border border-white/10 bg-white/5 hover:border-green-400 transition-colors group block">
-                <div class="text-xs text-gray-500 mb-1 font-mono">PRS_SOLVED</div>
-                <div class="text-2xl font-bold text-white group-hover:text-green-400 font-mono">${prsCount}</div>
+            <a href="https://github.com/AfonsoPaiva?tab=repositories" target="_blank" class="p-3 border border-white/10 bg-white/5 hover:border-green-400 transition-colors group block">
+                <div class="text-xs text-gray-500 mb-1 font-mono">PUBLIC_REPOS</div>
+                <div class="text-2xl font-bold text-white group-hover:text-green-400 font-mono">${reposCount}</div>
             </a>
-             <a href="https://github.com/search?q=author%3AAfonsoPaiva+type%3Aissue" target="_blank" class="p-3 border border-white/10 bg-white/5 hover:border-green-400 transition-colors group block">
-                <div class="text-xs text-gray-500 mb-1 font-mono">ISSUES_FILED</div>
-                <div class="text-2xl font-bold text-white group-hover:text-green-400 font-mono">${issuesCount}</div>
+            <a href="https://github.com/AfonsoPaiva?tab=followers" target="_blank" class="p-3 border border-white/10 bg-white/5 hover:border-green-400 transition-colors group block">
+                <div class="text-xs text-gray-500 mb-1 font-mono">FOLLOWERS</div>
+                <div class="text-2xl font-bold text-white group-hover:text-green-400 font-mono">${followersCount}</div>
             </a>
             <a href="${lastCommitLink}" target="_blank" class="p-3 border border-white/10 bg-white/5 hover:border-green-400 transition-colors group block">
                 <div class="text-xs text-gray-500 mb-1 font-mono">LAST_COMMIT</div>
                 <div class="text-sm font-bold text-white group-hover:text-green-400 font-mono truncate" title="${lastCommitRepo}">${lastCommitRepo}</div>
-                 <div class="text-xs text-gray-500 font-mono mt-1">${lastCommitDate}</div>
+                <div class="text-xs text-gray-500 font-mono mt-1">${lastCommitDate}</div>
             </a>
             <a href="https://github.com/AfonsoPaiva" target="_blank" class="p-3 border border-white/10 bg-white/5 hover:border-green-400 transition-colors group flex flex-col justify-between block">
-                 <div class="flex justify-between items-start">
-                    <div class="text-xs text-gray-500 font-mono">STREAK</div>
-                    <div class="text-xl font-bold text-white group-hover:text-green-400 font-mono">${streak}<span class="text-xs ml-1 text-gray-500 font-normal">DAYS</span></div>
-                 </div>
-                 <div class="flex gap-1 mt-1 justify-end flex-wrap max-w-full">
+                <div class="flex justify-between items-start">
+                    <div class="text-xs text-gray-500 font-mono">TOTAL_STARS</div>
+                    <div class="text-xl font-bold text-white group-hover:text-green-400 font-mono">${totalStars}</div>
+                </div>
+                <div class="flex gap-1 mt-1 justify-end flex-wrap max-w-full">
                     ${graphHTML}
-                 </div>
+                </div>
             </a>
         `;
     } catch (e) {
@@ -230,123 +229,6 @@ async function fetchGitHubStats() {
     }
 }
 
-
-// --- Boot Sequence ---
-
-const bootMessages = [
-    { text: "Mounting root filesystem...", status: "ok", delay: 20 },
-    { text: "Loading kernel modules...", status: "ok", delay: 15 },
-    { text: "Detecting hardware...", status: "ok", delay: 15 },
-    { text: "Initializing graphics subsystem...", status: "ok", delay: 20 },
-    { text: "Probing PCI devices...", status: "ok", delay: 15 },
-    { text: "Loading audio drivers...", status: "ok", delay: 15 },
-    { text: "Checking memory integrity...", status: "ok", delay: 15 },
-    { text: "Starting system message bus...", status: "ok", delay: 15 },
-    { text: "Starting udev daemon...", status: "ok", delay: 20 },
-    { text: "Activating swap...", status: "ok", delay: 15 },
-    { text: "Mounting /home/paiva...", status: "ok", delay: 20 },
-    { text: "Verifying disk quotas...", status: "ok", delay: 15 },
-    { text: "Loading user profiles...", status: "ok", delay: 20 },
-    { text: "Starting background services...", status: "ok", delay: 15 },
-    { text: "Configuring network interfaces...", status: "ok", delay: 20 },
-    { text: "Resolving hostnames...", status: "ok", delay: 15 },
-    { text: "Starting SSH daemon...", status: "ok", delay: 15 },
-    { text: "Initializing firewall rules...", status: "ok", delay: 15 },
-    { text: "Starting cron scheduler...", status: "ok", delay: 15 },
-    { text: "Checking security policies...", status: "ok", delay: 15 },
-    { text: "Setting system time...", status: "ok", delay: 15 },
-    { text: "Loading locale settings...", status: "ok", delay: 15 },
-    { text: "Establishing connection to sleep server...", status: "wait", delay: 50 }
-];
-
-function addBootLine(text, status) {
-    const log = document.getElementById('boot-log');
-    if (!log) return;
-    
-    const line = document.createElement('div');
-    line.className = 'boot-line';
-    
-    let statusHtml = '';
-    if (status === 'ok') statusHtml = '<span class="status ok">[ OK ]</span>';
-    else if (status === 'warn') statusHtml = '<span class="status warn">[WARN]</span>';
-    else if (status === 'fail') statusHtml = '<span class="status fail">[FAIL]</span>';
-    else if (status === 'wait') statusHtml = '<span class="status info">[....]</span>';
-    
-    line.innerHTML = `${statusHtml} <span class="content">${text}</span>`;
-    log.appendChild(line);
-}
-
-async function runBootSequence() {
-    // 1. Run initial messages
-    for (let i = 0; i < bootMessages.length - 1; i++) {
-        const msg = bootMessages[i];
-        await new Promise(r => setTimeout(r, msg.delay));
-        addBootLine(msg.text, msg.status);
-    }
-
-    // 2. Wait for API connection
-    const waitMsg = bootMessages[bootMessages.length - 1];
-    addBootLine(waitMsg.text, waitMsg.status);
-    
-    // Start fetches in background
-    const fetchStart = Date.now();
-    try {
-        await Promise.all([
-            fetchProjects(),
-            fetchExperience(),
-            fetchDocs(),
-            fetchGitHubStats()
-        ]);
-        
-        // Ensure a brief pause after data loads
-        const elapsed = Date.now() - fetchStart;
-        if (elapsed < 200) {
-            await new Promise(r => setTimeout(r, 200 - elapsed));
-        }
-
-        // Replace "wait" with "ok"
-        const log = document.getElementById('boot-log');
-        if (log && log.lastElementChild) {
-            log.lastElementChild.innerHTML = '<span class="status ok">[ OK ]</span> <span class="content">Connection established.</span>';
-        }
-
-    } catch (e) {
-        addBootLine("Connection failed. Starting offline mode...", "warn");
-    }
-
-    await new Promise(r => setTimeout(r, 50));
-    addBootLine("Starting portfolio_daemon v2.0...", "ok");
-    await new Promise(r => setTimeout(r, 80));
-
-    // 3. Fake typing command
-    const inputLine = document.getElementById('terminal-input-line');
-    if (inputLine) {
-        inputLine.classList.remove('hidden');
-        
-        const command = "./start_portfolio.sh";
-        const typingSpan = document.getElementById('typing-command');
-        
-        for (let char of command) {
-            if (typingSpan) typingSpan.innerText += char;
-            await new Promise(r => setTimeout(r, 3 + Math.random() * 5));
-        }
-    }
-
-    await new Promise(r => setTimeout(r, 30));
-
-    // 4. Remove Loader
-    const loader = document.getElementById('terminal-loader');
-    if (loader) {
-        gsap.to(loader, { 
-            opacity: 0, 
-            duration: 0.5, 
-            onComplete: () => {
-                loader.remove();
-                document.body.classList.remove('loading');
-            }
-        });
-    }
-}
 
 // --- Render Functions ---
 
@@ -499,10 +381,50 @@ function renderDocs() {
     lucide.createIcons();
 }
 
+function renderRobotics() {
+    const grid = document.getElementById('robotics-grid');
+    if (!grid) return;
+    const lang = state.lang;
+
+    if (!state.robotics || state.robotics.length === 0) {
+        grid.innerHTML = '<p class="col-span-full text-center text-gray-500">No robotics data.</p>';
+        return;
+    }
+
+    grid.innerHTML = state.robotics.map(item => {
+        const title = item.title?.[lang] || item.title?.['en'] || "Untitled";
+        const desc = item.description?.[lang] || item.description?.['en'] || "";
+        const tech = item.tech || [];
+        const youtubeUrl = item.youtubeUrl || '';
+        const watchText = state.translations[lang]['robotics.watch'] || 'WATCH';
+
+        const videoBtn = youtubeUrl
+            ? `<a href="${youtubeUrl}" target="_blank" rel="noopener noreferrer"
+                  class="flex items-center justify-center gap-2 w-full border-2 border-white/20 hover:border-green-400 hover:text-green-400 text-white text-xs font-bold font-mono py-3 transition-colors mt-4">
+                   <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg> ${watchText}_YOUTUBE
+               </a>`
+            : `<div class="flex items-center justify-center gap-2 w-full border-2 border-white/10 text-gray-600 text-xs font-bold font-mono py-3 mt-4 cursor-not-allowed">
+                   <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg> VIDEO_COMING_SOON
+               </div>`;
+
+        return `
+        <div class="border-2 border-white/10 hover:border-green-400 transition-colors bg-black p-6">
+            <h3 class="text-lg font-bold text-white mb-2">${title}</h3>
+            <p class="text-gray-500 text-sm mb-4 leading-relaxed">${desc}</p>
+            <div class="flex flex-wrap gap-2 mb-2">
+                ${tech.map(t => `<span class="text-xs text-green-400/80 font-mono border border-white/10 px-2 py-0.5">${t}</span>`).join('')}
+            </div>
+            ${videoBtn}
+        </div>
+        `;
+    }).join('');
+
+    lucide.createIcons();
+}
+
 // --- Interaction Functions ---
 
-function updateLanguage(newLang) {
-    state.lang = newLang;
+function updateLanguage(newLang) {    state.lang = newLang;
     localStorage.setItem('lang', newLang);
     
     // Update Toggle Button
@@ -523,6 +445,7 @@ function updateLanguage(newLang) {
     renderExperience();
     renderProjects();
     renderDocs();
+    renderRobotics();
 }
 
 function openModal(projectId) {
@@ -537,9 +460,38 @@ function openModal(projectId) {
     // Populate without Image
     document.getElementById('modal-title').innerText = project.title?.[lang] || "Untitled";
     
-    // Prioritize specific repository fields, fallback to generic link
-    const repoLink = project.repository || project.repo || project.github || project.link || "#";
-    document.getElementById('modal-link').href = repoLink;
+    // GitHub button
+    const githubUrl = project.githubUrl || '';
+    const modalGithubBtn = document.getElementById('modal-github-btn');
+    if (githubUrl) {
+        modalGithubBtn.href = githubUrl;
+        modalGithubBtn.classList.remove('hidden');
+        modalGithubBtn.querySelector('[data-i18n="modal.repo"]').textContent = state.translations[lang]['modal.repo'] || 'VIEW REPOSITORY';
+    } else {
+        modalGithubBtn.classList.add('hidden');
+    }
+
+    // Site button
+    const siteUrl = project.siteUrl || '';
+    const modalSiteBtn = document.getElementById('modal-site-btn');
+    if (siteUrl) {
+        modalSiteBtn.href = siteUrl;
+        modalSiteBtn.classList.remove('hidden');
+        modalSiteBtn.querySelector('[data-i18n="modal.site"]').textContent = state.translations[lang]['modal.site'] || 'VISIT SITE';
+    } else {
+        modalSiteBtn.classList.add('hidden');
+    }
+
+    // Video button
+    const videoUrl = project.videoUrl || '';
+    const modalVideoBtn = document.getElementById('modal-video-btn');
+    if (videoUrl) {
+        modalVideoBtn.href = videoUrl;
+        modalVideoBtn.classList.remove('hidden');
+        modalVideoBtn.querySelector('[data-i18n="modal.video"]').textContent = state.translations[lang]['modal.video'] || 'WATCH DEMO';
+    } else {
+        modalVideoBtn.classList.add('hidden');
+    }
     
     document.getElementById('modal-desc').innerText = project.fullDescription?.[lang] || project.shortDescription?.[lang] || "";
     
@@ -677,8 +629,14 @@ document.addEventListener('DOMContentLoaded', () => {
     // Initial Load
     updateLanguage(state.lang);
     
-    // Run boot sequence which handles data fetching
-    runBootSequence().then(() => {
+    // Fetch all data
+    Promise.all([
+        fetchProjects(),
+        fetchExperience(),
+        fetchDocs(),
+        fetchRobotics(),
+        fetchGitHubStats()
+    ]).then(() => {
         lucide.createIcons();
     });
 });
