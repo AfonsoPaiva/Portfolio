@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt">
+<html lang="pt" class="deck-page">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,7 +11,6 @@
     <script src="https://unpkg.com/lucide@latest"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-    <script src="https://unpkg.com/lenis@1.0.45/dist/lenis.min.js"></script>
     <script>
         tailwind.config = {
             theme: {
@@ -27,23 +26,22 @@
             }
         }
     </script>
-    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/styles.css?v=4">
 </head>
-<body class="bg-black text-gray-200 font-mono selection:bg-green-400 selection:text-black">
+<body class="deck-page bg-black text-gray-200 font-mono selection:bg-green-400 selection:text-black">
     
     <!-- Navigation -->
     <nav class="fixed top-0 w-full bg-black border-b-2 border-white/10 z-50">
         <div class="max-w-6xl mx-auto px-6 h-16 flex justify-between items-center">
-            <div class="font-bold text-white tracking-tighter hover:text-green-400 transition-colors cursor-pointer" onclick="window.scrollTo(0,0)">
+            <div id="nav-logo" class="font-bold text-white tracking-tighter hover:text-green-400 transition-colors cursor-pointer">
                 root@afonso:~$
             </div>
             <div class="flex items-center gap-6 text-sm font-bold">
-                <a href="#about" class="hidden md:block hover:text-green-400 transition-colors" data-i18n="nav.about">./ABOUT</a>
-                <a href="#experience" class="hidden md:block hover:text-green-400 transition-colors" data-i18n="nav.experience">./EXPERIENCE</a>
-                <a href="#projects" class="hidden md:block hover:text-green-400 transition-colors" data-i18n="nav.projects">./PROJECTS</a>
-                <a href="#docs" class="hidden md:block hover:text-green-400 transition-colors" data-i18n="nav.docs">./DOCS</a>
-                <a href="#robotics" class="hidden md:block hover:text-green-400 transition-colors" data-i18n="nav.robotics">./ROBOTICS</a>
-                <a href="#contact" class="hidden md:block hover:text-green-400 transition-colors" data-i18n="nav.contact">./CONTACT</a>
+                <a href="#about" class="nav-link hidden md:block hover:text-green-400 transition-colors" data-i18n="nav.about">./ABOUT</a>
+                <a href="#experience" class="nav-link hidden md:block hover:text-green-400 transition-colors" data-i18n="nav.experience">./EXPERIENCE</a>
+                <a href="#projects" class="nav-link hidden md:block hover:text-green-400 transition-colors" data-i18n="nav.projects">./PROJECTS</a>
+                <a href="#docs" class="nav-link hidden md:block hover:text-green-400 transition-colors" data-i18n="nav.docs">./DOCS</a>
+                <a href="#contact" class="nav-link hidden md:block hover:text-green-400 transition-colors" data-i18n="nav.contact">./CONTACT</a>
                 <button id="lang-toggle" class="border-2 border-white/20 px-3 py-1 hover:border-green-400 hover:text-green-400 transition-all">
                     PT / EN
                 </button>
@@ -52,6 +50,8 @@
                 </button>
             </div>
         </div>
+        <!-- Horizontal Scroll Progress Bar -->
+        <div id="scroll-progress" class="h-[2px] bg-green-400 origin-left scale-x-0 w-full"></div>
 
         <!-- Mobile Menu Overlay -->
         <div id="mobile-menu" class="fixed inset-0 bg-black/95 z-[60] hidden flex flex-col items-center justify-center gap-8 backdrop-blur-lg transform transition-transform duration-300 translate-x-full">
@@ -62,189 +62,236 @@
             <a href="#experience" class="text-2xl font-bold hover:text-green-400" data-i18n="nav.experience">./EXPERIENCE</a>
             <a href="#projects" class="text-2xl font-bold hover:text-green-400" data-i18n="nav.projects">./PROJECTS</a>
             <a href="#docs" class="text-2xl font-bold hover:text-green-400" data-i18n="nav.docs">./DOCS</a>
-            <a href="#robotics" class="text-2xl font-bold hover:text-green-400" data-i18n="nav.robotics">./ROBOTICS</a>
             <a href="#contact" class="text-2xl font-bold hover:text-green-400" data-i18n="nav.contact">./CONTACT</a>
         </div>
     </nav>
 
-    <main class="max-w-6xl mx-auto px-6 pt-24 md:pt-32 pb-20">
+    <!-- Left & Right Mouse Proximity Edge Zones -->
+    <div id="edge-left" class="edge-zone edge-zone-left hidden md:flex" aria-hidden="true">
+        <div class="edge-indicator">
+            <i data-lucide="chevron-left" class="w-5 h-5"></i>
+            <span id="edge-left-label" class="edge-label">PREV</span>
+        </div>
+    </div>
+    <div id="edge-right" class="edge-zone edge-zone-right hidden md:flex" aria-hidden="true">
+        <div class="edge-indicator">
+            <span id="edge-right-label" class="edge-label">NEXT</span>
+            <i data-lucide="chevron-right" class="w-5 h-5"></i>
+        </div>
+    </div>
+
+    <main id="deck-stage">
+        <div id="deck-container">
         
         <!-- Hero Section -->
-        <header class="min-h-[60vh] flex flex-col justify-center mb-24">
-            <div class="mb-6 flex items-center gap-4 text-xs font-bold font-mono">
-                <div class="flex items-center gap-2 px-3 py-1 bg-green-400 text-black border border-green-400">
-                    <div class="w-2 h-2 bg-black rounded-full animate-pulse"></div>
-                    <span data-i18n="hero.open_work">OPEN_FOR_WORK</span>
+        <header id="hero" class="deck-card is-active">
+            <div class="deck-card-header">
+                <div class="flex items-center gap-2 text-gray-400">
+                    <span class="w-2 h-2 bg-green-400 inline-block"></span>
+                    <span>~/afonso/00_hero.sh</span>
                 </div>
-                <div class="text-gray-500 border border-white/10 px-3 py-1" data-i18n="hero.last_updated">
-                    LAST_UPDATED::2026-04-27
-                </div>
+                <div class="text-gray-500">[01 / 06]</div>
             </div>
-            <div class="border-l-4 border-green-400 pl-6 mb-8">
-                <div class="text-green-400 mb-4">
-                    <svg viewBox="0 0 128 128" class="w-12 h-12 inline-block">
-                        <path fill-rule="evenodd" clip-rule="evenodd" fill="white" d="M113.823 104.595c-1.795-1.478-3.629-2.921-5.308-4.525-1.87-1.785-3.045-3.944-2.789-6.678.147-1.573-.216-2.926-2.113-3.452.446-1.154.864-1.928 1.033-2.753.188-.92.178-1.887.204-2.834.264-9.96-3.334-18.691-8.663-26.835-2.454-3.748-5.017-7.429-7.633-11.066-4.092-5.688-5.559-12.078-5.633-18.981a47.564 47.564 0 00-1.081-9.475C80.527 11.956 77.291 7.233 71.422 4.7c-4.497-1.942-9.152-2.327-13.901-1.084-6.901 1.805-11.074 6.934-10.996 14.088.074 6.885.417 13.779.922 20.648.288 3.893-.312 7.252-2.895 10.34-2.484 2.969-4.706 6.172-6.858 9.397-1.229 1.844-2.317 3.853-3.077 5.931-2.07 5.663-3.973 11.373-7.276 16.5-1.224 1.9-1.363 4.026-.494 6.199.225.563.363 1.429.089 1.882-2.354 3.907-5.011 7.345-10.066 8.095-3.976.591-4.172 1.314-4.051 5.413.1 3.337.061 6.705-.28 10.021-.363 3.555.008 4.521 3.442 5.373 7.924 1.968 15.913 3.647 23.492 6.854 3.227 1.365 6.465.891 9.064-1.763 2.713-2.771 6.141-3.855 9.844-3.859 6.285-.005 12.572.298 18.86.369 1.702.02 2.679.653 3.364 2.199.84 1.893 2.26 3.284 4.445 3.526 4.193.462 8.013-.16 11.19-3.359 3.918-3.948 8.436-7.066 13.615-9.227 1.482-.619 2.878-1.592 4.103-2.648 2.231-1.922 2.113-3.146-.135-5zM62.426 24.12c.758-2.601 2.537-4.289 5.243-4.801 2.276-.43 4.203.688 5.639 3.246 1.546 2.758 2.054 5.64.734 8.658-1.083 2.474-1.591 2.707-4.123 1.868-.474-.157-.937-.343-1.777-.652.708-.594 1.154-1.035 1.664-1.382 1.134-.772 1.452-1.858 1.346-3.148-.139-1.694-1.471-3.194-2.837-3.175-1.225.017-2.262 1.167-2.4 2.915-.086 1.089.095 2.199.173 3.589-3.446-1.023-4.711-3.525-3.662-7.118zm-12.75-2.251c1.274-1.928 3.197-2.314 5.101-1.024 2.029 1.376 3.547 5.256 2.763 7.576-.285.844-1.127 1.5-1.716 2.241l-.604-.374c-.23-1.253-.276-2.585-.757-3.733-.304-.728-1.257-1.184-1.919-1.762-.622.739-1.693 1.443-1.757 2.228-.088 1.084.477 2.28.969 3.331.311.661 1.001 1.145 1.713 1.916l-1.922 1.51c-3.018-2.7-3.915-8.82-1.871-11.909zM87.34 86.075c-.203 2.604-.5 2.713-3.118 3.098-1.859.272-2.359.756-2.453 2.964a101.744 101.744 0 00-.012 7.753c.061 1.77-.537 3.158-1.755 4.393-6.764 6.856-14.845 10.105-24.512 8.926-4.17-.509-6.896-3.047-9.097-6.639.98-.363 1.705-.607 2.412-.894 3.122-1.27 3.706-3.955 1.213-6.277-1.884-1.757-3.986-3.283-6.007-4.892-1.954-1.555-3.934-3.078-5.891-4.629-1.668-1.323-2.305-3.028-2.345-5.188-.094-5.182.972-10.03 3.138-14.747 1.932-4.209 3.429-8.617 5.239-12.885.935-2.202 1.906-4.455 3.278-6.388 1.319-1.854 2.134-3.669 1.988-5.94-.084-1.276-.016-2.562-.016-3.843l.707-.352c1.141.985 2.302 1.949 3.423 2.959 4.045 3.646 7.892 3.813 12.319.67 1.888-1.341 3.93-2.47 5.927-3.652.497-.294 1.092-.423 1.934-.738 2.151 5.066 4.262 10.033 6.375 15 1.072 2.524 1.932 5.167 3.264 7.547 2.671 4.775 4.092 9.813 4.07 15.272-.012 2.83.137 5.67-.081 8.482z"></path>
-                    </svg>
+            <div class="deck-card-body">
+                <div class="deck-card-content">
+                    <div class="mb-4 flex flex-wrap items-center gap-3 text-xs font-bold font-mono">
+                        <div class="flex items-center gap-2 px-2.5 py-1 bg-green-400 text-black border border-green-400">
+                            <div class="w-2 h-2 bg-black rounded-full animate-pulse"></div>
+                            <span data-i18n="hero.open_work">OPEN_FOR_WORK</span>
+                        </div>
+                        <div class="text-gray-500 border border-white/10 px-2.5 py-1" data-i18n="hero.last_updated">
+                            LAST_UPDATED::2026-10-26
+                        </div>
+                    </div>
+                    <div class="border-l-4 border-green-400 pl-5 mb-5">
+                        <div class="text-green-400 mb-2">
+                            <svg viewBox="0 0 128 128" class="w-10 h-10 inline-block">
+                                <path fill-rule="evenodd" clip-rule="evenodd" fill="white" d="M113.823 104.595c-1.795-1.478-3.629-2.921-5.308-4.525-1.87-1.785-3.045-3.944-2.789-6.678.147-1.573-.216-2.926-2.113-3.452.446-1.154.864-1.928 1.033-2.753.188-.92.178-1.887.204-2.834.264-9.96-3.334-18.691-8.663-26.835-2.454-3.748-5.017-7.429-7.633-11.066-4.092-5.688-5.559-12.078-5.633-18.981a47.564 47.564 0 00-1.081-9.475C80.527 11.956 77.291 7.233 71.422 4.7c-4.497-1.942-9.152-2.327-13.901-1.084-6.901 1.805-11.074 6.934-10.996 14.088.074 6.885.417 13.779.922 20.648.288 3.893-.312 7.252-2.895 10.34-2.484 2.969-4.706 6.172-6.858 9.397-1.229 1.844-2.317 3.853-3.077 5.931-2.07 5.663-3.973 11.373-7.276 16.5-1.224 1.9-1.363 4.026-.494 6.199.225.563.363 1.429.089 1.882-2.354 3.907-5.011 7.345-10.066 8.095-3.976.591-4.172 1.314-4.051 5.413.1 3.337.061 6.705-.28 10.021-.363 3.555.008 4.521 3.442 5.373 7.924 1.968 15.913 3.647 23.492 6.854 3.227 1.365 6.465.891 9.064-1.763 2.713-2.771 6.141-3.855 9.844-3.859 6.285-.005 12.572.298 18.86.369 1.702.02 2.679.653 3.364 2.199.84 1.893 2.26 3.284 4.445 3.526 4.193.462 8.013-.16 11.19-3.359 3.918-3.948 8.436-7.066 13.615-9.227 1.482-.619 2.878-1.592 4.103-2.648 2.231-1.922 2.113-3.146-.135-5zM62.426 24.12c.758-2.601 2.537-4.289 5.243-4.801 2.276-.43 4.203.688 5.639 3.246 1.546 2.758 2.054 5.64.734 8.658-1.083 2.474-1.591 2.707-4.123 1.868-.474-.157-.937-.343-1.777-.652.708-.594 1.154-1.035 1.664-1.382 1.134-.772 1.452-1.858 1.346-3.148-.139-1.694-1.471-3.194-2.837-3.175-1.225.017-2.262 1.167-2.4 2.915-.086 1.089.095 2.199.173 3.589-3.446-1.023-4.711-3.525-3.662-7.118zm-12.75-2.251c1.274-1.928 3.197-2.314 5.101-1.024 2.029 1.376 3.547 5.256 2.763 7.576-.285.844-1.127 1.5-1.716 2.241l-.604-.374c-.23-1.253-.276-2.585-.757-3.733-.304-.728-1.257-1.184-1.919-1.762-.622.739-1.693 1.443-1.757 2.228-.088 1.084.477 2.28.969 3.331.311.661 1.001 1.145 1.713 1.916l-1.922 1.51c-3.018-2.7-3.915-8.82-1.871-11.909zM87.34 86.075c-.203 2.604-.5 2.713-3.118 3.098-1.859.272-2.359.756-2.453 2.964a101.744 101.744 0 00-.012 7.753c.061 1.77-.537 3.158-1.755 4.393-6.764 6.856-14.845 10.105-24.512 8.926-4.17-.509-6.896-3.047-9.097-6.639.98-.363 1.705-.607 2.412-.894 3.122-1.27 3.706-3.955 1.213-6.277-1.884-1.757-3.986-3.283-6.007-4.892-1.954-1.555-3.934-3.078-5.891-4.629-1.668-1.323-2.305-3.028-2.345-5.188-.094-5.182.972-10.03 3.138-14.747 1.932-4.209 3.429-8.617 5.239-12.885.935-2.202 1.906-4.455 3.278-6.388 1.319-1.854 2.134-3.669 1.988-5.94-.084-1.276-.016-2.562-.016-3.843l.707-.352c1.141.985 2.302 1.949 3.423 2.959 4.045 3.646 7.892 3.813 12.319.67 1.888-1.341 3.93-2.47 5.927-3.652.497-.294 1.092-.423 1.934-.738 2.151 5.066 4.262 10.033 6.375 15 1.072 2.524 1.932 5.167 3.264 7.547 2.671 4.775 4.092 9.813 4.07 15.272-.012 2.83.137 5.67-.081 8.482z"></path>
+                            </svg>
+                        </div>
+                        <h1 class="text-3xl sm:text-5xl lg:text-6xl font-extrabold text-white mb-2 tracking-tight">
+                            Afonso Paiva
+                        </h1>
+                        <h2 class="text-lg sm:text-xl lg:text-2xl text-gray-400" data-i18n="hero.role">Junior Backend Developer</h2>
+                    </div>
+                    <p class="max-w-2xl text-sm sm:text-base text-gray-400 leading-relaxed mb-6" data-i18n="hero.desc">
+                        Backend Engineer specialized in high-performance microservices, distributed systems, and cloud-native infrastructure.
+                    </p>
+                    <div class="flex flex-wrap gap-3 text-xs sm:text-sm">
+                        <a href="#projects" class="bg-white text-black font-bold px-5 py-2.5 border-2 border-white hover:bg-green-400 hover:border-green-400 transition-colors" data-i18n="hero.cta">
+                            VIEW_WORK.SH
+                        </a>
+                        <a href="CV_AfonsoPaiva.pdf" download class="bg-green-400 text-black font-bold px-5 py-2.5 border-2 border-green-400 hover:bg-black hover:text-green-400 transition-colors flex items-center gap-2" data-i18n="hero.cv">
+                            <i data-lucide="download" class="w-4 h-4"></i> DOWNLOAD_CV.PDF
+                        </a>
+                        <a href="https://github.com/AfonsoPaiva" target="_blank" class="px-5 py-2.5 border-2 border-white/20 hover:border-white text-white transition-colors flex items-center gap-2">
+                            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg> GITHUB
+                        </a>
+                    </div>
                 </div>
-                <h1 class="text-5xl md:text-7xl font-extrabold text-white mb-4 tracking-tight">
-                    Afonso Paiva
-                </h1>
-                <h2 class="text-2xl md:text-3xl text-gray-400" data-i18n="hero.role">Junior Backend Developer</h2>
-            </div>
-            <p class="max-w-2xl text-lg text-gray-400 leading-relaxed mb-8" data-i18n="hero.desc">
-                Backend Engineer specialized in high-performance microservices, distributed systems, and cloud-native infrastructure.
-            </p>
-            <div class="flex flex-wrap gap-4">
-                <a href="#projects" class="bg-white text-black font-bold px-6 py-3 border-2 border-white hover:bg-green-400 hover:border-green-400 transition-colors" data-i18n="hero.cta">
-                    VIEW_WORK.SH
-                </a>
-                <a href="CV_AfonsoPaiva.pdf" download class="bg-green-400 text-black font-bold px-6 py-3 border-2 border-green-400 hover:bg-black hover:text-green-400 transition-colors flex items-center gap-2" data-i18n="hero.cv">
-                    <i data-lucide="download" class="w-4 h-4"></i> DOWNLOAD_CV.PDF
-                </a>
-                <a href="https://github.com/AfonsoPaiva" target="_blank" class="px-6 py-3 border-2 border-white/20 hover:border-white text-white transition-colors flex items-center gap-2">
-                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg> GITHUB
-                </a>
             </div>
         </header>
 
         <!-- About Section -->
-        <section id="about" class="mb-32">
-            <h3 class="text-2xl font-bold text-white mb-12 flex items-center gap-3">
-                <span class="text-green-400">00.</span> <span data-i18n="section.about">About Me</span>
-                <span class="flex-1 h-px bg-white/10 ml-4"></span>
-            </h3>
-            <div class="grid md:grid-cols-2 gap-12 items-start">
-                <div>
-                     <p class="text-gray-400 leading-relaxed mb-6" data-i18n="about.text1">
-                        I am a passionate backend developer with a deep love for systems programming and architecture. My journey involves solving complex problems, optimizing performance, and building reliable infrastructure.
-                    </p>
-                    <p class="text-gray-400 leading-relaxed" data-i18n="about.text2">
-                        I specialize in creating efficient services and have a strong foundation in distributed systems. I'm always eager to learn new technologies and improve my craft.
-                    </p>
-
-                    <div class="mt-6 border-l-2 border-white/10 pl-4 py-1">
-                        <h4 class="text-white font-bold text-sm mb-1 flex items-center gap-2">
-                             <i data-lucide="graduation-cap" class="w-4 h-4 text-green-400"></i>
-                             <span data-i18n="about.education">Education</span>
-                        </h4>
-                        <div class="text-xs text-green-400 font-mono mb-1" data-i18n="about.degree">
-                            BSc in Digital Game Engineering and Development
-                        </div>
-                        <div class="flex justify-between items-center text-xs text-gray-500 font-mono">
-                            <span data-i18n="about.uni">IPCA</span>
-                            <span class="border border-white/10 px-2 py-0.5" data-i18n="about.edu_period">Sep 2023 - Sep 2026</span>
-                        </div>
-                    </div>
-
-                    <div class="flex gap-4 mt-6">
-                        <a href="https://www.linkedin.com/" target="_blank" class="flex items-center gap-2 px-4 py-2 border border-white/10 bg-white/5 hover:border-green-400 hover:text-green-400 text-xs font-bold font-mono transition-colors">
-                            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg> LINKEDIN
-                        </a>
-                        <a href="https://www.youtube.com/@AfonsoPaiva451/videos" target="_blank" class="flex items-center gap-2 px-4 py-2 border border-white/10 bg-white/5 hover:border-green-400 hover:text-green-400 text-xs font-bold font-mono transition-colors">
-                            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg> YOUTUBE
-                        </a>
-                    </div>
+        <section id="about" class="deck-card">
+            <div class="deck-card-header">
+                <div class="flex items-center gap-2 text-gray-400">
+                    <span class="w-2 h-2 bg-green-400 inline-block"></span>
+                    <span>~/afonso/01_about.sh</span>
                 </div>
-                <div>
-                    <h4 class="text-xl font-bold text-white mb-6 flex items-center gap-2">
-                        <i data-lucide="cpu" class="text-green-400"></i>
-                        <span data-i18n="about.stack">Tech Stack</span>
-                    </h4>
-                    <div class="grid grid-cols-4 gap-3">
-                        <!-- Row 1: Backend -->
-                        <div class="flex flex-col items-center gap-2 p-3 border border-white/10 hover:border-green-400 transition-colors bg-white/5">
-                            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/java/java-original.svg" alt="Java" class="w-8 h-8"/>
-                            <span class="text-xs text-gray-500 font-mono">Java</span>
-                        </div>
-                        <div class="flex flex-col items-center gap-2 p-3 border border-white/10 hover:border-green-400 transition-colors bg-white/5">
-                            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/spring/spring-original.svg" alt="Spring" class="w-8 h-8"/>
-                            <span class="text-xs text-gray-500 font-mono">Spring</span>
-                        </div>
-                        <div class="flex flex-col items-center gap-2 p-3 border border-white/10 hover:border-green-400 transition-colors bg-white/5">
-                            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/go/go-original-wordmark.svg" alt="Go" class="w-8 h-8"/>
-                            <span class="text-xs text-gray-500 font-mono">Go</span>
-                        </div>
-                        <div class="flex flex-col items-center gap-2 p-3 border border-white/10 hover:border-green-400 transition-colors bg-white/5">
-                            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/python/python-original.svg" alt="Python" class="w-8 h-8"/>
-                            <span class="text-xs text-gray-500 font-mono">Python</span>
-                        </div>
-                        <!-- Row 2: Systems -->
-                        <div class="flex flex-col items-center gap-2 p-3 border border-white/10 hover:border-green-400 transition-colors bg-white/5">
-                            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/cplusplus/cplusplus-original.svg" alt="C++" class="w-8 h-8"/>
-                            <span class="text-xs text-gray-500 font-mono">C++</span>
-                        </div>
-                        <div class="flex flex-col items-center gap-2 p-3 border border-white/10 hover:border-green-400 transition-colors bg-white/5">
-                            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/csharp/csharp-original.svg" alt="C#" class="w-8 h-8"/>
-                            <span class="text-xs text-gray-500 font-mono">C#</span>
-                        </div>
-                        <div class="flex flex-col items-center gap-2 p-3 border border-white/10 hover:border-green-400 transition-colors bg-white/5">
-                            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/typescript/typescript-original.svg" alt="TypeScript" class="w-8 h-8"/>
-                            <span class="text-xs text-gray-500 font-mono">TypeScript</span>
-                        </div>
-                        <div class="flex flex-col items-center gap-2 p-3 border border-white/10 hover:border-green-400 transition-colors bg-white/5">
-                            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/angular/angular-original.svg" alt="Angular" class="w-8 h-8"/>
-                            <span class="text-xs text-gray-500 font-mono">Angular</span>
-                        </div>
-                        <!-- Row 3: Data/DB -->
-                        <div class="flex flex-col items-center gap-2 p-3 border border-white/10 hover:border-green-400 transition-colors bg-white/5">
-                            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/postgresql/postgresql-original.svg" alt="PostgreSQL" class="w-8 h-8"/>
-                            <span class="text-xs text-gray-500 font-mono">PostgreSQL</span>
-                        </div>
-                        <div class="flex flex-col items-center gap-2 p-3 border border-white/10 hover:border-green-400 transition-colors bg-white/5">
-                            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/mongodb/mongodb-original.svg" alt="MongoDB" class="w-8 h-8"/>
-                            <span class="text-xs text-gray-500 font-mono">MongoDB</span>
-                        </div>
-                        <div class="flex flex-col items-center gap-2 p-3 border border-white/10 hover:border-green-400 transition-colors bg-white/5">
-                            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/redis/redis-original.svg" alt="Redis" class="w-8 h-8"/>
-                            <span class="text-xs text-gray-500 font-mono">Redis</span>
-                        </div>
-                        <div class="flex flex-col items-center gap-2 p-3 border border-white/10 hover:border-green-400 transition-colors bg-white/5">
-                            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/firebase/firebase-original.svg" alt="Firebase" class="w-8 h-8"/>
-                            <span class="text-xs text-gray-500 font-mono">Firebase</span>
-                        </div>
-                        <!-- Row 4: Infra -->
-                        <div class="flex flex-col items-center gap-2 p-3 border border-white/10 hover:border-green-400 transition-colors bg-white/5">
-                            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/docker/docker-original.svg" alt="Docker" class="w-8 h-8"/>
-                            <span class="text-xs text-gray-500 font-mono">Docker</span>
-                        </div>
-                        <div class="flex flex-col items-center gap-2 p-3 border border-white/10 hover:border-green-400 transition-colors bg-white/5">
-                            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/kubernetes/kubernetes-original.svg" alt="Kubernetes" class="w-8 h-8"/>
-                            <span class="text-xs text-gray-500 font-mono">Kubernetes</span>
-                        </div>
-                        <div class="flex flex-col items-center gap-2 p-3 border border-white/10 hover:border-green-400 transition-colors bg-white/5">
-                            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/googlecloud/googlecloud-original.svg" alt="GCP" class="w-8 h-8"/>
-                            <span class="text-xs text-gray-500 font-mono">GCP</span>
-                        </div>
-                        <div class="flex flex-col items-center gap-2 p-3 border border-white/10 hover:border-green-400 transition-colors bg-white/5">
-                            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/linux/linux-original.svg" alt="Linux" class="w-8 h-8"/>
-                            <span class="text-xs text-gray-500 font-mono">Linux</span>
-                        </div>
-                        <!-- Row 5: More -->
-                        <div class="flex flex-col items-center gap-2 p-3 border border-white/10 hover:border-green-400 transition-colors bg-white/5">
-                            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/dotnetcore/dotnetcore-original.svg" alt=".NET" class="w-8 h-8"/>
-                            <span class="text-xs text-gray-500 font-mono">.NET</span>
-                        </div>
-                        <div class="flex flex-col items-center gap-2 p-3 border border-white/10 hover:border-green-400 transition-colors bg-white/5">
-                            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/graphql/graphql-plain.svg" alt="GraphQL" class="w-8 h-8"/>
-                            <span class="text-xs text-gray-500 font-mono">GraphQL</span>
-                        </div>
-                        <div class="flex flex-col items-center gap-2 p-3 border border-white/10 hover:border-green-400 transition-colors bg-white/5">
-                            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/git/git-original.svg" alt="Git" class="w-8 h-8"/>
-                            <span class="text-xs text-gray-500 font-mono">Git</span>
-                        </div>
-                        <div class="flex flex-col items-center gap-2 p-3 border border-white/10 hover:border-green-400 transition-colors bg-white/5">
-                            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/arduino/arduino-original.svg" alt="Arduino" class="w-8 h-8"/>
-                            <span class="text-xs text-gray-500 font-mono">Arduino</span>
-                        </div>
-                    </div>
+                <div class="text-gray-500">[02 / 06]</div>
+            </div>
+            <div class="deck-card-body">
+                <div class="deck-card-content">
+                    <h3 class="text-2xl font-bold text-white mb-6 flex items-center gap-3">
+                        <span class="text-green-400">00.</span> <span data-i18n="section.about">About Me</span>
+                        <span class="flex-1 h-px bg-white/10 ml-4"></span>
+                    </h3>
+                    <div class="grid md:grid-cols-2 gap-8 lg:gap-10 items-start">
+                        <div>
+                             <p class="text-gray-400 leading-relaxed mb-4 text-sm md:text-base" data-i18n="about.text1">
+                                I am a passionate backend developer with a deep love for systems programming and architecture. My journey involves solving complex problems, optimizing performance, and building reliable infrastructure.
+                            </p>
+                            <p class="text-gray-400 leading-relaxed text-sm md:text-base" data-i18n="about.text2">
+                                I specialize in creating efficient services and have a strong foundation in distributed systems. I'm always eager to learn new technologies and improve my craft.
+                            </p>
 
-                    <h4 class="text-xl font-bold text-white mb-6 flex items-center gap-2 mt-8">
-                        <svg class="w-5 h-5 text-green-400" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
-                        <span data-i18n="about.github">GitHub Stats</span>
-                    </h4>
-                    <div id="github-stats" class="grid grid-cols-2 gap-4">
-                        <div class="col-span-2 text-center text-gray-500 font-mono text-sm py-4 border border-white/10">
-                            Loading stats...
+                            <div class="mt-5 border-l-2 border-white/10 pl-4 py-1 space-y-3">
+                                <h4 class="text-white font-bold text-sm mb-1 flex items-center gap-2">
+                                     <i data-lucide="graduation-cap" class="w-4 h-4 text-green-400"></i>
+                                     <span data-i18n="about.education">Education</span>
+                                </h4>
+                                <div>
+                                    <div class="text-xs text-green-400 font-mono mb-0.5" data-i18n="about.msc">
+                                        M.Sc. in Computer Engineering
+                                    </div>
+                                    <div class="flex justify-between items-center text-xs text-gray-500 font-mono">
+                                        <span>ISEP, Porto</span>
+                                        <span class="border border-white/10 px-2 py-0.5" data-i18n="about.msc_period">Expected 2028</span>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="text-xs text-green-400 font-mono mb-0.5" data-i18n="about.degree">
+                                        B.Sc. in Digital Games Engineering
+                                    </div>
+                                    <div class="flex justify-between items-center text-xs text-gray-500 font-mono">
+                                        <span data-i18n="about.uni">IPCA, Braga</span>
+                                        <span class="border border-white/10 px-2 py-0.5" data-i18n="about.edu_period">2023 - Jun 2026</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="flex gap-4 mt-5">
+                                <a href="https://www.linkedin.com/in/afonso-paiva-7bb0b524b" target="_blank" class="flex items-center gap-2 px-4 py-2 border border-white/10 bg-white/5 hover:border-green-400 hover:text-green-400 text-xs font-bold font-mono transition-colors">
+                                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg> LINKEDIN
+                                </a>
+                                <a href="https://www.youtube.com/@AfonsoPaiva451/videos" target="_blank" class="flex items-center gap-2 px-4 py-2 border border-white/10 bg-white/5 hover:border-green-400 hover:text-green-400 text-xs font-bold font-mono transition-colors">
+                                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg> YOUTUBE
+                                </a>
+                            </div>
+                        </div>
+                        <div>
+                            <h4 class="text-lg font-bold text-white mb-3 flex items-center gap-2">
+                                <i data-lucide="cpu" class="text-green-400 w-5 h-5"></i>
+                                <span data-i18n="about.stack">Tech Stack</span>
+                            </h4>
+                            <div class="grid grid-cols-4 gap-2">
+                                <!-- Row 1: Backend -->
+                                <div class="flex flex-col items-center gap-1.5 p-2 border border-white/10 hover:border-green-400 transition-colors bg-white/5">
+                                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/java/java-original.svg" alt="Java" class="w-6 h-6"/>
+                                    <span class="text-[11px] text-gray-500 font-mono">Java</span>
+                                </div>
+                                <div class="flex flex-col items-center gap-1.5 p-2 border border-white/10 hover:border-green-400 transition-colors bg-white/5">
+                                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/spring/spring-original.svg" alt="Spring" class="w-6 h-6"/>
+                                    <span class="text-[11px] text-gray-500 font-mono">Spring</span>
+                                </div>
+                                <div class="flex flex-col items-center gap-1.5 p-2 border border-white/10 hover:border-green-400 transition-colors bg-white/5">
+                                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/go/go-original-wordmark.svg" alt="Go" class="w-6 h-6"/>
+                                    <span class="text-[11px] text-gray-500 font-mono">Go</span>
+                                </div>
+                                <div class="flex flex-col items-center gap-1.5 p-2 border border-white/10 hover:border-green-400 transition-colors bg-white/5">
+                                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/python/python-original.svg" alt="Python" class="w-6 h-6"/>
+                                    <span class="text-[11px] text-gray-500 font-mono">Python</span>
+                                </div>
+                                <!-- Row 2: Systems -->
+                                <div class="flex flex-col items-center gap-1.5 p-2 border border-white/10 hover:border-green-400 transition-colors bg-white/5">
+                                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/cplusplus/cplusplus-original.svg" alt="C++" class="w-6 h-6"/>
+                                    <span class="text-[11px] text-gray-500 font-mono">C++</span>
+                                </div>
+                                <div class="flex flex-col items-center gap-1.5 p-2 border border-white/10 hover:border-green-400 transition-colors bg-white/5">
+                                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/csharp/csharp-original.svg" alt="C#" class="w-6 h-6"/>
+                                    <span class="text-[11px] text-gray-500 font-mono">C#</span>
+                                </div>
+                                <div class="flex flex-col items-center gap-1.5 p-2 border border-white/10 hover:border-green-400 transition-colors bg-white/5">
+                                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/typescript/typescript-original.svg" alt="TypeScript" class="w-6 h-6"/>
+                                    <span class="text-[11px] text-gray-500 font-mono">TypeScript</span>
+                                </div>
+                                <div class="flex flex-col items-center gap-1.5 p-2 border border-white/10 hover:border-green-400 transition-colors bg-white/5">
+                                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/angular/angular-original.svg" alt="Angular" class="w-6 h-6"/>
+                                    <span class="text-[11px] text-gray-500 font-mono">Angular</span>
+                                </div>
+                                <!-- Row 3: Data/DB -->
+                                <div class="flex flex-col items-center gap-1.5 p-2 border border-white/10 hover:border-green-400 transition-colors bg-white/5">
+                                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/postgresql/postgresql-original.svg" alt="PostgreSQL" class="w-6 h-6"/>
+                                    <span class="text-[11px] text-gray-500 font-mono">PostgreSQL</span>
+                                </div>
+                                <div class="flex flex-col items-center gap-1.5 p-2 border border-white/10 hover:border-green-400 transition-colors bg-white/5">
+                                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/mongodb/mongodb-original.svg" alt="MongoDB" class="w-6 h-6"/>
+                                    <span class="text-[11px] text-gray-500 font-mono">MongoDB</span>
+                                </div>
+                                <div class="flex flex-col items-center gap-1.5 p-2 border border-white/10 hover:border-green-400 transition-colors bg-white/5">
+                                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/redis/redis-original.svg" alt="Redis" class="w-6 h-6"/>
+                                    <span class="text-[11px] text-gray-500 font-mono">Redis</span>
+                                </div>
+                                <div class="flex flex-col items-center gap-1.5 p-2 border border-white/10 hover:border-green-400 transition-colors bg-white/5">
+                                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/firebase/firebase-original.svg" alt="Firebase" class="w-6 h-6"/>
+                                    <span class="text-[11px] text-gray-500 font-mono">Firebase</span>
+                                </div>
+                                <!-- Row 4: Infra -->
+                                <div class="flex flex-col items-center gap-1.5 p-2 border border-white/10 hover:border-green-400 transition-colors bg-white/5">
+                                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/docker/docker-original.svg" alt="Docker" class="w-6 h-6"/>
+                                    <span class="text-[11px] text-gray-500 font-mono">Docker</span>
+                                </div>
+                                <div class="flex flex-col items-center gap-1.5 p-2 border border-white/10 hover:border-green-400 transition-colors bg-white/5">
+                                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/kubernetes/kubernetes-original.svg" alt="Kubernetes" class="w-6 h-6"/>
+                                    <span class="text-[11px] text-gray-500 font-mono">Kubernetes</span>
+                                </div>
+                                <div class="flex flex-col items-center gap-1.5 p-2 border border-white/10 hover:border-green-400 transition-colors bg-white/5">
+                                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/googlecloud/googlecloud-original.svg" alt="GCP" class="w-6 h-6"/>
+                                    <span class="text-[11px] text-gray-500 font-mono">GCP</span>
+                                </div>
+                                <div class="flex flex-col items-center gap-1.5 p-2 border border-white/10 hover:border-green-400 transition-colors bg-white/5">
+                                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/linux/linux-original.svg" alt="Linux" class="w-6 h-6"/>
+                                    <span class="text-[11px] text-gray-500 font-mono">Linux</span>
+                                </div>
+                                <!-- Row 5: More -->
+                                <div class="flex flex-col items-center gap-1.5 p-2 border border-white/10 hover:border-green-400 transition-colors bg-white/5">
+                                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/dotnetcore/dotnetcore-original.svg" alt=".NET" class="w-6 h-6"/>
+                                    <span class="text-[11px] text-gray-500 font-mono">.NET</span>
+                                </div>
+                                <div class="flex flex-col items-center gap-1.5 p-2 border border-white/10 hover:border-green-400 transition-colors bg-white/5">
+                                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/graphql/graphql-plain.svg" alt="GraphQL" class="w-6 h-6"/>
+                                    <span class="text-[11px] text-gray-500 font-mono">GraphQL</span>
+                                </div>
+                                <div class="flex flex-col items-center gap-1.5 p-2 border border-white/10 hover:border-green-400 transition-colors bg-white/5">
+                                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/git/git-original.svg" alt="Git" class="w-6 h-6"/>
+                                    <span class="text-[11px] text-gray-500 font-mono">Git</span>
+                                </div>
+                                <div class="flex flex-col items-center gap-1.5 p-2 border border-white/10 hover:border-green-400 transition-colors bg-white/5">
+                                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/arduino/arduino-original.svg" alt="Arduino" class="w-6 h-6"/>
+                                    <span class="text-[11px] text-gray-500 font-mono">Arduino</span>
+                                </div>
+                            </div>
+
+                            <h4 class="text-lg font-bold text-white mb-3 flex items-center gap-2 mt-5">
+                                <svg class="w-5 h-5 text-green-400" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
+                                <span data-i18n="about.github">GitHub Stats</span>
+                            </h4>
+                            <div id="github-stats" class="grid grid-cols-2 gap-3">
+                                <div class="col-span-2 text-center text-gray-500 font-mono text-sm py-4 border border-white/10">
+                                    Loading stats...
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -252,81 +299,116 @@
         </section>
 
         <!-- Experience Section -->
-        <section id="experience" class="mb-32">
-            <h3 class="text-2xl font-bold text-white mb-12 flex items-center gap-3">
-                <span class="text-green-400">01.</span> <span data-i18n="section.experience">Experience</span>
-                <span class="flex-1 h-px bg-white/10 ml-4"></span>
-            </h3>
-            <div id="experience-list" class="space-y-12">
-                <!-- Data injected by JS -->
-                <div class="text-center text-gray-500 py-10">Loading experience_data...</div>
+        <section id="experience" class="deck-card">
+            <div class="deck-card-header">
+                <div class="flex items-center gap-2 text-gray-400">
+                    <span class="w-2 h-2 bg-green-400 inline-block"></span>
+                    <span>~/afonso/02_experience.sh</span>
+                </div>
+                <div class="text-gray-500">[03 / 06]</div>
+            </div>
+            <div class="deck-card-body">
+                <div class="deck-card-content">
+                    <h3 class="text-2xl font-bold text-white mb-6 flex items-center gap-3">
+                        <span class="text-green-400">01.</span> <span data-i18n="section.experience">Experience</span>
+                        <span class="flex-1 h-px bg-white/10 ml-4"></span>
+                    </h3>
+                    <div id="experience-list" class="grid lg:grid-cols-2 gap-8">
+                        <!-- Data injected by JS -->
+                        <div class="col-span-full text-center text-gray-500 py-10">Loading experience_data...</div>
+                    </div>
+                </div>
             </div>
         </section>
 
         <!-- Projects Section -->
-        <section id="projects" class="mb-32">
-            <h3 class="text-2xl font-bold text-white mb-12 flex items-center gap-3">
-                <span class="text-green-400">02.</span> <span data-i18n="section.projects">Projects</span>
-                <span class="flex-1 h-px bg-white/10 ml-4"></span>
-            </h3>
-            <div id="projects-grid" class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <!-- Data injected by JS -->
-                <div class="col-span-full text-center text-gray-500 py-10">Loading projects_data...</div>
+        <section id="projects" class="deck-card">
+            <div class="deck-card-header">
+                <div class="flex items-center gap-2 text-gray-400">
+                    <span class="w-2 h-2 bg-green-400 inline-block"></span>
+                    <span>~/afonso/03_projects.sh</span>
+                </div>
+                <div class="text-gray-500">[04 / 06]</div>
+            </div>
+            <div class="deck-card-body">
+                <div class="deck-card-content">
+                    <h3 class="text-2xl font-bold text-white mb-6 flex items-center gap-3">
+                        <span class="text-green-400">02.</span> <span data-i18n="section.projects">Projects</span>
+                        <span class="flex-1 h-px bg-white/10 ml-4"></span>
+                    </h3>
+                    <div id="projects-grid" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+                        <!-- Data injected by JS -->
+                        <div class="col-span-full text-center text-gray-500 py-10">Loading projects_data...</div>
+                    </div>
+                </div>
             </div>
         </section>
 
         <!-- Documentation Section -->
-        <section id="docs" class="mb-32">
-            <h3 class="text-2xl font-bold text-white mb-12 flex items-center gap-3">
-                <span class="text-green-400">03.</span> <span data-i18n="section.docs">Documentation</span>
-                <span class="flex-1 h-px bg-white/10 ml-4"></span>
-            </h3>
-            <div id="docs-grid" class="grid md:grid-cols-2 gap-8">
-                <div class="col-span-full text-center text-gray-500 py-10">Loading docs_data...</div>
+        <section id="docs" class="deck-card">
+            <div class="deck-card-header">
+                <div class="flex items-center gap-2 text-gray-400">
+                    <span class="w-2 h-2 bg-green-400 inline-block"></span>
+                    <span>~/afonso/04_docs.sh</span>
+                </div>
+                <div class="text-gray-500">[05 / 06]</div>
+            </div>
+            <div class="deck-card-body">
+                <div class="deck-card-content">
+                    <h3 class="text-2xl font-bold text-white mb-6 flex items-center gap-3">
+                        <span class="text-green-400">03.</span> <span data-i18n="section.docs">Documentation</span>
+                        <span class="flex-1 h-px bg-white/10 ml-4"></span>
+                    </h3>
+                    <div id="docs-grid" class="grid md:grid-cols-2 gap-6">
+                        <div class="col-span-full text-center text-gray-500 py-10">Loading docs_data...</div>
+                    </div>
+                </div>
             </div>
         </section>
 
-        <!-- Robotics & Electronics Section -->
-        <section id="robotics" class="mb-32">
-            <h3 class="text-2xl font-bold text-white mb-12 flex items-center gap-3">
-                <span class="text-green-400">04.</span> <span data-i18n="section.robotics">Robotics &amp; Electronics</span>
-                <span class="flex-1 h-px bg-white/10 ml-4"></span>
-            </h3>
-            <div id="robotics-grid" class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <div class="col-span-full text-center text-gray-500 py-10">Loading robotics_data...</div>
+        <!-- Contact Section + Footer -->
+        <section id="contact" class="deck-card">
+            <div class="deck-card-header">
+                <div class="flex items-center gap-2 text-gray-400">
+                    <span class="w-2 h-2 bg-green-400 inline-block"></span>
+                    <span>~/afonso/05_contact.sh</span>
+                </div>
+                <div class="text-gray-500">[06 / 06]</div>
+            </div>
+            <div class="deck-card-body justify-between">
+                <div class="deck-card-content flex flex-col justify-between min-h-full">
+                    <div class="max-w-2xl w-full mx-auto my-auto text-center py-10 md:py-16 border-2 border-white/10 bg-white/5 p-6 md:p-8">
+                        <h3 class="text-3xl font-bold text-white mb-6" data-i18n="contact.title">Get In Touch</h3>
+                        <p class="text-gray-400 mb-8 leading-relaxed" data-i18n="contact.desc">
+                            Currently looking for new opportunities. Whether you have a question or just want to say hi, I'll try my best to get back to you!
+                        </p>
+                        <div class="mb-4 flex items-center justify-center gap-2">
+                            <a href="mailto:afonsecapaiva@gmail.com" class="inline-flex items-center gap-2 text-green-400 hover:text-white border-2 border-green-400 hover:border-white px-4 sm:px-6 py-3 font-bold transition-all text-sm sm:text-base">
+                                <i data-lucide="mail" class="w-5 h-5 shrink-0"></i>
+                                afonsecapaiva@gmail.com
+                            </a>
+                            <button onclick="navigator.clipboard.writeText('afonsecapaiva@gmail.com'); this.innerHTML='<i data-lucide=\'check\' class=\'w-4 h-4\'></i>'; lucide.createIcons(); setTimeout(() => { this.innerHTML='<i data-lucide=\'copy\' class=\'w-4 h-4\'></i>'; lucide.createIcons(); }, 2000)" class="border-2 border-white/20 hover:border-green-400 hover:text-green-400 p-3 transition-all shrink-0" title="Copy email">
+                                <i data-lucide="copy" class="w-4 h-4"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <footer class="w-full border-t-2 border-white/10 pt-5 mt-6">
+                        <div class="text-center text-xs sm:text-sm text-gray-500 font-mono">
+                            <p>&copy; 2026 Afonso Paiva. Built with raw code.</p>
+                        </div>
+                    </footer>
+                </div>
             </div>
         </section>
 
-        <!-- Contact Section -->
-        <section id="contact" class="max-w-2xl mx-auto text-center py-20 border-2 border-white/10 bg-white/5 p-8">
-            
-            <h3 class="text-3xl font-bold text-white mb-6" data-i18n="contact.title">Get In Touch</h3>
-            <p class="text-gray-400 mb-8 leading-relaxed" data-i18n="contact.desc">
-                Currently looking for new opportunities. Whether you have a question or just want to say hi, I'll try my best to get back to you!
-            </p>
-            <div class="mb-8 flex items-center justify-center gap-2">
-                <a href="mailto:afonsecapaiva@gmail.com" class="inline-flex items-center gap-2 text-green-400 hover:text-white border-2 border-green-400 hover:border-white px-6 py-3 font-bold transition-all">
-                    <i data-lucide="mail" class="w-5 h-5"></i>
-                    afonsecapaiva@gmail.com
-                </a>
-                <button onclick="navigator.clipboard.writeText('afonsecapaiva@gmail.com'); this.innerHTML='<i data-lucide=\'check\' class=\'w-4 h-4\'></i>'; lucide.createIcons(); setTimeout(() => { this.innerHTML='<i data-lucide=\'copy\' class=\'w-4 h-4\'></i>'; lucide.createIcons(); }, 2000)" class="border-2 border-white/20 hover:border-green-400 hover:text-green-400 p-3 transition-all" title="Copy email">
-                    <i data-lucide="copy" class="w-4 h-4"></i>
-                </button>
-            </div>
-        </section>
-
-    </main>
-
-    <footer class="border-t-2 border-white/10 py-8 bg-black">
-        <div class="text-center text-sm text-gray-500 font-mono">
-            <p>&copy; 2026 Afonso Paiva. Built with raw code.</p>
         </div>
-    </footer>
+    </main>
 
     <!-- Simple Project Modal -->
     <!-- Removed image, added GSAP ref class -->
     <div id="modal-overlay" class="fixed inset-0 bg-black/90 z-[60] hidden flex items-center justify-center p-4 backdrop-blur-sm opacity-0">
-        <div id="modal-content" class="bg-[#0a0a0a] border-2 border-white/20 w-full max-w-2xl max-h-[90vh] overflow-y-auto relative p-8 shadow-2xl">
+        <div id="modal-content" data-lenis-prevent class="bg-[#0a0a0a] border-2 border-white/20 w-full max-w-2xl max-h-[90vh] overflow-y-auto relative p-8 shadow-2xl">
             <button id="modal-close" class="absolute top-4 right-4 text-white hover:text-green-400 bg-black p-2 border border-white/20 z-10 transition-colors">
                 <i data-lucide="x"></i>
             </button>
@@ -364,6 +446,6 @@
         </div>
     </div>
 
-    <script src="js/main.js"></script>
+    <script src="js/main.js?v=4"></script>
 </body>
 </html>

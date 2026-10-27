@@ -1,6 +1,56 @@
 {
   "projects": [
     {
+      "id": 1160000000000000001,
+      "status": {
+        "text": "COMPLETED",
+        "color": "green"
+      },
+      "image": "https://github.com/AfonsoPaiva/ARIADNE/blob/main/docs/Images/logo-vertical-dark-background.svg?raw=true",
+      "title": {
+        "en": "ARIADNE: Async Causality Tracing for the JVM",
+        "pt": "ARIADNE: Rastreio de Causalidade Assíncrona para a JVM"
+      },
+      "shortDescription": {
+        "en": "Open-source, zero-code Java agent that restores the caller stack trace lost across thread boundaries in asynchronous Java code.",
+        "pt": "Agente Java open-source e zero-code que restaura a stack trace de origem perdida entre transições de threads em código Java assíncrono."
+      },
+      "fullDescription": {
+        "en": "Ariadne is an open-source, zero-code Java agent (Apache 2.0, v0.1.0-beta.1) that restores the caller stack trace lost at thread boundaries (ExecutorService, ForkJoinPool, CompletableFuture, virtual threads, Reactor, RxJava) and attaches it to failures as an AsyncCausalityException via addSuppressed, with optional SLF4J MDC propagation. Designed with a lazy, low-overhead model: a 40-byte immutable link per dispatch, allocation in under 4 ns, and stack synthesis only when an exception occurs.",
+        "pt": "O Ariadne é um agente Java open-source e zero-code (Apache 2.0, v0.1.0-beta.1) que restaura a stack trace de origem perdida nos limites entre threads (ExecutorService, ForkJoinPool, CompletableFuture, virtual threads, Reactor, RxJava) e a anexa a falhas como uma AsyncCausalityException via addSuppressed, com propagação opcional de SLF4J MDC. Desenhado com um modelo lazy de baixo overhead: um link imutável de 40 bytes por dispatch, alocação em menos de 4 ns e síntese de stack apenas quando ocorre uma exceção."
+      },
+      "features": {
+        "en": [
+          "Zero-code Java agent restoring caller stack traces across ExecutorService, ForkJoinPool, CompletableFuture, virtual threads, Reactor, and RxJava",
+          "W3C TraceContext propagation, OpenTelemetry bridge, Kotlin Coroutines adapter, JDK 21 Scoped Values carrier, and JMX observability",
+          "Lazy, low-overhead model: 40-byte immutable link per dispatch (<4 ns allocation) bounded to O(maxDepth) with a runtime kill switch and fail-safe advice",
+          "Validated with JMH on OpenJDK 21: ~1.5% overhead on Reactor Mono hops (5.8x less allocation than Hooks.onOperatorDebug, 14.2x faster than an OpenTelemetry span)",
+          "Backed by 100+ tests, including a forked-JVM javaagent integration test, with CI running JaCoCo and SpotBugs"
+        ],
+        "pt": [
+          "Agente Java zero-code que restaura stack traces entre ExecutorService, ForkJoinPool, CompletableFuture, virtual threads, Reactor e RxJava",
+          "Propagação W3C TraceContext, bridge OpenTelemetry, adaptador Kotlin Coroutines, suporte a JDK 21 Scoped Values e observabilidade JMX",
+          "Modelo lazy de baixo overhead: link imutável de 40 bytes por dispatch (<4 ns de alocação) limitado a O(maxDepth) com kill switch em runtime",
+          "Validado com JMH no OpenJDK 21: ~1.5% de overhead em Reactor Mono hops (5.8x menos alocação que Hooks.onOperatorDebug, 14.2x mais rápido que um span OpenTelemetry)",
+          "Suportado por mais de 100 testes, incluindo testes de integração javaagent em JVM isolada, com CI a correr JaCoCo e SpotBugs"
+        ]
+      },
+      "tech": [
+        "Java 21",
+        "ByteBuddy",
+        "Reactor",
+        "OpenTelemetry",
+        "JMH",
+        "JMX",
+        "Kotlin Coroutines"
+      ],
+      "githubUrl": "https://github.com/AfonsoPaiva/ARIADNE",
+      "siteUrl": "",
+      "videoUrl": "",
+      "createdAt": "2026-08-01T00:00:00.000000Z",
+      "updatedAt": "2026-10-26T00:00:00.000000Z"
+    },
+    {
       "id": 1153117849120505857,
       "status": {
         "text": "COMPLETED",
@@ -194,6 +244,52 @@
   ],
   "experience": [
     {
+      "id": 1160000000000000002,
+      "logo": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTD1NvPZmGkgy3XZWE5yNkfWgZ5RzJ3fdRI8STsME7stoQwTq9CNYhP0FM&s=10",
+      "company": {
+        "en": "INESC-TEC",
+        "pt": "INESC-TEC"
+      },
+      "role": {
+        "en": "Backend Developer (Part-Time)",
+        "pt": "Backend Developer (Part-Time)"
+      },
+      "period": {
+        "en": "August 2026 - Present",
+        "pt": "Agosto 2026 - Presente"
+      },
+      "description": {
+        "en": "Part of the engineering team migrating INESC-TEC's backend infrastructure from Python to Go, leading the data layer redesign with TimescaleDB. Previously completed a Software Research Engineering Internship (Jun – Aug 2026) architecting modular ROS/Docker components for the Robotair UAV platform.",
+        "pt": "Parte da equipa de engenharia responsável pela migração do backend do INESC-TEC de Python para Go, liderando o redesign da camada de dados com TimescaleDB. Anteriormente realizou um Estágio de Investigação em Engenharia de Software (Jun – Ago 2026) na arquitetura de componentes modulares ROS/Docker para a plataforma UAV Robotair."
+      },
+      "tech": [
+        "Go",
+        "Python",
+        "TimescaleDB",
+        "PostgreSQL",
+        "GORM",
+        "Docker",
+        "ROS",
+        "CI/CD"
+      ],
+      "achievements": [
+        {
+          "en": "Part of the team migrating INESC-TEC's backend from Python to Go.",
+          "pt": "Parte da equipa responsável pela migração do backend do INESC-TEC de Python para Go."
+        },
+        {
+          "en": "Leading the data layer redesign, preserving all foreign keys, constraints and relationships while configuring TimescaleDB hypertables.",
+          "pt": "Liderança do redesign da camada de dados, preservando todas as chaves estrangeiras, restrições e relações na configuração de hypertables em TimescaleDB."
+        },
+        {
+          "en": "Architected modular ROS/Docker components for the Robotair UAV platform, enabling air-gapped deployment of 5+ containerized services for secure field operations.",
+          "pt": "Arquitetou componentes modulares ROS/Docker para a plataforma UAV Robotair, permitindo o deployment air-gapped de 5+ serviços containerizados."
+        }
+      ],
+      "createdAt": "2026-08-01T00:00:00.000000Z",
+      "updatedAt": "2026-10-26T00:00:00.000000Z"
+    },
+    {
       "id": 1153116928346456065,
       "logo": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQtQ6wEGeE78SEnOFN3wIBR5Q8eP_-tU4TCzw&s",
       "company": {
@@ -201,12 +297,12 @@
         "pt": "YouOn"
       },
       "role": {
-        "en": "Internship",
-        "pt": "Estágio Curricular"
+        "en": "Software Engineering Intern",
+        "pt": "Estágio em Engenharia de Software"
       },
       "period": {
-        "en": "February 2026 - Present",
-        "pt": "Fevereiro 2026 - Presente"
+        "en": "February 2026 - May 2026",
+        "pt": "Fevereiro 2026 - Maio 2026"
       },
       "description": {
         "en": "Internship focused on developing front-end interfaces for the YouOn group's digital products and platforms. Responsibilities include the technical implementation of layouts, creating modular reusable components based on existing design systems, integrating backend APIs, and optimizing performance and accessibility in a collaborative engineering environment.",

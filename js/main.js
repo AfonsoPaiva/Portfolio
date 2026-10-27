@@ -7,7 +7,6 @@ const state = {
     projects: [],
     experience: [],
     docs: [],
-    robotics: [],
     translations: {
         en: {
             "nav.about": "./ABOUT",
@@ -19,14 +18,16 @@ const state = {
             "hero.desc": "Backend Engineer specialized in high-performance microservices, distributed systems, and cloud-native infrastructure.",
             "hero.cta": "VIEW_WORK.SH",
             "hero.open_work": "OPEN_FOR_WORK",
-            "hero.last_updated": "LAST_UPDATED::2026-04-27",
+            "hero.last_updated": "LAST_UPDATED::2026-10-26",
             "section.about": "About Me",
-            "about.text1": "Backend Developer based in Porto, Portugal. Specialized in building robust server-side architectures, API development, and efficient database management. Focused on system scalability, security, and performance.",
-            "about.text2": "I specialize in creating efficient services and have a strong foundation in distributed systems. I'm always eager to learn new technologies and improve my craft.",
+            "about.text1": "Backend engineer focused on Java and Spring Boot, with experience in REST APIs and microservices, and production experience in Go, Python and Angular. Currently a Part-Time Backend Developer at INESC-TEC, working on the Python to Go backend migration.",
+            "about.text2": "Author of Ariadne, an open-source JVM agent that restores caller context lost across thread boundaries in asynchronous Java code, and founder of SkillBridge, a non-profit full-stack platform in production.",
             "about.education": "Education",
-            "about.degree": "Bachelor in Digital Game Engineering and Development",
-            "about.uni": "IPCA",
-            "about.edu_period": "Sep 2023 - Present",
+            "about.msc": "M.Sc. in Computer Engineering",
+            "about.msc_period": "Expected 2028",
+            "about.degree": "B.Sc. in Digital Games Engineering",
+            "about.uni": "IPCA, Braga",
+            "about.edu_period": "2023 - Jun 2026",
             "about.stack": "Tech Stack",
             "about.github": "GitHub Stats",
             "section.experience": "Experience",
@@ -54,14 +55,16 @@ const state = {
             "hero.desc": "Engenheiro Backend especializado em microsserviços de alta performance, sistemas distribuídos e infraestrutura cloud-native.",
             "hero.cta": "VER_TRABALHO.SH",
             "hero.open_work": "DISPONÍVEL_PARA_TRABALHO",
-            "hero.last_updated": "ULTIMA_ATUALIZAÇÃO::27-04-2026",
+            "hero.last_updated": "ULTIMA_ATUALIZAÇÃO::26-10-2026",
             "section.about": "Sobre Mim",
-            "about.text1": "Desenvolvedor Backend sediado no Porto, Portugal. Especializado na construção de arquiteturas de servidor robustas, desenvolvimento de APIs e gestão eficiente de bases de dados. Focado em escalabilidade, segurança e performance de sistemas.",
-            "about.text2": "Especializo-me em criar serviços eficientes e tenho uma base sólida em sistemas distribuídos. Estou sempre ansioso para aprender novas tecnologias e melhorar minha arte.",
+            "about.text1": "Engenheiro Backend focado em Java e Spring Boot, com experiência em APIs REST e microsserviços, e experiência em produção com Go, Python e Angular. Atualmente Backend Developer (Part-Time) no INESC-TEC, na migração do backend de Python para Go.",
+            "about.text2": "Autor do Ariadne, um agente JVM open-source que restaura o contexto de chamada entre threads em código Java assíncrono, e fundador da SkillBridge, plataforma full-stack sem fins lucrativos em produção.",
             "about.education": "Educação",
-            "about.degree": "Licenciatura em Engenharia e Desenvolvimento de Jogos Digitais",
-            "about.uni": "IPCA",
-            "about.edu_period": "Set 2023 - Presente",
+            "about.msc": "Mestrado em Engenharia Informática",
+            "about.msc_period": "Previsto 2028",
+            "about.degree": "Licenciatura em Engenharia de Jogos Digitais",
+            "about.uni": "IPCA, Braga",
+            "about.edu_period": "2023 - Jun 2026",
             "about.stack": "Stack Tecnológica",
             "about.github": "Estatísticas GitHub",
             "section.experience": "Experiência",
@@ -122,18 +125,6 @@ async function fetchDocs() {
     } catch (e) {
         console.error("Failed to load docs", e);
         document.getElementById('docs-grid').innerHTML = '<p class="text-red-500">Error loading docs.</p>';
-    }
-}
-
-async function fetchRobotics() {
-    try {
-        const data = await loadData();
-        state.robotics = data.robotics || [];
-        renderRobotics();
-    } catch (e) {
-        console.error("Failed to load robotics", e);
-        const el = document.getElementById('robotics-grid');
-        if (el) el.innerHTML = '<p class="text-red-500">Error loading robotics data.</p>';
     }
 }
 
@@ -249,26 +240,24 @@ function renderExperience() {
         const achievements = exp.achievements || [];
 
         return `
-        <div class="group relative pl-8 border-l border-white/10 hover:border-green-400 transition-colors duration-300">
-       
-            
-            <div class="flex flex-col md:flex-row md:items-start md:justify-between mb-4 gap-4">
+        <div class="group relative pl-6 md:pl-8 border-l border-white/10 hover:border-green-400 transition-colors duration-300">
+            <div class="flex flex-col md:flex-row md:items-start md:justify-between mb-2 gap-2">
                 <div>
-                    <h4 class="text-xl font-bold text-white group-hover:text-green-400 transition-colors">${role}</h4>
-                    <p class="text-sm text-green-400 font-mono mb-2">${company}</p>
+                    <h4 class="text-lg md:text-xl font-bold text-white group-hover:text-green-400 transition-colors">${role}</h4>
+                    <p class="text-sm text-green-400 font-mono mb-1">${company}</p>
                 </div>
-                <div class="text-xs text-gray-500 font-mono border border-white/10 px-2 py-1">${period}</div>
+                <div class="text-xs text-gray-500 font-mono border border-white/10 px-2 py-1 self-start">${period}</div>
             </div>
 
-            <div class="grid md:grid-cols-[1fr_100px] gap-6">
+            <div class="grid md:grid-cols-[1fr_90px] gap-4">
                 <div>
-                    <p class="text-gray-400 text-sm leading-relaxed mb-4">${desc}</p>
+                    <p class="text-gray-400 text-xs sm:text-sm leading-relaxed mb-3">${desc}</p>
                     ${achievements.length > 0 ? `
-                    <ul class="space-y-2 mb-4">
+                    <ul class="space-y-1 mb-3">
                         ${achievements.map(a => `
-                            <li class="flex items-start gap-2 text-sm text-gray-500">
-                                <span class="text-green-400 mt-1">›</span>
-                                ${a[lang] || a}
+                            <li class="flex items-start gap-2 text-xs sm:text-sm text-gray-500">
+                                <span class="text-green-400 mt-0.5">›</span>
+                                <span>${a[lang] || a}</span>
                             </li>
                         `).join('')}
                     </ul>
@@ -278,7 +267,7 @@ function renderExperience() {
                     </div>
                 </div>
                 ${exp.logo ? `
-                <div class="hidden md:flex items-center justify-center p-2 bg-white/5 rounded border border-white/10 h-24 w-24">
+                <div class="hidden md:flex items-center justify-center p-2 bg-white/5 rounded border border-white/10 h-20 w-20">
                     <img src="${exp.logo}" alt="${company} Logo" class="max-w-full max-h-full object-contain transition-all duration-300">
                 </div>
                 ` : ''}
@@ -306,17 +295,26 @@ function renderProjects() {
         const status = project.status?.text || "UNKNOWN";
         const statusColor = project.status?.color === 'green' ? 'text-green-400' : 'text-yellow-400';
 
+        let imgUrl = project.image || '';
+        if (imgUrl.includes('github.com/') && imgUrl.includes('/blob/') && !imgUrl.includes('?raw=true')) {
+            imgUrl += '?raw=true';
+        }
+        const isSvgLogo = imgUrl.toLowerCase().includes('.svg');
+        const imgFitClass = isSvgLogo ? 'object-contain p-3 bg-[#080808]' : 'object-cover';
+
         return `
-        <div class="group border-2 border-white/10 bg-black hover:border-green-400 transition-all duration-300 cursor-pointer overflow-hidden" onclick="openModal('${project.id}')">
-            <div class="h-48 overflow-hidden relative border-b-2 border-white/10">
-                <img src="${project.image}" alt="${title}" class="w-full h-full object-cover  transition-all duration-500">
+        <div class="group border-2 border-white/10 bg-black hover:border-green-400 transition-all duration-300 cursor-pointer overflow-hidden flex flex-col" onclick="openModal('${project.id}')">
+            <div class="h-36 md:h-40 overflow-hidden relative border-b-2 border-white/10 shrink-0">
+                <img src="${imgUrl}" alt="${title}" class="w-full h-full ${imgFitClass} transition-all duration-500">
                 <div class="absolute top-2 right-2 bg-black/80 backdrop-blur px-2 py-1 text-[10px] font-bold border border-white/20 ${statusColor}">
                     ${status}
                 </div>
             </div>
-            <div class="p-6">
-                <h3 class="text-lg font-bold text-white mb-2 group-hover:text-green-400 transition-colors line-clamp-1">${title}</h3>
-                <p class="text-gray-500 text-sm mb-4 line-clamp-2 min-h-[40px]">${shortDesc}</p>
+            <div class="p-4 md:p-5 flex flex-col flex-grow justify-between">
+                <div>
+                    <h3 class="text-base md:text-lg font-bold text-white mb-1.5 group-hover:text-green-400 transition-colors line-clamp-1">${title}</h3>
+                    <p class="text-gray-500 text-xs md:text-sm mb-3 line-clamp-2 min-h-[36px]">${shortDesc}</p>
+                </div>
                 <div class="flex flex-wrap gap-2">
                     ${tech.slice(0, 3).map(t => `<span class="text-xs text-green-400/80 font-mono">#${t}</span>`).join('')}
                     ${tech.length > 3 ? `<span class="text-xs text-gray-600">+${tech.length - 3}</span>` : ''}
@@ -362,7 +360,7 @@ function renderDocs() {
         return `
         <div class="p-6 border border-white/10 bg-white/5 hover:border-green-400 transition-colors group flex flex-col h-full">
              <div class="flex items-center gap-4 mb-4">
-                <i data-lucide="${icon}" class="text-green-400"></i>
+                <i data-lucide="${icon}" class="text-green-400 shrink-0"></i>
                 <div>
                      <div class="text-xs text-green-400 font-mono mb-1 uppercase">${category}</div>
                      <h4 class="text-xl font-bold text-white leading-tight">${title}</h4>
@@ -381,50 +379,10 @@ function renderDocs() {
     lucide.createIcons();
 }
 
-function renderRobotics() {
-    const grid = document.getElementById('robotics-grid');
-    if (!grid) return;
-    const lang = state.lang;
-
-    if (!state.robotics || state.robotics.length === 0) {
-        grid.innerHTML = '<p class="col-span-full text-center text-gray-500">No robotics data.</p>';
-        return;
-    }
-
-    grid.innerHTML = state.robotics.map(item => {
-        const title = item.title?.[lang] || item.title?.['en'] || "Untitled";
-        const desc = item.description?.[lang] || item.description?.['en'] || "";
-        const tech = item.tech || [];
-        const youtubeUrl = item.youtubeUrl || '';
-        const watchText = state.translations[lang]['robotics.watch'] || 'WATCH';
-
-        const videoBtn = youtubeUrl
-            ? `<a href="${youtubeUrl}" target="_blank" rel="noopener noreferrer"
-                  class="flex items-center justify-center gap-2 w-full border-2 border-white/20 hover:border-green-400 hover:text-green-400 text-white text-xs font-bold font-mono py-3 transition-colors mt-4">
-                   <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg> ${watchText}_YOUTUBE
-               </a>`
-            : `<div class="flex items-center justify-center gap-2 w-full border-2 border-white/10 text-gray-600 text-xs font-bold font-mono py-3 mt-4 cursor-not-allowed">
-                   <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg> VIDEO_COMING_SOON
-               </div>`;
-
-        return `
-        <div class="border-2 border-white/10 hover:border-green-400 transition-colors bg-black p-6">
-            <h3 class="text-lg font-bold text-white mb-2">${title}</h3>
-            <p class="text-gray-500 text-sm mb-4 leading-relaxed">${desc}</p>
-            <div class="flex flex-wrap gap-2 mb-2">
-                ${tech.map(t => `<span class="text-xs text-green-400/80 font-mono border border-white/10 px-2 py-0.5">${t}</span>`).join('')}
-            </div>
-            ${videoBtn}
-        </div>
-        `;
-    }).join('');
-
-    lucide.createIcons();
-}
-
 // --- Interaction Functions ---
 
-function updateLanguage(newLang) {    state.lang = newLang;
+function updateLanguage(newLang) {
+    state.lang = newLang;
     localStorage.setItem('lang', newLang);
     
     // Update Toggle Button
@@ -445,7 +403,6 @@ function updateLanguage(newLang) {    state.lang = newLang;
     renderExperience();
     renderProjects();
     renderDocs();
-    renderRobotics();
 }
 
 function openModal(projectId) {
@@ -512,68 +469,372 @@ function openModal(projectId) {
 
     // Open & Animate
     modal.classList.remove('hidden');
-    document.body.style.overflow = 'hidden';
+    const isMobile = window.innerWidth < 768;
 
-    // GSAP Animation
+    // GSAP Animation (faster on mobile than the 0.45s page transition)
     gsap.set(modal, { opacity: 0 });
-    gsap.set(modalContent, { y: 50, opacity: 0 });
+    gsap.set(modalContent, { y: isMobile ? 20 : 50, opacity: 0 });
     
-    gsap.to(modal, { opacity: 1, duration: 0.3 });
+    gsap.to(modal, { opacity: 1, duration: isMobile ? 0.15 : 0.3 });
     gsap.to(modalContent, { 
         y: 0, 
         opacity: 1, 
-        duration: 0.5, 
+        duration: isMobile ? 0.2 : 0.5, 
         ease: "power2.out", 
-        delay: 0.1 
+        delay: isMobile ? 0 : 0.1 
     });
 }
 
 function closeModal() {
     const modal = document.getElementById('modal-overlay');
     const modalContent = document.getElementById('modal-content');
+    const isMobile = window.innerWidth < 768;
     
     // Animate Out
-    gsap.to(modalContent, { y: 20, opacity: 0, duration: 0.3 });
+    gsap.to(modalContent, { y: 20, opacity: 0, duration: isMobile ? 0.14 : 0.3 });
     gsap.to(modal, { 
         opacity: 0, 
-        duration: 0.3, 
-        delay: 0.1,
+        duration: isMobile ? 0.16 : 0.3, 
+        delay: isMobile ? 0 : 0.1,
         onComplete: () => {
              modal.classList.add('hidden');
-             document.body.style.overflow = '';
         }
     });
 }
 
-// --- Init ---
+// --- Init & GNOME Coverflow Alt-Tab 3D Controller (GPU-Optimized) ---
 
-document.addEventListener('DOMContentLoaded', () => {
-    // Lenis Smooth Scroll
-    const lenis = new Lenis({
-        duration: 1.2,
-        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-        direction: 'vertical',
-        gestureDirection: 'vertical',
-        smooth: true,
-        mouseMultiplier: 1,
-        smoothTouch: false,
-        touchMultiplier: 2,
+let currentPageIndex = 0;
+let isPageAnimating = false;
+let settleTimeout = null;
+let panels = [];
+
+function isOverlayOpen() {
+    const modal = document.getElementById('modal-overlay');
+    const mobileMenu = document.getElementById('mobile-menu');
+    return (modal && !modal.classList.contains('hidden')) ||
+           (mobileMenu && !mobileMenu.classList.contains('hidden'));
+}
+
+function updateActiveUI(index) {
+    const progressBar = document.getElementById('scroll-progress');
+    if (progressBar && panels.length > 1) {
+        gsap.to(progressBar, {
+            scaleX: index / (panels.length - 1),
+            duration: 0.45,
+            ease: 'power2.out',
+            overwrite: true
+        });
+    }
+
+    const activePanel = panels[index];
+    const activeId = activePanel ? activePanel.id : null;
+
+    document.querySelectorAll('.nav-link').forEach(link => {
+        const href = link.getAttribute('href');
+        if (activeId && href === `#${activeId}`) {
+            link.classList.add('text-green-400');
+        } else {
+            link.classList.remove('text-green-400');
+        }
     });
 
-    function raf(time) {
-        lenis.raf(time);
-        requestAnimationFrame(raf);
-    }
-    requestAnimationFrame(raf);
+    const sectionNames = ['HERO', 'ABOUT', 'EXP', 'PROJECTS', 'DOCS', 'CONTACT'];
+    const edgeLeft = document.getElementById('edge-left');
+    const edgeRight = document.getElementById('edge-right');
+    const edgeLeftLabel = document.getElementById('edge-left-label');
+    const edgeRightLabel = document.getElementById('edge-right-label');
 
-    // Sync Lenis scroll with standard anchors
+    if (edgeLeft) {
+        if (index <= 0) {
+            edgeLeft.classList.add('is-disabled');
+        } else {
+            edgeLeft.classList.remove('is-disabled');
+            if (edgeLeftLabel) edgeLeftLabel.textContent = sectionNames[index - 1] || 'PREV';
+        }
+    }
+    if (edgeRight) {
+        if (index >= panels.length - 1) {
+            edgeRight.classList.add('is-disabled');
+        } else {
+            edgeRight.classList.remove('is-disabled');
+            if (edgeRightLabel) edgeRightLabel.textContent = sectionNames[index + 1] || 'NEXT';
+        }
+    }
+}
+
+function renderCoverflowState(activeIndex, mode = 'focused', immediate = false) {
+    const isMobile = window.innerWidth < 768;
+    const isSwitching = mode === 'coverflow';
+
+    panels.forEach((card, i) => {
+        const offset = i - activeIndex;
+        const absOffset = Math.abs(offset);
+        const sign = Math.sign(offset);
+        const body = card.querySelector('.deck-card-body');
+
+        if (offset === 0) {
+            card.classList.add('is-active');
+            card.style.pointerEvents = 'auto';
+            card.style.zIndex = 50;
+            if (body && isSwitching) body.scrollTop = 0;
+
+            gsap.to(card, {
+                xPercent: 0,
+                y: isSwitching ? -8 : 0,
+                z: 0,
+                rotationY: 0,
+                rotationX: 0,
+                scale: isSwitching ? (isMobile ? 0.84 : 0.78) : 1,
+                autoAlpha: 1,
+                force3D: true,
+                duration: immediate ? 0 : 0.45,
+                ease: 'power3.out',
+                overwrite: true
+            });
+        } else {
+            card.classList.remove('is-active');
+            card.style.zIndex = 50 - absOffset;
+
+            // Only render immediate neighbors (absOffset <= 2) during Coverflow switch;
+            // hide all non-active cards completely (visibility: hidden via autoAlpha: 0) when focused
+            const isVisibleWing = isSwitching && absOffset <= 2;
+            card.style.pointerEvents = isVisibleWing ? 'auto' : 'none';
+
+            const wingSpreadBase = isMobile ? 38 : 44;
+            const wingSpreadStep = isMobile ? 10 : 12;
+            const wingAngle = isMobile ? 48 : 55;
+
+            const targetXPercent = isSwitching
+                ? sign * (wingSpreadBase + (absOffset - 1) * wingSpreadStep)
+                : sign * 65;
+
+            const targetZ = isSwitching
+                ? -160 - (absOffset - 1) * 90
+                : -260;
+
+            const targetRotY = -sign * wingAngle;
+            const targetScale = isSwitching
+                ? (isMobile ? 0.72 : 0.68) - (absOffset - 1) * 0.05
+                : 0.7;
+            const targetAlpha = isVisibleWing
+                ? (absOffset === 1 ? 0.85 : 0.45)
+                : 0;
+
+            gsap.to(card, {
+                xPercent: targetXPercent,
+                y: 0,
+                z: targetZ,
+                rotationY: targetRotY,
+                rotationX: 0,
+                scale: targetScale,
+                autoAlpha: targetAlpha,
+                force3D: true,
+                duration: immediate ? 0 : 0.45,
+                ease: 'power3.out',
+                overwrite: true
+            });
+        }
+    });
+}
+
+function goToPage(targetIndex, immediate = false, keepCoverflowOpen = false) {
+    if (panels.length === 0) return;
+
+    const clampedIndex = Math.max(0, Math.min(panels.length - 1, targetIndex));
+    if (clampedIndex === currentPageIndex && !immediate) return;
+    if (isPageAnimating && !immediate) return;
+
+    currentPageIndex = clampedIndex;
+    updateActiveUI(currentPageIndex);
+
+    if (immediate) {
+        renderCoverflowState(currentPageIndex, 'focused', true);
+        return;
+    }
+
+    isPageAnimating = true;
+    setTimeout(() => {
+        isPageAnimating = false;
+    }, 360);
+
+    // 1. Enter GNOME Coverflow 3D Alt-Tab mode and flip to the selected window
+    renderCoverflowState(currentPageIndex, 'coverflow', false);
+
+    // 2. If not holding cursor at the screen edge, zoom forward into full-page focus after flip
+    if (settleTimeout) clearTimeout(settleTimeout);
+    if (!keepCoverflowOpen) {
+        settleTimeout = setTimeout(() => {
+            renderCoverflowState(currentPageIndex, 'focused', false);
+        }, 560);
+    }
+}
+
+function scrollToSection(targetSelector) {
+    if (!targetSelector || targetSelector === '#top' || targetSelector === '#hero') {
+        goToPage(0);
+        return;
+    }
+
+    const id = targetSelector.replace('#', '');
+    const index = panels.findIndex(p => p.id === id);
+    if (index !== -1) {
+        goToPage(index);
+    }
+}
+
+function initDeckController() {
+    const container = document.getElementById('deck-container');
+    if (!container) return;
+
+    panels = Array.from(container.querySelectorAll('.deck-card'));
+    panels.forEach((card, idx) => {
+        card.addEventListener('click', (e) => {
+            if (idx !== currentPageIndex) {
+                e.stopPropagation();
+                goToPage(idx);
+            }
+        });
+    });
+
+    window.addEventListener('resize', () => {
+        renderCoverflowState(currentPageIndex, 'focused', true);
+    });
+
+    updateActiveUI(currentPageIndex);
+    renderCoverflowState(currentPageIndex, 'focused', true);
+
+    // Desktop Mouse Proximity Edge Navigation (Left / Right screen edges trigger Coverflow switch)
+    let activeEdgeSide = null; // 'left' | 'right' | null
+    let edgeRepeatInterval = null;
+    const edgeLeftEl = document.getElementById('edge-left');
+    const edgeRightEl = document.getElementById('edge-right');
+
+    function clearEdgeTrigger() {
+        if (edgeRepeatInterval) {
+            clearInterval(edgeRepeatInterval);
+            edgeRepeatInterval = null;
+        }
+        if (edgeLeftEl) edgeLeftEl.classList.remove('is-triggered');
+        if (edgeRightEl) edgeRightEl.classList.remove('is-triggered');
+
+        if (activeEdgeSide !== null) {
+            activeEdgeSide = null;
+            if (settleTimeout) clearTimeout(settleTimeout);
+            settleTimeout = setTimeout(() => {
+                renderCoverflowState(currentPageIndex, 'focused', false);
+            }, 350);
+        }
+    }
+
+    window.addEventListener('mousemove', (e) => {
+        if (isOverlayOpen() || window.innerWidth < 768) return;
+
+        // Ignore top navbar area so clicking nav buttons doesn't trigger edge flip
+        if (e.clientY <= 64) {
+            clearEdgeTrigger();
+            return;
+        }
+
+        const edgeThreshold = Math.min(110, Math.max(64, window.innerWidth * 0.065));
+        const isLeftEdge = e.clientX <= edgeThreshold;
+        const isRightEdge = e.clientX >= window.innerWidth - edgeThreshold;
+
+        if (isRightEdge && currentPageIndex < panels.length - 1) {
+            if (activeEdgeSide !== 'right') {
+                clearEdgeTrigger();
+                activeEdgeSide = 'right';
+                if (edgeRightEl) edgeRightEl.classList.add('is-triggered');
+                goToPage(currentPageIndex + 1, false, true);
+
+                edgeRepeatInterval = setInterval(() => {
+                    if (currentPageIndex < panels.length - 1) {
+                        goToPage(currentPageIndex + 1, false, true);
+                    } else {
+                        clearEdgeTrigger();
+                    }
+                }, 950);
+            }
+        } else if (isLeftEdge && currentPageIndex > 0) {
+            if (activeEdgeSide !== 'left') {
+                clearEdgeTrigger();
+                activeEdgeSide = 'left';
+                if (edgeLeftEl) edgeLeftEl.classList.add('is-triggered');
+                goToPage(currentPageIndex - 1, false, true);
+
+                edgeRepeatInterval = setInterval(() => {
+                    if (currentPageIndex > 0) {
+                        goToPage(currentPageIndex - 1, false, true);
+                    } else {
+                        clearEdgeTrigger();
+                    }
+                }, 950);
+            }
+        } else {
+            clearEdgeTrigger();
+        }
+    });
+
+    document.addEventListener('mouseleave', () => {
+        clearEdgeTrigger();
+    });
+
+    // Mobile Touch Swipe handler (horizontal swipe triggers 3D Coverflow on touch devices)
+    let touchStartX = 0;
+    let touchStartY = 0;
+
+    window.addEventListener('touchstart', (e) => {
+        if (isOverlayOpen() || !e.touches.length) return;
+        touchStartX = e.touches[0].clientX;
+        touchStartY = e.touches[0].clientY;
+    }, { passive: true });
+
+    window.addEventListener('touchend', (e) => {
+        if (isOverlayOpen() || isPageAnimating || !e.changedTouches.length) return;
+        const touchEndX = e.changedTouches[0].clientX;
+        const touchEndY = e.changedTouches[0].clientY;
+
+        const deltaX = touchStartX - touchEndX;
+        const deltaY = touchStartY - touchEndY;
+
+        if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > 45) {
+            if (deltaX > 0) {
+                goToPage(currentPageIndex + 1);
+            } else {
+                goToPage(currentPageIndex - 1);
+            }
+        }
+    }, { passive: true });
+
+    // Keyboard Arrows (Left / Right)
+    window.addEventListener('keydown', (e) => {
+        if (isOverlayOpen() || isPageAnimating) return;
+        if (e.key === 'ArrowRight') {
+            e.preventDefault();
+            goToPage(currentPageIndex + 1);
+        } else if (e.key === 'ArrowLeft') {
+            e.preventDefault();
+            goToPage(currentPageIndex - 1);
+        }
+    });
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    initDeckController();
+
+    // Logo scroll to start
+    const navLogo = document.getElementById('nav-logo');
+    if (navLogo) {
+        navLogo.addEventListener('click', () => scrollToSection('#hero'));
+    }
+
+    // Sync horizontal scroll with anchor links
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function (e) {
             const targetId = this.getAttribute('href');
-            // Only intercept if it's still an anchor link (starts with #)
-            if (targetId && targetId.startsWith('#')) {
+            if (targetId && targetId.startsWith('#') && targetId.length > 1) {
                 e.preventDefault();
-                lenis.scrollTo(targetId, { offset: -100 });
+                scrollToSection(targetId);
             }
         });
     });
@@ -589,7 +850,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (e.target.id === 'modal-overlay') closeModal();
     });
 
-    // Mobile Menu
+    // Mobile Menu (faster than the 0.45s page transition on mobile)
     const mobileMenuBtn = document.getElementById('mobile-menu-btn');
     const mobileMenu = document.getElementById('mobile-menu');
     const mobileMenuClose = document.getElementById('mobile-menu-close');
@@ -597,31 +858,32 @@ document.addEventListener('DOMContentLoaded', () => {
     if (mobileMenuBtn && mobileMenu && mobileMenuClose) {
         mobileMenuBtn.addEventListener('click', () => {
              mobileMenu.classList.remove('hidden');
-             gsap.fromTo(mobileMenu, { x: '100%' }, { x: '0%', duration: 0.4, ease: 'power2.out' });
-             document.body.style.overflow = 'hidden';
+             gsap.fromTo(mobileMenu, { x: '100%' }, { x: '0%', duration: 0.18, ease: 'power3.out' });
         });
 
-        const closeMenu = () => {
+        const closeMenu = (onDone) => {
              gsap.to(mobileMenu, { 
                 x: '100%', 
-                duration: 0.4, 
-                ease: 'power2.in', 
+                duration: 0.16, 
+                ease: 'power3.in', 
                 onComplete: () => {
                     mobileMenu.classList.add('hidden');
-                    document.body.style.overflow = '';
+                    if (typeof onDone === 'function') onDone();
                 }
              });
         };
 
-        mobileMenuClose.addEventListener('click', closeMenu);
+        mobileMenuClose.addEventListener('click', () => closeMenu());
 
-        // Close on link click
+        // Close on link click rapidly so the overlay clears faster than the page change animation
         mobileMenu.querySelectorAll('a').forEach(link => {
-            link.addEventListener('click', () => {
+            link.addEventListener('click', (e) => {
+                const targetId = link.getAttribute('href');
+                e.preventDefault();
                 closeMenu();
-                // Allow lenis to scroll after menu closes? 
-                // Lenis scroll happens on click, closeMenu is async animation.
-                // It should be fine.
+                if (targetId && targetId.startsWith('#')) {
+                    scrollToSection(targetId);
+                }
             });
         });
     }
@@ -634,10 +896,12 @@ document.addEventListener('DOMContentLoaded', () => {
         fetchProjects(),
         fetchExperience(),
         fetchDocs(),
-        fetchRobotics(),
         fetchGitHubStats()
     ]).then(() => {
         lucide.createIcons();
+        if (window.location.hash) {
+            scrollToSection(window.location.hash);
+        }
     });
 });
 
