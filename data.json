@@ -1,4 +1,86 @@
 {
+  "translations": {
+    "pt": {
+      "nav_about": "Sobre",
+      "nav_experience": "Experiência",
+      "nav_projects": "Projetos",
+      "nav_docs": "Documentação",
+      "nav_blog": "Blog",
+      "lang_btn": "🇬🇧",
+      "role_title": "Engenheiro de Backend",
+      "about_heading": "Sobre Mim",
+      "about_text1": "Engenheiro Backend focado em Java e Spring Boot, com experiência em APIs REST e microsserviços, e experiência em produção com Go, Python e Angular. Atualmente Backend Developer (Part-Time) no INESC-TEC, na migração do backend de Python para Go.",
+      "about_text2": "Autor do Ariadne, um agente JVM open-source que restaura o contexto de chamada entre threads em código Java assíncrono, e fundador da SkillBridge, plataforma full-stack sem fins lucrativos em produção.",
+      "education_heading": "Educação",
+      "edu_msc": "Mestrado em Engenharia Informática",
+      "expected": "Previsto",
+      "edu_bsc": "Licenciatura em Engenharia de Jogos Digitais",
+      "skills_heading": "Competências Técnicas",
+      "skills_languages": "Linguagens:",
+      "skills_backend": "Backend & Frameworks:",
+      "skills_db": "Bases de Dados & Cloud:",
+      "contact_heading": "Contactos & Ligações",
+      "cv_download": "Descarregar CV (PDF)",
+      "experience_title": "Experiência Profissional",
+      "projects_title": "Projetos",
+      "docs_title": "Documentação Técnica",
+      "blog_title": "Blog",
+      "blog_empty": "Nenhum post publicado até ao momento.",
+      "back_docs": "← Voltar à Documentação",
+      "doc_not_found": "Documento não encontrado.",
+      "status_label": "Estado:",
+      "features_label": "Funcionalidades:",
+      "tech_label": "Tecnologias:",
+      "achievements_label": "Principais Realizações:",
+      "period_label": "Período:",
+      "code_link": "Ver Repositório no GitHub",
+      "site_link": "Visitar Website",
+      "video_link": "Ver Demonstração / Vídeo",
+      "read_more": "Ler Documentação Completa →",
+      "loading": "A carregar...",
+      "error": "Erro ao carregar os dados."
+    },
+    "en": {
+      "nav_about": "About",
+      "nav_experience": "Experience",
+      "nav_projects": "Projects",
+      "nav_docs": "Documentation",
+      "nav_blog": "Blog",
+      "lang_btn": "🇵🇹",
+      "role_title": "Backend Developer",
+      "about_heading": "About Me",
+      "about_text1": "Backend engineer focused on Java and Spring Boot, with experience in REST APIs and microservices, and production experience in Go, Python and Angular. Currently a Part-Time Backend Developer at INESC-TEC, working on the Python to Go backend migration.",
+      "about_text2": "Author of Ariadne, an open-source JVM agent that restores caller context lost across thread boundaries in asynchronous Java code, and founder of SkillBridge, a non-profit full-stack platform in production.",
+      "education_heading": "Education",
+      "edu_msc": "M.Sc. in Computer Engineering",
+      "expected": "Expected",
+      "edu_bsc": "B.Sc. in Digital Games Engineering",
+      "skills_heading": "Technical Skills",
+      "skills_languages": "Languages:",
+      "skills_backend": "Backend & Frameworks:",
+      "skills_db": "Databases & Cloud:",
+      "contact_heading": "Contact & Links",
+      "cv_download": "Download CV (PDF)",
+      "experience_title": "Work Experience",
+      "projects_title": "Projects",
+      "docs_title": "Technical Documentation",
+      "blog_title": "Blog",
+      "blog_empty": "No posts published yet.",
+      "back_docs": "← Back to Docs",
+      "doc_not_found": "Document not found.",
+      "status_label": "Status:",
+      "features_label": "Features:",
+      "tech_label": "Technologies:",
+      "achievements_label": "Key Achievements:",
+      "period_label": "Period:",
+      "code_link": "View GitHub Repository",
+      "site_link": "Visit Website",
+      "video_link": "Watch Demo / Video",
+      "read_more": "Read Full Documentation →",
+      "loading": "Loading...",
+      "error": "Error loading data."
+    }
+  },
   "projects": [
     {
       "id": 1160000000000000001,
@@ -417,48 +499,19 @@
       "updatedAt": "2025-12-07T15:58:31.328688Z"
     }
   ],
-  "robotics": [
-    {
-      "id": 1,
-      "title": {
-        "en": "Autonomous Line-Following Robot",
-        "pt": "Robot Seguidor de Linha Autónomo"
-      },
-      "description": {
-        "en": "PID-controlled autonomous robot using infrared sensors for line detection and real-time path correction.",
-        "pt": "Robot autónomo com controlo PID usando sensores infravermelhos para deteção de linha e correção de trajetória em tempo real."
-      },
-      "youtubeUrl": "",
-      "tech": ["Arduino", "C", "PID Control", "IR Sensors", "Electronics"]
-    },
-    {
-      "id": 2,
-      "title": {
-        "en": "Servo Motor Control System",
-        "pt": "Sistema de Controlo de Servo Motor"
-      },
-      "description": {
-        "en": "Precision servo motor control system with PWM modulation and feedback loop for robotic arm positioning.",
-        "pt": "Sistema de controlo de servo motor de precisão com modulação PWM e loop de feedback para posicionamento de braço robótico."
-      },
-      "youtubeUrl": "",
-      "tech": ["Arduino", "PWM", "Servo Control", "C++", "Electronics"]
-    },
-    {
-      "id": 3,
-      "title": {
-        "en": "ESP32 IoT Sensor Network",
-        "pt": "Rede de Sensores IoT com ESP32"
-      },
-      "description": {
-        "en": "Distributed sensor network using ESP32 modules with MQTT protocol for real-time data collection and monitoring.",
-        "pt": "Rede de sensores distribuída utilizando módulos ESP32 com protocolo MQTT para recolha e monitorização de dados em tempo real."
-      },
-      "youtubeUrl": "",
-      "tech": ["ESP32", "MQTT", "IoT", "C++", "Wi-Fi"]
-    }
-  ],
   "docs": [
+    {
+      "id": 1160000000000000003,
+      "slug": "ariadne-technical-documentation",
+      "url": "https://afonsopaiva.github.io/ARIADNE/wiki.html",
+      "title": {
+        "en": "ARIADNE - Technical Documentation",
+        "pt": "ARIADNE - Documentação Técnica"
+      },
+      "category": "documentation",
+      "published": true,
+      "order": 1
+    },
     {
       "id": 1147681623929356289,
       "slug": "loadx-full-documentation",
