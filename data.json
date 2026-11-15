@@ -88,7 +88,7 @@
         "text": "COMPLETED",
         "color": "green"
       },
-      "image": "https://github.com/AfonsoPaiva/ARIADNE/blob/main/docs/Images/logo-vertical-dark-background.svg?raw=true",
+      "image": "https://afonsopaiva.github.io/ARIADNE/Images/Logo-vertical-white-background.svg",
       "title": {
         "en": "ARIADNE: Async Causality Tracing for the JVM",
         "pt": "ARIADNE: Rastreio de Causalidade Assíncrona para a JVM"

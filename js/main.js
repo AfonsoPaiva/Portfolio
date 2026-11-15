@@ -100,11 +100,13 @@ function renderExperience(list) {
 
         return `
             <article>
+                <img src="${item.logo || 'https://placehold.co/60'}" width="60" height="60" border="2" align="left" hspace="10" alt="${company}">
                 <h3>${role} - ${company}</h3>
                 <p><strong>${t('period_label')}</strong> ${period}</p>
                 <p>${desc}</p>
                 ${achievements ? `<h4>${t('achievements_label')}</h4><ul>${achievements}</ul>` : ''}
                 ${tech ? `<p><strong>${t('tech_label')}</strong> ${tech}</p>` : ''}
+                <br clear="all">
                 <hr>
             </article>
         `;
@@ -133,13 +135,20 @@ function renderProjects(list) {
         if (item.siteUrl) links.push(`<a href="${item.siteUrl}" target="_blank">${t('site_link')}</a>`);
         if (item.videoUrl) links.push(`<a href="${item.videoUrl}" target="_blank">${t('video_link')}</a>`);
 
+        const yt = item.videoUrl?.match(/(?:youtu\.be\/|v=)([\w-]+)/);
+        const video = yt
+            ? `<p><iframe src="https://www.youtube-nocookie.com/embed/${yt[1]}" title="${title}" loading="lazy" frameborder="2" allowfullscreen></iframe></p>`
+            : (item.videoUrl ? `<p><video src="${item.videoUrl}" controls preload="metadata" border="2"></video></p>` : '');
+
         return `
             <article>
                 <h3>${title}</h3>
                 ${status ? `<p><strong>${t('status_label')}</strong> ${status}</p>` : ''}
+                ${item.image ? `<p><img src="${item.image}" alt="${title}" loading="lazy" decoding="async" border="2"></p>` : ''}
                 <p>${fullDesc || shortDesc}</p>
                 ${features ? `<h4>${t('features_label')}</h4><ul>${features}</ul>` : ''}
                 ${tech ? `<p><strong>${t('tech_label')}</strong> ${tech}</p>` : ''}
+                ${video}
                 ${links.length > 0 ? `<p>${links.join(' | ')}</p>` : ''}
                 <hr>
             </article>

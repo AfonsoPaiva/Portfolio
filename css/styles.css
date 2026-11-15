@@ -1,0 +1,28 @@
+img, iframe, video {
+    max-width: 100%;
+    height: auto;
+    box-sizing: border-box;
+}
+iframe {
+    aspect-ratio: 16 / 9;
+    width: 100%;
+}
+video[border="2"] {
+    border: 2px solid;
+}
+#projects-list img, #projects-list iframe, #projects-list video {
+    width: 100%;
+    max-width: 450px;
+}
+#projects-list img {
+    aspect-ratio: 16 / 9;
+    object-fit: contain;
+    background: #fff;
+}
+@media (min-width: 768px) {
+    body {
+        max-width: 800px;
+        margin: 20px auto;
+        padding: 0 16px;
+    }
+}
